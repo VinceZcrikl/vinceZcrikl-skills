@@ -1,20 +1,20 @@
 {
-  "name": "vincez-agent-skills",
+  "name": "VinceZcrikl-skills",
   "owner": {
     "name": "VinceZcrikl"
   },
   "metadata": {
-    "description": "VinceZcrikl example skills",
+    "description": "A collection of Agent Skills for AI assistants",
     "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "example-skills",
-      "description": "Collection of example skills",
+      "name": "VinceZcrikl-skills",
+      "description": "VinceZcrikl-skills collection",
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/example-skill"
+        "./skills/everything-search"
       ]
     }
   ]

@@ -1,46 +1,39 @@
-# Skills
+# VinceZcrikl-skills
 
-Skills are folders of instructions, scripts, and resources that Claude loads dynamically to improve performance on specialized tasks. Skills teach Claude how to complete specific tasks in a repeatable way, whether that's creating documents with your company's brand guidelines, analyzing data using your organization's specific workflows, or automating personal tasks.
+An open-source collection of Agent Skills for AI assistants. Each skill is a self-contained folder with a `SKILL.md` file that teaches the agent how to complete specialized tasks — from file search to document generation.
 
-For more information, check out:
-- [What are skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
-- [Using skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
-- [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills)
+## Skills
 
-# About This Repository
+**System & Productivity**
 
-This repository contains skills that demonstrate what's possible with Claude's skills system. Each skill is self-contained in its own folder with a `SKILL.md` file containing the instructions and metadata that Claude uses. Browse through these skills to get inspiration for your own skills or to understand different patterns and approaches.
+- **[everything-search](./skills/everything-search)** `[Windows only]` — Instant file search powered by [Everything (voidtools)](https://www.voidtools.com). Find any file by name, extension, size, date, or path in milliseconds. Accepts natural language or raw Everything query syntax.
 
-# Skill Sets
-- [./skills](./skills): Skill examples
-- [./spec](./spec): The Agent Skills specification
-- [./template](./template): Skill template
+## Installation
 
-# Creating a Basic Skill
+### Register as a plugin marketplace
 
-Skills are simple to create - just a folder with a `SKILL.md` file containing YAML frontmatter and instructions. You can use the **template** in this repository as a starting point:
-
-```markdown
----
-name: my-skill-name
-description: A clear description of what this skill does and when to use it
----
-
-# My Skill Name
-
-[Add your instructions here that Claude will follow when this skill is active]
-
-## Examples
-- Example usage 1
-- Example usage 2
-
-## Guidelines
-- Guideline 1
-- Guideline 2
+```
+/plugin marketplace add VinceZcrikl/VinceZcrikl-skills
 ```
 
-The frontmatter requires only two fields:
-- `name` - A unique identifier for your skill (lowercase, hyphens for spaces)
-- `description` - A complete description of what the skill does and when to use it
+### Install via git clone
 
-The markdown content below contains the instructions, examples, and guidelines that Claude will follow. For more details, see [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills).
+Personal install (available in all projects):
+
+```bash
+git clone https://github.com/VinceZcrikl/VinceZcrikl-skills.git "%USERPROFILE%\.claude\skills\VinceZcrikl-skills"
+```
+
+Project install (current project only):
+
+```bash
+git clone https://github.com/VinceZcrikl/VinceZcrikl-skills.git ".claude\skills\VinceZcrikl-skills"
+```
+
+## Resources
+
+- [Agent Skills specification](./spec/agent-skills-spec.md)
+
+## License
+
+MIT
