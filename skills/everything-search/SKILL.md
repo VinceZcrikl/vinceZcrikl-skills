@@ -110,3 +110,19 @@ Found **N** result(s) for `<query>`:
 | `windows_only` | "Everything only runs on Windows. This skill cannot run on macOS or Linux." |
 
 Always include the `setup` field from the error JSON as additional context.
+
+## Implementation note — query tokenization
+
+`es.exe` expects each search term and operator as a separate argv token. Passing
+the full query string as one argument causes compound queries to silently return
+zero results.
+
+Inside `scripts/es_helper.py`, the query is split before building the command:
+
+```python
+query_args = shlex.split(query, posix=False)
+cmd = [str(es_path), ..., *query_args]
+```
+
+Symptom of the bug: plain single-keyword searches work, but queries like
+`meeting ext:zip` or `ext:pptx dm:lastmonth` return nothing.

@@ -13,6 +13,7 @@ import io
 import json
 import locale
 import pathlib
+import shlex
 import shutil
 import subprocess
 import sys
@@ -105,7 +106,13 @@ def search_via_es(
     max_results: int,
     sort: str,
 ) -> dict:
-    """Execute search using es.exe CLI."""
+    """Execute search using es.exe CLI.
+
+    es.exe expects each search term/operator as its own argv token.
+    Passing the whole query as one string makes compound queries like
+    `meeting ext:zip` or `ext:pptx dm:lastmonth` fail silently.
+    """
+    query_args = shlex.split(query, posix=False)
     cmd = [
         str(es_path),
         "-n", str(max_results),
@@ -115,7 +122,7 @@ def search_via_es(
         "-path-column",
         "-size",
         "-date-modified",
-        query,
+        *query_args,
     ]
 
     try:
