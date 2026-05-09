@@ -1,0 +1,21 @@
+{
+  "name": "vincez-agent-skills",
+  "owner": {
+    "name": "VinceZcrikl"
+  },
+  "metadata": {
+    "description": "VinceZcrikl example skills",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "example-skills",
+      "description": "Collection of example skills",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/example-skill"
+      ]
+    }
+  ]
+}
