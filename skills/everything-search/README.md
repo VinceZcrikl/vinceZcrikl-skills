@@ -72,13 +72,21 @@ If `es.exe` is unavailable, the skill falls back to Everything's HTTP API:
 
 Once installed, the AI agent automatically uses this skill when you ask to find files:
 
-| Request | Translated query |
-|---|---|
-| large PDF files modified this week | `ext:pdf size:large dm:thisweek` |
-| Python files in the src folder | `path:src\ ext:py` |
-| videos bigger than 2GB on D drive | `video: size:>2gb path:D:\` |
-| folders named dist or build | `folder: dist \| folder: build` |
-| images created today | `pic: dc:today` |
+| Request | Translated query | Suggested sort |
+|---|---|---|
+| large PDF files modified this week | `ext:pdf size:large dm:thisweek` | `--sort date-modified` |
+| Python files in the src folder | `path:src\ ext:py` | `--sort name` |
+| videos bigger than 2GB on D drive | `video: size:>2gb path:D:\` | `--sort size` (desc) |
+| folders named dist or build | `folder: dist \| folder: build` | `--sort name` |
+| images created today | `pic: dc:today` | `--sort date-created` |
+
+### Helper script flags
+
+- `--max N` — result cap (default `20`)
+- `--sort name|size|date-modified|date-created|path` — sort field (default `name`)
+- `--order asc|desc` — sort direction. Defaults: `name`/`path` → asc, `size`/`date-*` → desc
+- `--count-only` — return only `{total, query}`, useful as a cheap probe before picking `--max`
+- `--http-port N` — Everything HTTP fallback port (default `80`)
 
 ## Troubleshooting
 

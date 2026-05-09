@@ -12,10 +12,12 @@ Everything (voidtools) is a near-instant Windows file search engine that indexes
 Translate the user's request to Everything search syntax, then run the search:
 
 ```bash
-python {skill_dir}/scripts/es_helper.py --query "ext:py dm:thisweek" --max 50
+python {skill_dir}/scripts/es_helper.py --query "ext:py dm:thisweek" --sort date-modified
 ```
 
 The script prints JSON to stdout. Parse it and format the results as a markdown table.
+
+Pick `--sort`, `--order`, and `--max` based on user intent (see Step 3 decision table) — do **not** rely on defaults blindly. The default sort is `name` (alphabetical, asc); `--order` defaults intelligently per `--sort` (name/path=asc, size/date-\*=desc); `--max` defaults to 20.
 
 ## Step 1 — Locate the skill directory
 
@@ -60,15 +62,38 @@ Tell the user the translated query before running: **Searching for: `<translated
 
 For complex queries or unfamiliar operators, load [reference/syntax.md](reference/syntax.md) for the full reference.
 
-## Step 3 — Run the search
+## Step 3 — Choose parameters by user intent, then run
+
+Map the user's intent to parameters using this table — do not just take the defaults:
+
+| User intent (signals) | `--sort` | `--order` | `--max` |
+|---|---|---|---|
+| "recent / today / this week / this month" — query has `dm:` / `dc:` | `date-modified` | `desc` | 30 |
+| "largest / smallest / over N MB" — query has `size:` | `size` | `desc` (largest) / `asc` (smallest) | 30 |
+| "the file called X / find a specific file" (concrete name) | `name` | `asc` | 10 |
+| "all X / list X" (browsing a category) | `name` | `asc` | 50 |
+| "duplicate / sizedupe" — query has `dupe:` / `sizedupe:` | `size` | `desc` | 100 |
+| Unclear / fallback | `name` | `asc` | 20 |
+
+For open-ended queries where you can't estimate scale, run a cheap probe first:
 
 ```bash
-python "{SKILL_DIR}/scripts/es_helper.py" --query "<translated_query>" --max 50 --sort name
+python "{SKILL_DIR}/scripts/es_helper.py" --query "<translated_query>" --count-only
+```
+
+It returns `{"total": N, ...}` with no `results` list, so you can pick `--max` informedly.
+
+Then run the actual search:
+
+```bash
+python "{SKILL_DIR}/scripts/es_helper.py" --query "<translated_query>" --sort date-modified --max 30
 ```
 
 Options:
-- `--max N` — maximum results (default 50; increase if user asks for more)
-- `--sort name|size|date-modified|date-created|path` — sort order
+- `--max N` — maximum results (default 20)
+- `--sort name|size|date-modified|date-created|path` — sort field (default `name`)
+- `--order asc|desc` — sort direction. Defaults intelligently: `name`/`path` → asc; `size`/`date-modified`/`date-created` → desc. Override only when needed.
+- `--count-only` — return only `{total, query}` without results
 - `--http-port N` — Everything HTTP server port if not using default 80
 
 ## Step 4 — Present results
@@ -96,7 +121,8 @@ Found **N** result(s) for `<query>`:
 | 1 | report.pdf | C:\Users\... | 1.0 MB | 2026-05-01 14:32 |
 ```
 
-- If `total > 50` and results is full: add *"Showing top 50 of N. Use narrower filters to reduce results."*
+- If `total > max` (results truncated): add *"Showing top `<max>` of `<total>`. Narrow the query or rerun with a larger `--max`."*
+- If `total > max * 5`: prefer narrowing the query (add filters like `path:`, `dm:`, `size:`) over simply raising `--max`.
 - If `results` is empty: *"No files found matching `<query>`. Try broader terms or check the spelling."*
 
 ## Step 5 — Handle errors

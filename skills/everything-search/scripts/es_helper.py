@@ -4,7 +4,8 @@ es_helper.py - Everything search helper for Claude Code skill.
 Stdlib only. No pip dependencies required.
 
 Usage:
-  python3 es_helper.py --query "<query>" [--max 50] [--sort name] [--http-port 80]
+  python3 es_helper.py --query "<query>" [--max 20] [--sort name]
+                       [--order asc|desc] [--count-only] [--http-port 80]
 """
 
 import argparse
@@ -42,6 +43,16 @@ SORT_MAP = {
     "date-modified": "date-modified",
     "date-created": "date-created",
     "path": "path",
+}
+
+# Default sort direction per field — picked to match the most common intent
+# (largest/newest first, names alphabetical).
+DEFAULT_ORDER = {
+    "name": "asc",
+    "path": "asc",
+    "size": "desc",
+    "date-modified": "desc",
+    "date-created": "desc",
 }
 
 
@@ -105,6 +116,8 @@ def search_via_es(
     query: str,
     max_results: int,
     sort: str,
+    order: str,
+    count_only: bool = False,
 ) -> dict:
     """Execute search using es.exe CLI.
 
@@ -113,17 +126,23 @@ def search_via_es(
     `meeting ext:zip` or `ext:pptx dm:lastmonth` fail silently.
     """
     query_args = shlex.split(query, posix=False)
-    cmd = [
-        str(es_path),
-        "-n", str(max_results),
-        "-sort", SORT_MAP.get(sort, "name"),
-        "-csv",
-        "-name",
-        "-path-column",
-        "-size",
-        "-date-modified",
-        *query_args,
-    ]
+    order_flag = "-sort-ascending" if order == "asc" else "-sort-descending"
+
+    if count_only:
+        cmd = [str(es_path), "-get-result-count", *query_args]
+    else:
+        cmd = [
+            str(es_path),
+            "-n", str(max_results),
+            "-sort", SORT_MAP.get(sort, "name"),
+            order_flag,
+            "-csv",
+            "-name",
+            "-path-column",
+            "-size",
+            "-date-modified",
+            *query_args,
+        ]
 
     try:
         proc = subprocess.run(cmd, capture_output=True, timeout=15)
@@ -156,6 +175,13 @@ def search_via_es(
             "setup": stderr_text.strip(),
         }
 
+    if count_only:
+        try:
+            total = int(stdout_text.strip().splitlines()[-1])
+        except (ValueError, IndexError):
+            total = 0
+        return {"total": total, "query": query, "source": "es.exe"}
+
     results = parse_es_csv(stdout_text)
     return {
         "results": results,
@@ -165,15 +191,24 @@ def search_via_es(
     }
 
 
-def search_via_http(query: str, max_results: int, ports: List[int]) -> dict:
+def search_via_http(
+    query: str,
+    max_results: int,
+    ports: List[int],
+    sort: str = "name",
+    order: str = "asc",
+    count_only: bool = False,
+) -> dict:
     """Execute search using Everything HTTP API."""
     params = urllib.parse.urlencode({
         "s": query,
         "j": 1,
-        "c": max_results,
+        "c": 0 if count_only else max_results,
         "path_column": 1,
         "size_column": 1,
         "date_modified_column": 1,
+        "sort": SORT_MAP.get(sort, "name"),
+        "ascending": 1 if order == "asc" else 0,
     })
 
     last_error = ""
@@ -188,6 +223,13 @@ def search_via_http(query: str, max_results: int, ports: List[int]) -> dict:
         except Exception as exc:
             last_error = str(exc)
             continue
+
+        if count_only:
+            return {
+                "total": raw.get("totalResults", 0),
+                "query": query,
+                "source": f"http:{port}",
+            }
 
         raw_results = raw.get("results", [])
         results = []
@@ -237,16 +279,29 @@ def _json_out(data: dict) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Search using Everything")
     parser.add_argument("--query", required=True, help="Everything search query")
-    parser.add_argument("--max", type=int, default=50, help="Maximum results (default: 50)")
+    parser.add_argument("--max", type=int, default=20, help="Maximum results (default: 20)")
     parser.add_argument(
         "--sort",
         default="name",
         choices=list(SORT_MAP.keys()),
-        help="Sort order (default: name)",
+        help="Sort field (default: name)",
+    )
+    parser.add_argument(
+        "--order",
+        choices=["asc", "desc"],
+        default=None,
+        help="Sort direction. Default depends on --sort: name/path=asc, size/date-*=desc.",
+    )
+    parser.add_argument(
+        "--count-only",
+        action="store_true",
+        help="Return only the total count, no result list. Useful for cheap probing.",
     )
     parser.add_argument("--es-path", help="Explicit path to es.exe")
     parser.add_argument("--http-port", type=int, default=80, help="Everything HTTP port (default: 80)")
     args = parser.parse_args()
+
+    order = args.order or DEFAULT_ORDER.get(args.sort, "asc")
 
     if sys.platform != "win32":
         _json_out({
@@ -259,7 +314,9 @@ def main() -> None:
     # Strategy 1: es.exe
     es_path = find_es_exe(args.es_path)
     if es_path:
-        result = search_via_es(es_path, args.query, args.max, args.sort)
+        result = search_via_es(
+            es_path, args.query, args.max, args.sort, order, args.count_only
+        )
         if "error" not in result:
             _json_out(result)
             sys.exit(0)
@@ -274,7 +331,9 @@ def main() -> None:
     if args.http_port != 8080:
         ports.append(8080)
 
-    http_result = search_via_http(args.query, args.max, ports)
+    http_result = search_via_http(
+        args.query, args.max, ports, args.sort, order, args.count_only
+    )
     if "error" not in http_result:
         _json_out(http_result)
         sys.exit(0)
