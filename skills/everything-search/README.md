@@ -29,21 +29,20 @@ everything-search/
 | Requirement | Notes |
 |---|---|
 | Windows 10 / 11 | Everything is Windows-only |
-| [Everything](https://www.voidtools.com) installed and running | Free, ~2 MB. Can be auto-installed — see below. |
 | Python 3.8+ | Stdlib only, no pip required |
 
-### Auto-install (optional)
+Everything itself is **bundled** — `bin/Everything.exe` is included in the skill. No separate
+installation is required. If Everything is not running when you search, the skill launches it
+automatically (appears as a tray icon) and retries.
 
-If Everything is not installed or not running, the skill returns a `not_running` / `not_installed`
-error with `"can_auto_install": true`. The agent will ask for your consent, then rerun with
-`--auto-install` to:
+### First-run notes
 
-1. Download the portable `Everything.exe` (~5 MB) into the skill's `bin/` folder — no UAC, no system-wide install.
-2. Launch it minimized to the system tray.
-3. Wait up to 60 s for the IPC to become ready (first launch builds the index).
-4. Retry the original search automatically.
-
-Everything will keep running in the tray until you quit it. Subsequent launches are instant.
+- Everything builds a file-system index on first launch. This takes a few seconds to a minute
+  depending on drive size. Subsequent launches are instant.
+- The tray icon remains until you quit it from the tray menu. This is normal — it keeps the
+  index ready for fast searches.
+- On x86 Windows (rare/legacy), the bundled x64 binary is incompatible. Pass `--auto-install`
+  to download the matching x86 build instead.
 
 ## Installation
 

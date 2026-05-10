@@ -94,7 +94,23 @@ Options:
 - `--sort name|size|date-modified|date-created|path` — sort field (default `name`)
 - `--order asc|desc` — sort direction. Defaults intelligently: `name`/`path` → asc; `size`/`date-modified`/`date-created` → desc. Override only when needed.
 - `--count-only` — return only `{total, query}` without results
+- `--elevated` — relaunch Everything with UAC elevation (shows one dialog); use when the query targets system directories
+- `--auto-install` — download portable Everything if missing (x86 fallback or no bundled exe)
 - `--http-port N` — Everything HTTP server port if not using default 80
+
+### When to use `--elevated`
+
+Add `--elevated` when the translated query contains any of these patterns:
+
+| Pattern | Example |
+|---|---|
+| `path:C:\Windows\` | files inside Windows directory |
+| `path:C:\Program Files\` | system-installed programs |
+| `path:C:\ProgramData\` | system-wide app data |
+| `attrib:H` or `attrib:S` | hidden or system-attributed files |
+| `path:C:\System Volume Information` | volume snapshots |
+
+Before adding `--elevated`, ask the user: *"This query targets system directories. Everything needs admin privileges to index them — a UAC dialog will appear. Shall I proceed?"*
 
 ## Step 4 — Present results
 
@@ -129,8 +145,8 @@ Found **N** result(s) for `<query>`:
 
 | `error` field | Response |
 |---|---|
-| `not_running` | Everything is installed but not running. Tell the user, then ask: *"Shall I launch it automatically?"* If yes → rerun adding `--auto-install`. |
-| `not_installed` | Everything is not installed. Tell the user, then ask: *"Shall I download the portable version (~5 MB, no system install needed) and launch it automatically?"* If yes → rerun adding `--auto-install`. |
+| `not_running` | Everything is not running but the binary is present — the script auto-launches it and retries. If the retry also returns `not_running`, report the `ipc_timeout` path below. |
+| `not_installed` | The portable binary is missing. Ask: *"Shall I download Everything automatically (~5 MB, no system install)?"* If yes → rerun adding `--auto-install`. |
 | `download_failed` | "Failed to download Everything. Check your internet connection and retry." |
 | `launch_failed` | "Could not start Everything.exe. Try launching it manually from the Start Menu." |
 | `ipc_timeout` | "Everything launched but is still building its index. Wait a minute and retry." |
@@ -142,6 +158,8 @@ Found **N** result(s) for `<query>`:
 Always include the `setup` field from the error JSON as additional context.
 
 When `can_auto_install: true` appears in the error JSON, that is the signal to ask the user for consent before rerunning with `--auto-install`.
+
+When a search succeeds after an auto-launch (i.e., the first attempt returned `not_running` but the retry succeeded), append one sentence to your reply: *"(Everything was not running — it has been auto-launched and is now active in the system tray.)"*
 
 ## Implementation note — query tokenization
 

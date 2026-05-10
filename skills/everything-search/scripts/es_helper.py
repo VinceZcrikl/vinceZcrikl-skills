@@ -182,6 +182,33 @@ def launch_everything(exe_path: pathlib.Path) -> bool:
         return False
 
 
+def launch_everything_elevated(exe_path: pathlib.Path) -> bool:
+    """Relaunch Everything with UAC elevation via ShellExecute runas.
+
+    Shows a UAC dialog — user must click Yes. Returns True if ShellExecute succeeded
+    (not whether the user approved; approval is confirmed later by wait_for_ipc).
+    """
+    import ctypes
+    try:
+        ret = ctypes.windll.shell32.ShellExecuteW(
+            None,           # hwnd
+            "runas",        # verb — triggers UAC elevation
+            str(exe_path),  # file
+            "-startup",     # parameters
+            None,           # working directory
+            0,              # SW_HIDE
+        )
+        # ShellExecuteW returns >32 on success, <=32 on error
+        if ret <= 32:
+            print(f"ShellExecuteW returned {ret} (user may have cancelled UAC)", file=sys.stderr)
+            return False
+        print(f"Launched {exe_path.name} (elevated)", file=sys.stderr)
+        return True
+    except Exception as exc:
+        print(f"Failed to launch elevated {exe_path}: {exc}", file=sys.stderr)
+        return False
+
+
 def wait_for_ipc(es_path: pathlib.Path, timeout: int = 30) -> bool:
     """Poll es.exe until Everything's IPC is ready or timeout expires."""
     print(f"Waiting for Everything IPC (up to {timeout}s) ...", file=sys.stderr)
@@ -211,38 +238,42 @@ def ensure_everything(
 
     Returns {} on success (caller should retry the search), or an error dict on failure.
     """
-    if not auto_install:
-        everything_exe = find_everything_exe()
-        if everything_exe:
+    everything_exe = find_everything_exe()
+
+    if everything_exe:
+        # Binary is available locally — auto-launch silently, no flag required.
+        if not launch_everything(everything_exe):
             return {
-                "error": "not_running",
-                "message": "Everything is installed but not running.",
-                "setup": (
-                    "Start Everything from the Start Menu, or re-run with --auto-install "
-                    "to have this script launch it automatically."
-                ),
-                "can_auto_install": True,
+                "error": "launch_failed",
+                "message": f"Could not start {everything_exe}.",
+                "setup": "Try launching Everything manually from the Start Menu.",
             }
+        if not wait_for_ipc(es_path, timeout=30):
+            return {
+                "error": "ipc_timeout",
+                "message": "Everything launched but IPC was not ready within 30s.",
+                "setup": "Everything may still be building its index. Wait a moment and retry.",
+            }
+        return {}  # success — caller retries the search
+
+    # Binary not found anywhere — need to download.
+    if not auto_install:
         return {
             "error": "not_installed",
-            "message": "Everything is not installed.",
+            "message": "Everything is not installed and the portable binary is missing from bin/.",
             "setup": (
-                "Install Everything from https://www.voidtools.com, or re-run with "
-                "--auto-install to download and launch the portable version automatically (~5 MB)."
+                "Re-run with --auto-install to download the portable version (~5 MB). "
+                "Or install Everything from https://www.voidtools.com."
             ),
             "can_auto_install": True,
         }
 
-    # --- auto_install=True path ---
-    everything_exe = find_everything_exe()
-    first_install = everything_exe is None
-
-    if everything_exe is None:
-        print("Everything not found — downloading portable build ...", file=sys.stderr)
-        try:
-            everything_exe = download_portable(bin_dir)
-        except RuntimeError as exc:
-            return {"error": "download_failed", "message": str(exc), "setup": ""}
+    # --auto-install path: download, then launch.
+    print("Everything not found — downloading portable build ...", file=sys.stderr)
+    try:
+        everything_exe = download_portable(bin_dir)
+    except RuntimeError as exc:
+        return {"error": "download_failed", "message": str(exc), "setup": ""}
 
     if not launch_everything(everything_exe):
         return {
@@ -251,12 +282,11 @@ def ensure_everything(
             "setup": "Try launching Everything manually from the Start Menu.",
         }
 
-    # First-time launch needs longer to build the index
-    ipc_timeout = 60 if first_install else 30
-    if not wait_for_ipc(es_path, timeout=ipc_timeout):
+    # First-time launch needs longer to build the initial index.
+    if not wait_for_ipc(es_path, timeout=60):
         return {
             "error": "ipc_timeout",
-            "message": f"Everything launched but IPC was not ready within {ipc_timeout}s.",
+            "message": "Everything launched but IPC was not ready within 60s.",
             "setup": "Everything may still be building its index. Wait a moment and retry.",
         }
 
@@ -487,6 +517,14 @@ def main() -> None:
         help="Return only the total count, no result list. Useful for cheap probing.",
     )
     parser.add_argument(
+        "--elevated",
+        action="store_true",
+        help=(
+            "Relaunch Everything with UAC elevation so it can index system directories "
+            "(C:\\Windows, Program Files, etc.). Shows a UAC confirmation dialog once."
+        ),
+    )
+    parser.add_argument(
         "--auto-install",
         action="store_true",
         help=(
@@ -507,6 +545,32 @@ def main() -> None:
             "setup": "",
         })
         sys.exit(5)
+
+    # --elevated: relaunch Everything with UAC, then search
+    if args.elevated:
+        everything_exe = find_everything_exe()
+        if everything_exe is None:
+            _json_out({
+                "error": "not_found",
+                "message": "Everything.exe not found — cannot relaunch elevated.",
+                "setup": "Ensure Everything is installed or the skill's bin/ contains Everything.exe.",
+            })
+            sys.exit(1)
+        print("Requesting UAC elevation — please confirm the dialog ...", file=sys.stderr)
+        if not launch_everything_elevated(everything_exe):
+            _json_out({
+                "error": "launch_failed",
+                "message": "UAC elevation was cancelled or failed.",
+                "setup": "Accept the UAC dialog to allow Everything to index system directories.",
+            })
+            sys.exit(1)
+        if not wait_for_ipc(find_es_exe(args.es_path) or pathlib.Path("es.exe"), timeout=30):
+            _json_out({
+                "error": "ipc_timeout",
+                "message": "Everything (elevated) launched but IPC was not ready within 30s.",
+                "setup": "Wait a moment and retry.",
+            })
+            sys.exit(1)
 
     # Strategy 1: es.exe
     es_path = find_es_exe(args.es_path)
