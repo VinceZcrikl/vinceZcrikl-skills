@@ -14,16 +14,33 @@ import io
 import json
 import locale
 import pathlib
+import platform
 import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from typing import Dict, List, Optional, Tuple
 
 SKILL_ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+EVERYTHING_VERSION = "1.4.1.1026"
+EVERYTHING_PORTABLE_URLS: Dict[str, str] = {
+    "AMD64": f"https://www.voidtools.com/Everything-{EVERYTHING_VERSION}.x64.zip",
+    "x86":   f"https://www.voidtools.com/Everything-{EVERYTHING_VERSION}.x86.zip",
+    # ARM64 native build not yet widely available; fall back to x64
+    "ARM64": f"https://www.voidtools.com/Everything-{EVERYTHING_VERSION}.x64.zip",
+}
+
+EVERYTHING_COMMON_PATHS = [
+    pathlib.Path(r"C:\Program Files\Everything\Everything.exe"),
+    pathlib.Path(r"C:\Program Files (x86)\Everything\Everything.exe"),
+]
 
 ES_EXIT_CODES = {
     0: "success",
@@ -72,6 +89,178 @@ def find_es_exe(hint: Optional[str] = None) -> Optional[pathlib.Path]:
         return pathlib.Path(found)
 
     return None
+
+
+def find_everything_exe() -> Optional[pathlib.Path]:
+    """Locate Everything.exe: skill bin/ > common install paths > PATH > registry."""
+    bundled = SKILL_ROOT / "bin" / "Everything.exe"
+    if bundled.exists():
+        return bundled
+
+    for p in EVERYTHING_COMMON_PATHS:
+        if p.exists():
+            return p
+
+    found = shutil.which("Everything") or shutil.which("Everything.exe")
+    if found:
+        return pathlib.Path(found)
+
+    try:
+        import winreg
+        for hive in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
+            try:
+                with winreg.OpenKey(hive, r"Software\voidtools\Everything") as key:
+                    install_dir, _ = winreg.QueryValueEx(key, "install_dir")
+                    candidate = pathlib.Path(install_dir) / "Everything.exe"
+                    if candidate.exists():
+                        return candidate
+            except OSError:
+                pass
+    except ImportError:
+        pass
+
+    return None
+
+
+def download_portable(dest_dir: pathlib.Path) -> pathlib.Path:
+    """Download the portable Everything ZIP and extract Everything.exe into dest_dir."""
+    arch = platform.machine()
+    url = EVERYTHING_PORTABLE_URLS.get(arch, EVERYTHING_PORTABLE_URLS["AMD64"])
+
+    print(f"Downloading Everything {EVERYTHING_VERSION} ({arch}) from {url} ...", file=sys.stderr)
+
+    with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
+        tmp_path = pathlib.Path(tmp.name)
+
+    try:
+        def _report(block_count: int, block_size: int, total: int) -> None:
+            downloaded = block_count * block_size
+            if total > 0:
+                pct = min(downloaded * 100 // total, 100)
+                print(f"\r  {pct}% ({downloaded // 1024} KB / {total // 1024} KB)", end="", file=sys.stderr)
+
+        urllib.request.urlretrieve(url, tmp_path, reporthook=_report)
+        print(file=sys.stderr)  # newline after progress
+    except Exception as exc:
+        tmp_path.unlink(missing_ok=True)
+        raise RuntimeError(f"Download failed: {exc}") from exc
+
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    exe_dest = dest_dir / "Everything.exe"
+
+    try:
+        with zipfile.ZipFile(tmp_path) as zf:
+            names = zf.namelist()
+            exe_name = next((n for n in names if n.lower().endswith("everything.exe")), None)
+            if exe_name is None:
+                raise RuntimeError(f"Everything.exe not found in ZIP. Contents: {names}")
+            with zf.open(exe_name) as src, open(exe_dest, "wb") as dst:
+                shutil.copyfileobj(src, dst)
+    finally:
+        tmp_path.unlink(missing_ok=True)
+
+    if not exe_dest.exists():
+        raise RuntimeError(f"Extraction finished but {exe_dest} is missing.")
+
+    print(f"Extracted to {exe_dest}", file=sys.stderr)
+    return exe_dest
+
+
+def launch_everything(exe_path: pathlib.Path) -> bool:
+    """Start Everything in the background (minimized to tray). Returns True on success."""
+    try:
+        subprocess.Popen(
+            [str(exe_path), "-startup", "-no-uac"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=subprocess.DETACHED_PROCESS | subprocess.CREATE_NO_WINDOW,
+        )
+        print(f"Launched {exe_path.name}", file=sys.stderr)
+        return True
+    except Exception as exc:
+        print(f"Failed to launch {exe_path}: {exc}", file=sys.stderr)
+        return False
+
+
+def wait_for_ipc(es_path: pathlib.Path, timeout: int = 30) -> bool:
+    """Poll es.exe until Everything's IPC is ready or timeout expires."""
+    print(f"Waiting for Everything IPC (up to {timeout}s) ...", file=sys.stderr)
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        try:
+            result = subprocess.run(
+                [str(es_path), "-get-result-count", ""],
+                capture_output=True,
+                timeout=3,
+            )
+            if result.returncode == 0:
+                print("IPC ready.", file=sys.stderr)
+                return True
+        except Exception:
+            pass
+        time.sleep(1)
+    return False
+
+
+def ensure_everything(
+    es_path: pathlib.Path,
+    auto_install: bool,
+    bin_dir: pathlib.Path,
+) -> dict:
+    """Handle the not_running case: locate/download Everything, launch it, wait for IPC.
+
+    Returns {} on success (caller should retry the search), or an error dict on failure.
+    """
+    if not auto_install:
+        everything_exe = find_everything_exe()
+        if everything_exe:
+            return {
+                "error": "not_running",
+                "message": "Everything is installed but not running.",
+                "setup": (
+                    "Start Everything from the Start Menu, or re-run with --auto-install "
+                    "to have this script launch it automatically."
+                ),
+                "can_auto_install": True,
+            }
+        return {
+            "error": "not_installed",
+            "message": "Everything is not installed.",
+            "setup": (
+                "Install Everything from https://www.voidtools.com, or re-run with "
+                "--auto-install to download and launch the portable version automatically (~5 MB)."
+            ),
+            "can_auto_install": True,
+        }
+
+    # --- auto_install=True path ---
+    everything_exe = find_everything_exe()
+    first_install = everything_exe is None
+
+    if everything_exe is None:
+        print("Everything not found — downloading portable build ...", file=sys.stderr)
+        try:
+            everything_exe = download_portable(bin_dir)
+        except RuntimeError as exc:
+            return {"error": "download_failed", "message": str(exc), "setup": ""}
+
+    if not launch_everything(everything_exe):
+        return {
+            "error": "launch_failed",
+            "message": f"Could not start {everything_exe}.",
+            "setup": "Try launching Everything manually from the Start Menu.",
+        }
+
+    # First-time launch needs longer to build the index
+    ipc_timeout = 60 if first_install else 30
+    if not wait_for_ipc(es_path, timeout=ipc_timeout):
+        return {
+            "error": "ipc_timeout",
+            "message": f"Everything launched but IPC was not ready within {ipc_timeout}s.",
+            "setup": "Everything may still be building its index. Wait a moment and retry.",
+        }
+
+    return {}  # success — caller retries the search
 
 
 def format_size(size_bytes: Optional[int]) -> str:
@@ -297,6 +486,14 @@ def main() -> None:
         action="store_true",
         help="Return only the total count, no result list. Useful for cheap probing.",
     )
+    parser.add_argument(
+        "--auto-install",
+        action="store_true",
+        help=(
+            "If Everything is not running, automatically download the portable build, "
+            "launch it, and retry the search. Requires internet access (~5 MB download)."
+        ),
+    )
     parser.add_argument("--es-path", help="Explicit path to es.exe")
     parser.add_argument("--http-port", type=int, default=80, help="Everything HTTP port (default: 80)")
     args = parser.parse_args()
@@ -320,8 +517,19 @@ def main() -> None:
         if "error" not in result:
             _json_out(result)
             sys.exit(0)
-        # Everything not running — HTTP won't work either
         if result["error"] == "not_running":
+            # Attempt to locate/install/launch Everything, then retry once
+            bootstrap = ensure_everything(es_path, args.auto_install, SKILL_ROOT / "bin")
+            if "error" in bootstrap:
+                _json_out(bootstrap)
+                sys.exit(1)
+            # Everything is now running — retry the search
+            result = search_via_es(
+                es_path, args.query, args.max, args.sort, order, args.count_only
+            )
+            if "error" not in result:
+                _json_out(result)
+                sys.exit(0)
             _json_out(result)
             sys.exit(1)
         # IPC not ready or other es error — fall through to HTTP

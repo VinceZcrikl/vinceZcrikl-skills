@@ -29,8 +29,21 @@ everything-search/
 | Requirement | Notes |
 |---|---|
 | Windows 10 / 11 | Everything is Windows-only |
-| [Everything](https://www.voidtools.com) installed and running | Free, ~2 MB |
+| [Everything](https://www.voidtools.com) installed and running | Free, ~2 MB. Can be auto-installed — see below. |
 | Python 3.8+ | Stdlib only, no pip required |
+
+### Auto-install (optional)
+
+If Everything is not installed or not running, the skill returns a `not_running` / `not_installed`
+error with `"can_auto_install": true`. The agent will ask for your consent, then rerun with
+`--auto-install` to:
+
+1. Download the portable `Everything.exe` (~5 MB) into the skill's `bin/` folder — no UAC, no system-wide install.
+2. Launch it minimized to the system tray.
+3. Wait up to 60 s for the IPC to become ready (first launch builds the index).
+4. Retry the original search automatically.
+
+Everything will keep running in the tray until you quit it. Subsequent launches are instant.
 
 ## Installation
 

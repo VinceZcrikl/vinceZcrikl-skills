@@ -129,13 +129,19 @@ Found **N** result(s) for `<query>`:
 
 | `error` field | Response |
 |---|---|
-| `not_running` | "Everything is not running. Start it from the Start Menu (or install from https://www.voidtools.com), then retry." |
+| `not_running` | Everything is installed but not running. Tell the user, then ask: *"Shall I launch it automatically?"* If yes → rerun adding `--auto-install`. |
+| `not_installed` | Everything is not installed. Tell the user, then ask: *"Shall I download the portable version (~5 MB, no system install needed) and launch it automatically?"* If yes → rerun adding `--auto-install`. |
+| `download_failed` | "Failed to download Everything. Check your internet connection and retry." |
+| `launch_failed` | "Could not start Everything.exe. Try launching it manually from the Start Menu." |
+| `ipc_timeout` | "Everything launched but is still building its index. Wait a minute and retry." |
 | `not_found` | "es.exe is missing and the HTTP API is unavailable. See the README for setup instructions." |
 | `ipc_failed` | "Everything's IPC is not ready. It may still be loading — wait a few seconds and retry." |
 | `http_failed` | "HTTP API unavailable. Enable it in Everything: Tools → Options → HTTP Server." |
 | `windows_only` | "Everything only runs on Windows. This skill cannot run on macOS or Linux." |
 
 Always include the `setup` field from the error JSON as additional context.
+
+When `can_auto_install: true` appears in the error JSON, that is the signal to ask the user for consent before rerunning with `--auto-install`.
 
 ## Implementation note — query tokenization
 
