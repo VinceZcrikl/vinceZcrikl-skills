@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Uninstalling Everything</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="uninstalling_everything">Uninstalling Everything</h1>
+<p>An uninstaller is created when Everything is installed.</p>
+<br/>
+<p>To completely uninstall Everything with the uninstaller:</p>
+<ul>
+<li><p>From the <b>Control panel</b>, open <b>Programs and Features</b>.</p></li>
+<li><p>Right click <b><i>Everything</i></b>.</p></li>
+<li><p>Select <b>Uninstall/Change</b></p></li>
+<li><p>Select the language of the uninstaller if the multilingual installer was used to install Everything.</p></li>
+<li><p>Click <b>Uninstall</b>.</p></li>
+</ul>
+<br/>
+<p>To completely uninstall the portable version of Everything:</p>
+<ul>
+<li><p>From a command prompt, run:</p><pre>Everything.exe -uninstall</pre>
+</li>
+<li><p>Delete Everything.exe.</p></li>
+</ul>
+<br/>
+<h2 id="system_modifications">System modifications</h2>
+<p>The follow settings modify the system:</p>
+<ul>
+<li><p>Store settings and data in %APPDATA%\Everything</p></li>
+<li><p>Start Everything on system startup</p></li>
+<li><p>Everything service</p></li>
+<li><p>Show shell context menus</p></li>
+<li><p>Start menu shortcuts</p></li>
+<li><p>Desktop shortcuts</p></li>
+<li><p>Quick Launch shortcuts</p></li>
+<li><p>URL protocol</p></li>
+<li><p>EFU file association.</p></li>
+</ul>
+<br/>
+<p>To change these settings:</p>
+<ul>
+<li><p>In <b><i>Everything</i></b>, from the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>General</b> tab.</p></li>
+</ul>
+<br/>
+<p>All system modifications made by Everything are removed when Everything is uninstalled.</p>
+<br/>
+<h2 id="files_created_by_everything">Files created by Everything</h2>
+<br/>
+<p>Everything may create the following files in %LOCALAPPDATA%\Everything:</p>
+<ul>
+<li><p>Everything.db</p></li>
+<li><p>Everything.db.tmp</p></li>
+</ul>
+<br/>
+<p>These files are deleted when Everything is uninstalled for all users.</p>
+<br/>
+<p>Everything may create the following files in %APPDATA%\Everything:</p>
+<ul>
+<li><p>Everything.ini</p></li>
+<li><p>Bookmarks.csv</p></li>
+<li><p>Filters.csv</p></li>
+<li><p>Search History.csv</p></li>
+<li><p>Run History.csv</p></li>
+<li><p>Everything.ini.tmp</p></li>
+<li><p>Errorlog.txt</p></li>
+<li><p>Bookmarks.csv.tmp</p></li>
+<li><p>Filters.csv.tmp</p></li>
+<li><p>Search History.csv.tmp</p></li>
+<li><p>Run History.csv.tmp</p></li>
+<li><p>Logs\HTTP_Server_Log.txt</p></li>
+<li><p>Logs\ETP_Server_Log.txt</p></li>
+</ul>
+<br/>
+<p>These files are deleted when Everything is uninstalled for the current user.</p>
+<br/>
+<p>If <a href="/everything/options.htm#store_settings_and_data_in_appdata_everything">Store settings and data in %APPDATA%\Everything</a> is disabled, these files are stored in the same location as Everything.exe.</p>
+<p>These files have different filenames if <a href="/everything/multiple_instances.htm">Multiple Instances</a> is used.</p>
+<p>If you use <a href="/everything/multiple_instances.htm">Named instances</a> and wish to uninstall, you will have to uninstall each instance separately with Everything.exe -uninstall -instance &lt;Instance Name&gt;</p>
+<br/>
+<h2 id="manual_uninstall">Manual uninstall</h2>
+<ul>
+<li><p>Make sure Everything and the Everything service is not running.</p></li>
+<li><p>Delete the folder C:\Program Files\Everything</p></li>
+<li><p>Delete the folder C:\Program Files (x86)\Everything</p></li>
+<li><p>Delete the folder %APPDATA%\Everything</p></li>
+<li><p>Delete the registry value Everything in HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</p></li>
+<li><p>Delete the registry value Everything in HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run</p></li>
+<li><p>Delete the registry key HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Everything</p></li>
+<li><p>Delete the registry key HKEY_CLASSES_ROOT\Folder\shell\Search Everything...</p></li>
+<li><p>Delete the folder %APPDATA%\Microsoft\Windows\Start Menu\Programs\Everything</p></li>
+<li><p>Delete the folder %USERPROFILE%\Start Menu\Programs\Everything</p></li>
+<li><p>Delete the shortcut %USERPROFILE%\Desktop\Search Everything.lnk</p></li>
+<li><p>Delete the shortcut %APPDATA%\Microsoft\Internet Explorer\Quick Launch\Search Everything.lnk</p></li>
+<li><p>Delete the registry key HKEY_CLASSES_ROOT\ES</p></li>
+<li><p>Delete the registry key HKEY_CLASSES_ROOT\.efu</p></li>
+<li><p>Delete the registry key HKEY_CLASSES_ROOT\Everything.FileList</p></li>
+<li><p>Delete the registry key HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Everything</p></li>
+<li><p>Delete the registry key HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Everything</p></li>
+<li><p>Delete the registry key HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything</p></li>
+<li><p>Remove the empty registry key HKEY_LOCAL_MACHINE\SOFTWARE\voidtools</p></li>
+</ul>
+<br/>
+<h2 id="see_also">See also</h2>
+<ul>
+<li><p><a href="/everything/multiple_instances.htm">Multiple Instances</a></p></li>
+</ul>
+</body>
+</html>

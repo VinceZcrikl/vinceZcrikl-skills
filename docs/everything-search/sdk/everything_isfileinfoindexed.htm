@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_IsFileInfoIndexed</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_isfileinfoindexed">Everything_IsFileInfoIndexed</h1>
+<p>The <b>Everything_IsFileInfoIndexed</b> function checks if the specified file information is indexed.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_IsFileInfoIndexed(DWORD fileInfoType);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="fileinfotype"><p><i>fileInfoType</i></p></dt>
+<dd><p>Can be one of the following:</p>
+<table>
+<tr><th class="wikinowrap">Code</th><th class="wikinowrap">Value</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_FILE_INFO_FILE_SIZE</td><td>1</td><td>File size</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_FILE_INFO_FOLDER_SIZE</td><td>2</td><td>Folder size</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_FILE_INFO_DATE_CREATED</td><td>3</td><td>Date created</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_FILE_INFO_DATE_MODIFIED</td><td>4</td><td>Date modified</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_FILE_INFO_DATE_ACCESSED</td><td>5</td><td>Date accessed</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_FILE_INFO_ATTRIBUTES</td><td>6</td><td>Attributes</td></tr>
+</table>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if the specified information is indexed.</p>
+<p>The function returns 0 if the specified information is not indexed or if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_SUCCESS</td><td>The specified information is not indexed.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<br/>
+<h2 id="example">Example</h2>
+<pre>BOOL isSizeIndexed;<br/><br/>isSizeIndexed = Everything_IsFileInfoIndexed(EVERYTHING_IPC_FILE_INFO_FILE_SIZE);</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_isfastsort.htm">Everything_IsFastSort</a></p></li>
+<li><p><a href="everything/indexes/.htm#size_dates_and_attributes_indexing">Enable or disable file information indexing</a></p></li>
+<li><p><a href="everything/indexes/.htm#fast_sorting">Enable or disable fast sorting</a></p></li>
+</ul>
+</body>
+</html>

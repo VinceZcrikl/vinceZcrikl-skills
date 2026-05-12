@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetOffset</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setoffset">Everything_SetOffset</h1>
+<p>The <b>Everything_SetOffset</b> function set the first result offset to return from a call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetOffset(<br/>    DWORD dwOffset<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="dwoffset"><p>dwOffset</p></dt>
+<dd><p>Specifies the first result from the available results.</p>
+<p>Set this to 0 to return the first available result.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The default offset is 0 (the first available result).</p>
+<p>If you are displaying the results in a window with a custom scroll bar, set the offset to the vertical scroll bar position.</p>
+<p>Using a search window can reduce the amount of data sent over the IPC and significantly increase search performance.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>Everything_SetOffset(scrollbar_vpos);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getoffset.htm">Everything_GetOffset</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

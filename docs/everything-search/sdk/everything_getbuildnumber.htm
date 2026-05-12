@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetBuildNumber</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getbuildnumber">Everything_GetBuildNumber</h1>
+<p>The <b>Everything_GetBuildNumber</b> function retrieves the build number of Everything.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>DWORD Everything_GetBuildNumber(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dd><p>No parameters.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns the build number.</p>
+<p>The function returns 0 if build information is unavailable. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Everything uses the following version format:</p>
+<p>major.minor.revision.build</p>
+<p>The build part is incremental and unique for all Everything versions.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>DWORD buildNumber;<br/><br/>// get the build number <br/>buildNumber = Everything_GetBuildNumber();<br/><br/>if (buildNumber &gt;= 686)<br/>{<br/>	// do something with build 686 or later.<br/>}</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.0.0.0 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getmajorversion.htm">Everything_GetMajorVersion</a></p></li>
+<li><p><a href="/everything/sdk/everything_getminorversion.htm">Everything_GetMinorVersion</a></p></li>
+<li><p><a href="/everything/sdk/everything_getrevision.htm">Everything_GetRevision</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettargetmachine.htm">Everything_GetTargetMachine</a></p></li>
+</ul>
+</body>
+</html>

@@ -31,7 +31,7 @@ Store the result as `SKILL_DIR`. If not found, also check `.claude/skills/VinceZ
 
 ## Step 2 — Translate natural language to Everything syntax
 
-If the query already contains Everything operators (`ext:`, `size:`, `dm:`, `path:`, `folder:`, `pic:`, etc.), use it as-is.
+If the query already contains Everything operators (`ext:`, `size:`, `dm:`, `path:`, `folder:`, etc.), use it as-is.
 
 Otherwise translate using these rules:
 
@@ -39,11 +39,11 @@ Otherwise translate using these rules:
 |---|---|
 | "PDF files" / "PDFs" | `ext:pdf` |
 | "Word documents" | `ext:docx` |
-| "images" / "pictures" | `pic:` |
-| "videos" / "movies" | `video:` |
-| "music" / "audio files" | `audio:` |
-| "zip files" / "archives" | `zip:` |
-| "executables" / "programs" | `exe:` |
+| "images" / "pictures" | `ext:jpg \| ext:jpeg \| ext:png \| ext:gif \| ext:webp \| ext:heic \| ext:bmp \| ext:tiff` |
+| "videos" / "movies" | `ext:mp4 \| ext:mkv \| ext:avi \| ext:mov \| ext:wmv \| ext:flv \| ext:webm \| ext:m4v` |
+| "music" / "audio files" | `ext:mp3 \| ext:flac \| ext:aac \| ext:wav \| ext:m4a \| ext:ogg \| ext:wma` |
+| "zip files" / "archives" | `ext:zip \| ext:7z \| ext:rar \| ext:tar \| ext:gz` |
+| "executables" / "programs" | `ext:exe \| ext:msi` |
 | "files larger than X" | `size:>X` (kb/mb/gb) |
 | "files smaller than X" | `size:<X` |
 | "between X and Y in size" | `size:X..Y` |

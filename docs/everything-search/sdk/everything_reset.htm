@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_Reset</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_reset">Everything_Reset</h1>
+<p>The <b>Everything_Reset</b> function resets the result list and search state to the default state, freeing any allocated memory by the library.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_Reset(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<p>This function has no parameters.</p>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>This function has no return value.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Calling <a href="/everything/sdk/everything_setsearch.htm">Everything_SetSearch</a> frees the old search and allocates the new search string.</p>
+<p>Calling <a href="/everything/sdk/everything_query.htm">Everything_Query</a> frees the old result list and allocates the new result list.</p>
+<p>Calling <a href="/everything/sdk/everything_reset.htm">Everything_Reset</a> frees the current search and current result list.</p>
+<p>The default state:</p>
+<br/>
+<pre>Everything_SetSearch(\"\");<br/>Everything_SetMatchPath(FALSE);<br/>Everything_SetMatchCase(FALSE);<br/>Everything_SetMatchWholeWord(FALSE);<br/>Everything_SetRegex(FALSE);<br/>Everything_SetMax(0xFFFFFFFF);<br/>Everything_SetOffset(0);<br/>Everything_SetReplyWindow(0);<br/>Everything_SetReplyID(0);</pre>
+<br/>
+<h2 id="example">Example</h2>
+<pre>Everything_Reset();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_setsearch.htm">Everything_SetSearch</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_cleanup.htm">Everything_CleanUp</a></p></li>
+</ul>
+</body>
+</html>

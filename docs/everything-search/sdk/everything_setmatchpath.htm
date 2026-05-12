@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetMatchPath</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setmatchpath">Everything_SetMatchPath</h1>
+<p>The <b>Everything_SetMatchPath</b> function enables or disables full path matching for the next call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetMatchPath(<br/>    BOOL bEnable<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="benable"><p><i>bEnable</i></p></dt>
+<dd><p>[in] Specifies whether to enable or disable full path matching.</p>
+<p>If this parameter is TRUE, full path matching is enabled. </p>
+<p>If the parameter is FALSE, full path matching is disabled. </p>
+</dd>
+</dl>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>If match full path is being enabled, the next call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a> will search the full path and file name of each file and folder.</p>
+<p>If match full path is being disabled, the next call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a> will search the file name only of each file and folder.</p>
+<p>Match path is disabled by default.</p>
+<p>Enabling match path will add a significant performance hit.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>Everything_SetMatchPath(TRUE);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getmatchpath.htm">Everything_GetMatchPath</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

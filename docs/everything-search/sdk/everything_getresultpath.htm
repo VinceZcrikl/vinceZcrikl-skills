@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetResultPath</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getresultpath">Everything_GetResultPath</h1>
+<p>The <b>Everything_GetResultPath</b> function retrieves the path part of the visible result.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>LPCTSTR Everything_GetResultPath(<br/>    int index<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="index"><p><i>index</i></p></dt>
+<dd><p>Zero based index of the visible result.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns a pointer to a null terminated string of <b>TCHARs</b>.</p>
+<p>If the function fails the return value is NULL. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_GetResultPath.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDINDEX</td><td>index must be greater than or equal to 0 and less than the visible number of results.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The ANSI / Unicode version of this function must match the ANSI / Unicode version of the call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<p>The function is faster than Everything_GetResultFullPathName as no memory copying occurs.</p>
+<p>The function returns a pointer to an internal structure that is only valid until the next call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a> or <a href="/everything/sdk/everything_reset.htm">Everything_Reset</a>.</p>
+<p>You can only call this function for a visible result. To determine if a result is visible use the <a href="/everything/sdk/everything_getnumfileresults.htm">Everything_GetNumFileResults</a> function.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// set the search text to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// execute the query<br/>Everything_Query(TRUE);<br/><br/>// Get the path part of the first visible result.<br/>LPCTSTR lpPath = Everything_GetResultPath(0);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_reset.htm">Everything_Reset</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultfilename.htm">Everything_GetResultFileName</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultfullpathname.htm">Everything_GetResultFullPathName</a></p></li>
+</ul>
+</body>
+</html>

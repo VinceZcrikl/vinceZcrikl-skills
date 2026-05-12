@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Multiple Instances</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="multiple_instances">Multiple Instances</h1>
+<p>By default there is only one instance of Everything.</p>
+<p>When you run Everything.exe it will check for an existing instance. If an existing instance is found the command line options are sent and processed by the existing instance. If no existing instance is found a new one is created.</p>
+<br/>
+<p>To run multiple instances of Everything use <a href="/everything/multiple_instances.htm#named_instances">Named instances</a>.</p>
+<br/>
+<h2 id="named_instances">Named instances</h2>
+<p>By default Everything uses the unnamed instance. </p>
+<p>Assign unique names to Everything instances to use multiple instances.</p>
+<p>There can only be one instance for each unique name.</p>
+<br/>
+<p>To assign a name to the instance:</p>
+<p>Use the <a href="/everything/command_line_options.htm#-instance">-instance</a> command line option to specify the instance name when starting Everything.exe.</p>
+<br/>
+<p>For example:</p>
+<pre>Everything.exe -instance "ETP Server"</pre>
+<br/>
+<p>Named instances use unique settings and data.</p>
+<p>For example, the named instanced "ETP Server" will use Everything-ETP SERVER.ini as the settings file.</p>
+<br/>
+<p>The name of the instance is located in the Everything search window caption and in the tooltip when hovering over the tray icon with the cursor.</p>
+<br/>
+<h2 id="service">Service</h2>
+<p>By default Everything will install a service for each instance.</p>
+<br/>
+<p>To use the same service for all instances, use the <a href="/everything/command_line_options.htm#-service-pipe-name">-service-pipe-name</a> command line option or <a href="/everything/ini.htm#service_pipe_name">service_pipe_name</a> ini option to specify the same service pipe name.</p>
+<p>The default unnamed servive pipe name is:</p>
+<pre>\\\\.\\PIPE\\Everything Service</pre>
+<br/>
+<p>For example, to connect to the default service pipe with a different instance name:</p>
+<pre>Everything.exe -instance "ETP Server" -service-pipe-name "\\\\.\\PIPE\\Everything Service"</pre>
+</body>
+</html>

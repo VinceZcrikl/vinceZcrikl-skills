@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetTotFolderResults</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_gettotfolderresults">Everything_GetTotFolderResults</h1>
+<p>The <b>Everything_GetTotFolderResults</b> function returns the total number of folder results.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>DWORD Everything_GetTotFolderResults(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<p>This functions has no parameters.</p>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>Returns the total number of folder results.</p>
+<p>If the function fails the return value is 0. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_GetTotFolderResults.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>You must call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_GetTotFolderResults.</p>
+<p>Use <a href="/everything/sdk/everything_getnumfolderresults.htm">Everything_GetNumFolderResults</a> to retrieve the number of visible folder results.</p>
+<p>Use the result offset and max result values to limit the number of visible results.</p>
+<p>Everything_GetTotFolderResults is not supported when using <a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a></p>
+<br/>
+<h2 id="example">Example</h2>
+<br/>
+<pre>// set the search text to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// execute the query<br/>Everything_Query(TRUE);<br/><br/>// get the total number of folder results.<br/>DWORD dwTotFolderResults = Everything_GetTotFolderResults();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumresults.htm">Everything_GetNumResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfileresults.htm">Everything_GetNumFileResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfolderresults.htm">Everything_GetNumFolderResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotresults.htm">Everything_GetTotResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotfileresults.htm">Everything_GetTotFileResults</a></p></li>
+</ul>
+</body>
+</html>

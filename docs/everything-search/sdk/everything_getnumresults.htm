@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetNumResults</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getnumresults">Everything_GetNumResults</h1>
+<p>The <b>Everything_GetNumResults</b> function returns the number of visible file and folder results.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>DWORD Everything_GetNumResults(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<p>This functions has no parameters.</p>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>Returns the number of visible file and folder results.</p>
+<p>If the function fails the return value is 0. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_GetNumResults.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>You must call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_GetNumResults.</p>
+<p>Use <a href="/everything/sdk/everything_gettotresults.htm">Everything_GetTotResults</a> to retrieve the total number of file and folder results.</p>
+<p>If the result offset state is 0, and the max result is 0xFFFFFFFF, Everything_GetNumResults will return the total number of file and folder results and all file and folder results will be visible.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// set the search text to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// execute the query<br/>Everything_Query(TRUE);<br/><br/>// get the number of visible file and folder results.<br/>DWORD dwNumResults = Everything_GetNumResults();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfileresults.htm">Everything_GetNumFileResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfolderresults.htm">Everything_GetNumFolderResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotresults.htm">Everything_GetTotResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotfileresults.htm">Everything_GetTotFileResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotfolderresults.htm">Everything_GetTotFolderResults</a></p></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>IPC C Example</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="ipc_c_example">IPC C Example</h1>
+<p>A C example to send a search query to Everything using WM_COPYDATA and retrieve the results.</p>
+<p>Note: requires Everything running in the background.</p>
+<br/>
+<h2 id="sending_a_query">Sending a query</h2>
+<pre>#define COPYDATA_QUERYCOMPLETE	0<br/><br/>BOOL sendquery(HWND hwnd,DWORD max_results,WCHAR *search_string,BOOL regex,BOOL match_case,BOOL match_whole_word,BOOL match_path)<br/>{<br/>	EVERYTHING_IPC_QUERY *query;<br/>	DWORD len;<br/>	DWORD size;<br/>	HWND everything_hwnd;<br/>	COPYDATASTRUCT cds;<br/>	<br/>	everything_hwnd = FindWindow(EVERYTHING_IPC_WNDCLASS,0);<br/>	if (everything_hwnd)<br/>	{<br/>		len = (int)wcslen(search_string);<br/>		<br/>		size = sizeof(EVERYTHING_IPC_QUERY) - sizeof(WCHAR) + len*sizeof(WCHAR) + sizeof(WCHAR);<br/>		<br/>		query = (EVERYTHING_IPC_QUERY *)HeapAlloc(GetProcessHeap(),0,size);<br/>		if (query)<br/>		{<br/>			query-&gt;max_results = max_results;<br/>			query-&gt;offset = 0;<br/>			query-&gt;reply_copydata_message = COPYDATA_QUERYCOMPLETE;<br/>			query-&gt;search_flags = (regex?EVERYTHING_IPC_REGEX:0) | (match_case?EVERYTHING_IPC_MATCHCASE:0) | (match_whole_word?EVERYTHING_IPC_MATCHWHOLEWORD:0) | (match_path?EVERYTHING_IPC_MATCHPATH:0);<br/>			query-&gt;reply_hwnd = hwnd;<br/>			<br/>			CopyMemory(query-&gt;search_string,search_string,(len+1)*sizeof(WCHAR));<br/>			<br/>			cds.cbData = size;<br/>			cds.dwData = EVERYTHING_IPC_COPYDATAQUERY;<br/>			cds.lpData = query;<br/>			<br/>			if (SendMessage(everything_hwnd,WM_COPYDATA,(WPARAM)hwnd,(LPARAM)&amp;cds) == TRUE)<br/>			{<br/>				HeapFree(GetProcessHeap(),0,query);<br/>				<br/>				return TRUE;<br/>			}<br/>			else<br/>			{<br/>				// Everything IPC service not running<br/>			}<br/>			<br/>			HeapFree(GetProcessHeap(),0,query);<br/>		}<br/>	}<br/>	else<br/>	{<br/>		// the everything window was not found.<br/>		// we can optionally RegisterWindowMessage("EVERYTHING_IPC_CREATED") and <br/>		// wait for Everything to post this message to all top level windows when its up and running.<br/>	}<br/>	<br/>	return FALSE;<br/>}</pre>
+<br/>
+<h2 id="retrieving_results">Retrieving results</h2>
+<pre><br/>void DisplayPathName(TCHAR *path,TCHAR *filename)<br/>{<br/>	// ...<br/>	// do something with path and filename<br/>	// ...<br/>}<br/><br/>LRESULT CALLBACK window_proc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)<br/>{<br/>	DWORD i;<br/>	EVERYTHING_IPC_LIST *list<br/>	<br/>	switch(uMsg)<br/>	{<br/>		case WM_COPYDATA:<br/>		{<br/>			COPYDATASTRUCT *cds = (COPYDATASTRUCT *)lParam;<br/>			<br/>			switch(cds-&gt;dwData)<br/>			{<br/>				case COPYDATA_QUERYCOMPLETE:<br/>				<br/>				list = (EVERYTHING_IPC_LIST *)cds-&gt;lpData;<br/>				<br/>				for(i=0;i&lt;list-&gt;numitems;i++)<br/>				{<br/>					DisplayPathName(EVERYTHING_IPC_ITEMPATH(list,&amp;list-&gt;items[i]),EVERYTHING_IPC_ITEMFILENAME(list,&amp;list-&gt;items[i]))<br/>				}<br/>				<br/>				return TRUE;<br/>			}<br/>			<br/>			break;<br/>		}<br/>	}<br/>	<br/>	return DefWindowProc(hwnd,msg,wParam,lParam);<br/>}</pre>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Folder Indexing</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="folder_indexing">Folder Indexing</h1>
+<p>Folder indexing allows Everything to include any file system folder in the Everything index.</p>
+<br/>
+<p>Indexed folders can go offline and remain in the Everything index.</p>
+<br/>
+<p>The following folders can be added to your Everything index:</p>
+<ul>
+<li><p>Network shares or mapped network drives.</p></li>
+<li><p>FAT32 and other volumes.</p></li>
+<li><p>Any physical file-system folder.</p></li>
+</ul>
+<br/>
+<p><img src="/everything/everything.options.folders.server.downloads.png" alt="Everything Options Folders Network Share" /></p>
+<br/>
+<h2 id="do_i_need_administrative_privileges_or_the_everything_service_to_index_folders">Do I need administrative privileges or the Everything service to index folders?</h2>
+<p>No, folder indexing does not require administrative privileges or the Everything service.</p>
+<br/>
+<h2 id="why_is_indexing_so_slow">Why is indexing so slow?</h2>
+<p>Folder indexing uses the same approach as the Windows search.</p>
+<p>This can be a lot slower than NTFS indexing.</p>
+<p>Everything can take a couple minutes to scan a folder and all its subfolders and files.</p>
+<br/>
+<h2 id="how_do_i_add_a_folder_to_the_everything_index">How do I add a folder to the Everything index?</h2>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Folders </b>tab.</p></li>
+<li><p>Click <b>Add...</b>.</p></li>
+<li><p>Select a folder to add to the Everything index.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="how_do_i_add_a_network_share_to_the_everything_index">How do I add a network share to the Everything index?</h2>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Folders </b>tab.</p></li>
+<li><p>Click <b>Add...</b>.</p></li>
+<li><p>Select the network share to add to the Everything index, for example:</p><pre>\\server\share</pre>
+</li>
+<li><p>Click <b>OK</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="how_do_i_add_a_mapped_network_drive_to_the_everything_index">How do I add a mapped network drive to the Everything index?</h2>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Folders </b>tab.</p></li>
+<li><p>Click <b>Add...</b>.</p></li>
+<li><p>Select the mapped network drive.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<p>If network drives are not listed in Everything, please try running Everything as a standard user:</p>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>General</b> tab on the left.</p></li>
+<li><p>Check <b>Everything service</b>.</p></li>
+<li><p>Uncheck <b>Run as administrator</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+<li><p>Restart Everything (right click the Everything tray icon and click Exit).</p></li>
+</ul>
+<br/>
+<h2 id="how_do_i_stop_everything_from_scanning_folders_on_startup">How do I stop Everything from scanning folders on startup</h2>
+<p>To prevent Everything from rescanning folders on startup:</p>
+<ul>
+<li><p>In <b>Everything</b>, type in the following search and press <b>ENTER</b>:</p><p>/<a href="/everything/ini.htm#folder_update_rescan_asap">folder_update_rescan_asap</a>=0</p>
+</li>
+</ul>
+<br/>
+<p>Folder rescanning will occur at the next scheduled time.</p>
+<br/>
+<h2 id="will_everything_detect_all_file_name_changes_made_to_this_folder">Will Everything detect all file name changes made to this folder?</h2>
+<p>Almost all changes are detected. </p>
+<p>Changes can be missed if too many occur in a short time.</p>
+<br/>
+<p>To rebuild the folder index when too many changes occur in a short time:</p>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Folders </b>tab.</p></li>
+<li><p>Select a folder.</p></li>
+<li><p>Check <b>Rescan on full buffer</b>.</p></li>
+</ul>
+<br/>
+<p>Everything can schedule an update time or update interval to rescan the entire folder for changes that might have been missed.</p>
+<br/>
+<p>To customize the update time or update interval:</p>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Folders </b>tab.</p></li>
+<li><p>Select a folder.</p></li>
+<li><p>Choose one of the options below:</p><ul>
+<li><p>Update each day, or weekly on a specific day, at a specific time.</p></li>
+<li><p>Update periodically in the specified hours or minutes.</p></li>
+<li><p>Never update.</p></li>
+</ul>
+</li>
+</ul>
+<br/>
+<h2 id="how_do_i_manually_update_a_folder_index">How do I manually update a folder index?</h2>
+<p>To manually update all folder indexes:</p>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Folders </b>tab.</p></li>
+<li><p>Click <b>Rescan All Now</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<p>To manually update a folder index:</p>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Folders </b>tab.</p></li>
+<li><p>Select the folder to update and click <b>Rescan Now</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="what_happens_if_the_indexed_folder_is_offline_or_not_available">What happens if the indexed folder is offline or not available?</h2>
+<p>The folder index will remain unchanged.</p>
+<br/>
+<p>Everything will continue to re-scan the folder at the specified update time or update interval and only update the folder when it is online.</p>
+<br/>
+<p>Displaying icons and file information of offline folders can take several seconds to time-out.</p>
+<p>You can press F5 to refresh this cache when the folder is back online.</p>
+</body>
+</html>

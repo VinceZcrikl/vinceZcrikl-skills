@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetResultDateRecentlyChanged</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getresultdaterecentlychanged">Everything_GetResultDateRecentlyChanged</h1>
+<p>The <b>Everything_GetResultDateRecentlyChanged</b> function retrieves the recently changed date of a visible result.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_GetResultDateRecentlyChanged(<br/>    DWORD dwIndex,<br/>    FILETIME *lpDateRecentlyChanged<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="dwindex"><p><i>dwIndex</i></p></dt>
+<dd><p>Zero based index of the visible result.</p>
+</dd>
+<dt id="lpdaterecentlychanged"><p><i>lpDateRecentlyChanged</i></p></dt>
+<dd><p>Pointer to a FILETIME to hold the recently changed date of the result.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if successful.</p>
+<p>The function returns 0 if the recently changed date information is unavailable. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_GetResultDateRecentlyChanged.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDREQUEST</td><td>Recently changed date was not requested or is unavailable, Call <a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a> with EVERYTHING_REQUEST_DATE_RECENTLY_CHANGED before calling <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDINDEX</td><td>index must be greater than or equal to 0 and less than the visible number of results.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>dwIndex must be a valid visible result index. To determine if a result index is visible use the <a href="/everything/sdk/everything_getnumresults.htm">Everything_GetNumResults</a> function.</p>
+<p>The date recently changed is the date and time of when the result was changed in the Everything index, this could be from a file creation, rename, attribute or content change.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>FILETIME dateRecentlyChanged;<br/><br/>// set the search text to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// execute the query<br/>Everything_Query(TRUE);<br/><br/>// Get the recently changed date of the first visible result.<br/>Everything_GetResultDateRecentlyChanged(0,&amp;dateRecentlyChanged);</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_reset.htm">Everything_Reset</a></p></li>
+<li><p><a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a></p></li>
+</ul>
+</body>
+</html>

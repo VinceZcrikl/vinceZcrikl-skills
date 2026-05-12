@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetSearch</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getsearch">Everything_GetSearch</h1>
+<p>The <b>Everything_GetSearch</b> function retrieves the search text to use for the next call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>LPCTSTR Everything_GetSearch(void);</pre>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The return value is a pointer to the null terminated search string.</p>
+<p>The unicode and ansi version must match the call to Everything_SetSearch.</p>
+<p>The function will fail if you call Everything_GetSearchA after a call to Everything_SetSearchW</p>
+<p>The function will fail if you call Everything_GetSearchW after a call to Everything_SetSearchA</p>
+<p>If the function fails, the return value is NULL.</p>
+<p>To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Mismatched unicode / ansi call. </td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Get the internal state of the search text.</p>
+<p>The default string is an empty string.</p>
+<br/>
+<h2 id="example">Example</h2>
+<br/>
+<pre>LPCTSTR lpSearchString = Everything_GetSearch();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_setsearch.htm">Everything_SetSearch</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

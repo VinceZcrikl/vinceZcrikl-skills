@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Installing Everything</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="installing_everything">Installing Everything</h1>
+<p>Everything can be installed or run as a portable executable.</p>
+<p>The installer and portable version of Everything can be found on the <a href="http://www.voidtools.com/downloads" target="_blank">downloads page</a>.</p>
+<br/>
+<h2 id="what_version_of_everything_should_i_download">What version of Everything should I download?</h2>
+<table>
+<tr><th class="wikinowrap">Version</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">Installer</td><td>The installer version will guide the user through the installation of Everything (recommended). The installed Everything.exe is the same as the portable Everything.exe.</td></tr>
+<tr><td class="wikinowrap">Portable</td><td>The user must extract the Everything.exe to the desired location. No changes to the system are made. Most of the options in the installer are available in the portable version in the <a href="/everything/options.htm">Everything Options</a>.</td></tr>
+<tr><td class="wikinowrap">x86</td><td>Only x86 context menu extensions will work in Everything. This version will work on both x86 and x64 versions of Windows.</td></tr>
+<tr><td class="wikinowrap">x64</td><td>The x64 version requires a 64bit x64 OS. Supports databases larger than 2GB. Only x64 context menu extensions will work in Everything. The x64 version will use more memory than the x86 version.</td></tr>
+<tr><td class="wikinowrap">English (US)</td><td>Only English is available for this version, the <a href="everything/supported_languages/.htm#installing_the_language_pack">language pack</a> can be installed manually.</td></tr>
+<tr><td class="wikinowrap">Multilingual</td><td>Includes the Everything <a href="everything/supported_languages/.htm#installing_the_language_pack">language pack</a> for multiple language support.</td></tr>
+<tr><td class="wikinowrap">Lite</td><td>This light version does not contain <a href="/everything/etp.htm">ETP/FTP</a>/<a href="/everything/http.htm">HTTP</a> servers and does not allow <a href="/everything/sdk/ipc.htm">IPC</a>.</td></tr>
+</table>
+<br/>
+<h2 id="language_selection">Language selection</h2>
+<p><img src="/everything/Everything.Installer.Language.png" alt="Everything Installer Language" /></p>
+<br/>
+<p>Choose the language of the installer. This language will also be used in Everything.</p>
+<p>See <a href="/everything/supported_languages.htm">Supported Languages</a> for a list of supported languages.</p>
+<br/>
+<h2 id="license_agreement">License Agreement</h2>
+<p><img src="/everything/Everything.Installer.License.Agreement.png" alt="Everything Installer License Agreement" /></p>
+<br/>
+<p>You must accept the agreement to install Everything.</p>
+<p>You can find a copy of the license <a href="http://www.voidtools.com/License.txt" target="_blank">here</a>.</p>
+<br/>
+<h2 id="install_location">Install Location</h2>
+<p><img src="/everything/Everything.Installer.Install.Location.png" alt="Everything Installer Install Location" /></p>
+<br/>
+<p>Choose the installation location of Everything.</p>
+<br/>
+<p>By default Everything is installed to:</p>
+<pre>C:\Program Files\Everything</pre>
+<br/>
+<p>or if you install the x86 version of "Everything" on a x64 OS:</p>
+<pre>c:\Program Files (x86)\Everything</pre>
+<br/>
+<h2 id="location_for_data_and_settings">Location for data and settings</h2>
+<p><img src="/everything/Everything.Installer.Install.Options1.png" alt="Everything Installer Install Options 1" /></p>
+<br/>
+<p>Choose a location to store data and settings.</p>
+<p>%APPDATA%\Everything is recommended.</p>
+<br/>
+<p>This setting can be changed in the <a href="/everything/options.htm">Everything options</a> at anytime.</p>
+<br/>
+<h2 id="indexing_ntfs_volumes">Indexing NTFS volumes</h2>
+<p>Choose a method for indexing NTFS volumes</p>
+<table>
+<tr><th class="wikinowrap">Method</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">Install Everything service</td><td>Install the Everything service which will do all the low level volume reading required for NTFS indexing. The service runs with the necessary privileges so the Everything client can run as a standard user account.</td></tr>
+<tr><td class="wikinowrap">Run as administrator</td><td>Run Everything with administrative privileges.</td></tr>
+<tr><td class="wikinowrap">No NTFS indexing</td><td>Everything will not attempt to index NTFS volumes.</td></tr>
+</table>
+<br/>
+<p>This setting can be changed in the <a href="/everything/options.htm">Everything options</a> at anytime.</p>
+<br/>
+<h2 id="install_options">Install Options</h2>
+<p><img src="/everything/Everything.Installer.Install.Options2.png" alt="Everything Installer Install Options 2" /></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Option</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">Check for updates</td><td>Enabling this setting will make Everything check www.voidtools.com for updates when you run Everything.</td></tr>
+<tr><td class="wikinowrap">Start Everything on system startup</td><td>Run Everything when Windows starts. This will load the Everything database into memory and create the Everything tray icon.</td></tr>
+<tr><td class="wikinowrap">Install folder context menus</td><td>Enabling this will show the context menu item "Search Everything..." when you right click a folder in Windows. Clicking on this context menu item will show the Everything window with the search set to the selected folder.</td></tr>
+<tr><td class="wikinowrap">Install start menu items.</td><td>Creates the Search Everything and Uninstall Everything shortcuts in the Start menu.</td></tr>
+<tr><td class="wikinowrap">Install Desktop shortcut</td><td>Creates the Search Everything shortcut on the Desktop.</td></tr>
+<tr><td class="wikinowrap">Install Quick launch shortcut</td><td>Creates the Search Everything shortcut in the Quick launch toolbar.</td></tr>
+<tr><td class="wikinowrap">ES URL Protocol</td><td>Open Everything from es: urls.</td></tr>
+<tr><td class="wikinowrap">Associate EFU files with Everything</td><td>Associate Everything file lists (EFU files) with Everything.</td></tr>
+<tr><td class="wikinowrap">Automatically index fixed NTFS volumes</td><td>If enabled Everything will automatically add all NTFS volumes to the index. Disable to manually setup which volumes are included.</td></tr>
+</table>
+<br/>
+<p>These settings can be changed in the <a href="/everything/options.htm">Everything options</a> at anytime.</p>
+<br/>
+<h2 id="uac">UAC</h2>
+<p><img src="/everything/Everything.Installer.UAC.png" alt="Everything Installer UAC" /></p>
+<br/>
+<p>Everything installation requires administrative privileges.</p>
+<p>Click Yes to continue installation with administrative privileges.</p>
+<br/>
+<h2 id="finish">Finish</h2>
+<p><img src="/everything/Everything.Installer.Finish.png" alt="Everything Installer Finish" /></p>
+<br/>
+<p>The installation of Everything is complete. Click Finish to launch Everything.</p>
+<p>When Everything launches it will begin creating the initial index which will take a few seconds.</p>
+<p>For a basic guide on using Everything, please see <a href="/everything/using_everything.htm">Using Everything</a>.</p>
+<br/>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">OS is not x64<br/>Install anyway?</td><td>This error is displayed when attempting to install the x64 version of Everything on a 32bit OS. Please make sure you have the correct x86 or x64 version of Everything for your OS (See <a href="/everything/installing_everything.htm#what_version_of_everything_should_i_download">What version of Everything should I download?</a>).</td></tr>
+<tr><td class="wikinowrap">Failed to execute admin command</td><td>The installer failed to run Everything as an administrator to make changes to the system. Please make sure Everything can run with elevated privileges.</td></tr>
+<tr><td class="wikinowrap">Failed to execute user command</td><td>The installer failed to run Everything to install the options for the current user. This could be due to anti-virus software. Please make sure the installer can execute Everything from the temp directory.</td></tr>
+</table>
+<br/>
+<h2 id="see_also">See also</h2>
+<ul>
+<li><p><a href="/everything/using_everything.htm">Using Everything</a></p></li>
+<li><p><a href="/everything/options.htm">Options</a></p></li>
+<li><p><a href="/everything/uninstalling_everything.htm">Uninstalling Everything</a></p></li>
+</ul>
+</body>
+</html>

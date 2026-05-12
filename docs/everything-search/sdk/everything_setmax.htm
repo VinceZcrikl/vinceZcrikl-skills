@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetMax</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setmax">Everything_SetMax</h1>
+<p>The <b>Everything_SetMax</b> function set the maximum number of results to return from <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetMax(<br/>    DWORD dwMaxResults<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="dwmaxresults"><p><i>dwMaxResults</i></p></dt>
+<dd><p>Specifies the maximum number of results to return.</p>
+<p>Setting this to 0xffffffff will return all results.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The default maximum number of results is 0xffffffff (all results).</p>
+<p>If you are displaying the results in a window, set the maximum number of results to the number of visible items in the window.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>Everything_SetMax(window_height / item_height);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getmax.htm">Everything_GetMax</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

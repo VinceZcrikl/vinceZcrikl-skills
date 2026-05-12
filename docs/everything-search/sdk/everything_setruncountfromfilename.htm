@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetRunCountFromFileName</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setruncountfromfilename">Everything_SetRunCountFromFileName</h1>
+<p>The <b>Everything_SetRunCountFromFileName</b> function sets the run count for a specified file in the Everything index by file name.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_SetRunCountFromFileName(<br/>    LPCTSTR lpFileName,<br/>    DWORD dwRunCount<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="lpfilename"><p><i>lpFileName</i> [in]</p></dt>
+<dd><p>Pointer to a null-terminated string that specifies a fully qualified file name in the Everything index. </p>
+</dd>
+<dt id="dwruncount"><p><i>dwRunCount</i> [in]</p></dt>
+<dd><p>The new run count.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if successful.</p>
+<p>The function returns 0 if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Set the run count to 0 to remove any run history information for the specified file.</p>
+<p>The file does not have to exist. When the file is created it will have the correct run history.</p>
+<p>Run history information is preserved between file deletion and creation.</p>
+<p>Calling this function will update the date run to the current time for the specified file.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// set a file to show higher in the results by setting an exaggerated run count<br/>Everything_SetRunCountFromFileName(TEXT("C:\\folder\\file.doc"),1000);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getruncountfromfilename.htm">Everything_GetRunCountFromFileName</a></p></li>
+<li><p><a href="/everything/sdk/everything_incruncountfromfilename.htm">Everything_IncRunCountFromFileName</a></p></li>
+</ul>
+<br/>
+</body>
+</html>

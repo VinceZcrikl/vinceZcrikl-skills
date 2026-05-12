@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Customizing</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="customizing">Customizing</h1>
+<p>Everything can be customized through the Everything.ini, registry and Everything options.</p>
+<p>This guide will help you customize Everything.</p>
+<br/>
+<h2 id="window_caption">Window Caption</h2>
+<p>To customize the Everything search window caption, HTTP server title and/or taskbar notification title:</p>
+<ul>
+<li><p>Exit Everything</p></li>
+<li><p>Open your <a href="/everything/ini.htm">Everything.ini</a> file.</p></li>
+<li><p>Change the following lines:</p><pre>window_title_format=$s?{$s - }$t$i?{ ($i)}<br/>http_title_format=$s?{$s - }$t<br/>taskbar_notification_title_format=$t$i?{ ($i)}</pre>
+<br/>
+</li>
+<li><p>Set a new format:</p><table>
+<tr><th class="wikinowrap">Variable</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap"><code>$s</code></td><td>Current search</td></tr>
+<tr><td class="wikinowrap"><code>$t</code></td><td>Everything (localized)</td></tr>
+<tr><td class="wikinowrap"><code>$v</code></td><td>Version</td></tr>
+<tr><td class="wikinowrap"><code>$i</code></td><td>Instance name</td></tr>
+</table>
+</li>
+<li><p>Use the following syntax to optionally display text:</p><table>
+<tr><th class="wikinowrap">Syntax</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap"><code>$x?{text}</code></td><td>Display <b>text</b> if $x is not empty.</td></tr>
+</table>
+</li>
+<li><p>Save changes and close the Everything.ini.</p></li>
+<li><p>Restart Everything.</p></li>
+</ul>
+<br/>
+<p>Example formats:</p>
+<table>
+<tr><th class="wikinowrap">Format</th><th class="wikinowrap">Search</th><th class="wikinowrap">Title</th></tr>
+<tr><td class="wikinowrap">$s?{$s - }My Search</td><td>apples</td><td>apples - My Search</td></tr>
+<tr><td class="wikinowrap">$s?{$s - }My Search</td><td></td><td>My Search</td></tr>
+</table>
+<br/>
+<p>Note: Changing the window_title_format will also affect the title on the taskbar button.</p>
+<br/>
+<h2 id="icon">Icon</h2>
+<p>To change the Everything icon:</p>
+<ul>
+<li><p>Copy your custom icon file to: </p><pre>%APPDATA%\Everything\Everything.ico</pre>
+<br/>
+<p>If <a href="/everything/options.htm#store_settings_and_data_in_appdata_everything">Store settings and data in %APPDATA%\Everything</a> is disabled, copy your custom icon file to Everything.ico in the same location as your Everything.exe.</p>
+</li>
+<li><p>Exit <b><i>Everything</i></b> (Right click the Everything system tray icon and click Exit)</p></li>
+<li><p>Restart <b><i>Everything</i></b>.</p></li>
+</ul>
+<br/>
+<p>Download the colorful Everything Icon Pack:</p>
+<p><a href="http://www.voidtools.com/Everything-Icons.zip" target="_blank">Everything-Icons.zip</a></p>
+<br/>
+<h2 id="taskbar_group_icon">Taskbar Group Icon</h2>
+<p>To change the Everything Taskbar group icon:</p>
+<ul>
+<li><p>Right click the Everything taskbar button.</p></li>
+<li><p>Hold down the Shift key and right click Search Everything.</p></li>
+<li><p>Click <b>Properties</b>.</p><p><img src="/everything/right.click.taskbar.shift.right.click.search.everything.properties.png" alt="Right click taskbar shift right click Search Everything Properties" /></p>
+<br/>
+</li>
+<li><p>Click <b>Change Icon</b>.</p></li>
+<li><p>Click <b>Browse...</b>, select a new icon and click <b>Open</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+<li><p>Click <b>OK</b>.</p><p><img src="/everything/change.icon.green.icon.png" alt="Change icon green icon" /></p>
+<br/>
+</li>
+<li><p>Rebuild the icon cache:</p></li>
+<li><p>From the Start menu, type in the following search and press enter:</p><pre>cmd</pre>
+<br/>
+<p><img src="/everything/start.search.cmd.png" alt="Start search cmd" /></p>
+<br/>
+</li>
+<li><p>In the command prompt, navigate to local app data folder by typing in the following and pressing enter:</p><pre>cd %localappdata%</pre>
+<br/>
+</li>
+<li><p>Remove the hidden attribute from the icon cache database by typing the following and pressing enter:</p><pre>attrib iconcache.db -h</pre>
+<br/>
+</li>
+<li><p>Delete the icon cache database by typing the following and pressing enter:</p><pre>del iconcache.db</pre>
+<br/>
+</li>
+<li><p>Terminate Windows Explorer by typing the following and pressing enter:</p><pre>taskkill /f /im explorer.exe</pre>
+<br/>
+</li>
+<li><p>Restart Windows Explorer by typing the following and pressing enter:</p><pre>explorer</pre>
+<br/>
+<p><img src="/everything/rebuild.icon.cache.png" alt="Rebuild icon cache" /></p>
+</li>
+</ul>
+<br/>
+<h2 id="external_file_manager">External File Manager</h2>
+<p>To open paths in an external file manager:</p>
+<ul>
+<li><p>In <b><i>Everything</i></b>, from the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Context Menu</b> tab.</p></li>
+<li><p>Select <b>Open Path</b>.</p></li>
+<li><p>Change the <b>command</b> to:</p><pre>$exec("C:\Program Files $(x86$)\ExternalFileManager\ExternalFileManager.exe" "%1")</pre>
+<br/>
+</li>
+<li><p>Where C:\ExternalFileManager\ExternalFileManager.exe is the location of the external file manager.</p></li>
+<li><p>Use $$, $%, $( and $) to escape $, %, ( and ).</p></li>
+<li><p>Check your external file manager help for any required command line parameters.</p></li>
+<li><p>Click OK.</p></li>
+</ul>
+<br/>
+<h2 id="date_format">Date Format</h2>
+<p>To use a custom date format in Everything:</p>
+<ul>
+<li><p>Exit Everything.</p></li>
+<li><p>Open your <a href="/everything/ini.htm">Everything.ini</a>.</p></li>
+<li><p>Change the following line:</p><pre>date_format=</pre>
+<br/>
+<p>Date format can be zero or more of the following codes:</p>
+<table>
+<tr><th class="wikinowrap">code</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">d </td><td>Day of month as digits with no leading zero for single-digit days. </td></tr>
+<tr><td class="wikinowrap">dd </td><td>Day of month as digits with leading zero for single-digit days. </td></tr>
+<tr><td class="wikinowrap">ddd </td><td>Day of week as a three-letter abbreviation. The function uses the LOCALE_SABBREVDAYNAME value associated with the specified locale. </td></tr>
+<tr><td class="wikinowrap">dddd </td><td>Day of week as its full name. The function uses the LOCALE_SDAYNAME value associated with the specified locale. </td></tr>
+<tr><td class="wikinowrap">M </td><td>Month as digits with no leading zero for single-digit months. </td></tr>
+<tr><td class="wikinowrap">MM </td><td>Month as digits with leading zero for single-digit months. </td></tr>
+<tr><td class="wikinowrap">MMM </td><td>Month as a three-letter abbreviation. The function uses the LOCALE_SABBREVMONTHNAME value associated with the specified locale. </td></tr>
+<tr><td class="wikinowrap">MMMM </td><td>Month as its full name. The function uses the LOCALE_SMONTHNAME value associated with the specified locale. </td></tr>
+<tr><td class="wikinowrap">y </td><td>Year as last two digits, but with no leading zero for years less than 10. </td></tr>
+<tr><td class="wikinowrap">yy </td><td>Year as last two digits, but with leading zero for years less than 10. </td></tr>
+<tr><td class="wikinowrap">yyyy </td><td>Year represented by full four digits. </td></tr>
+<tr><td class="wikinowrap">gg </td><td>Period/era string. The function uses the CAL_SERASTRING value associated with the specified locale. This element is ignored if the date to be formatted does not have an associated era or period string. </td></tr>
+</table>
+</li>
+<li><p>Save changes to the Everything.ini</p></li>
+<li><p>Restart Everything.</p></li>
+</ul>
+<br/>
+<h2 id="time_format">Time Format</h2>
+<p>To use a custom time format in Everything:</p>
+<ul>
+<li><p>Exit Everything.</p></li>
+<li><p>Open your <a href="/everything/ini.htm">Everything.ini</a>.</p></li>
+<li><p>Change the following line:</p><pre>time_format=</pre>
+<br/>
+<p>Time format can be zero or more of the following codes:</p>
+<table>
+<tr><th class="wikinowrap">Code</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">h </td><td>Hours with no leading zero for single-digit hours; 12-hour clock. </td></tr>
+<tr><td class="wikinowrap">hh </td><td>Hours with leading zero for single-digit hours; 12-hour clock. </td></tr>
+<tr><td class="wikinowrap">H </td><td>Hours with no leading zero for single-digit hours; 24-hour clock. </td></tr>
+<tr><td class="wikinowrap">HH </td><td>Hours with leading zero for single-digit hours; 24-hour clock. </td></tr>
+<tr><td class="wikinowrap">m </td><td>Minutes with no leading zero for single-digit minutes. </td></tr>
+<tr><td class="wikinowrap">mm </td><td>Minutes with leading zero for single-digit minutes. </td></tr>
+<tr><td class="wikinowrap">s </td><td>Seconds with no leading zero for single-digit seconds. </td></tr>
+<tr><td class="wikinowrap">ss </td><td>Seconds with leading zero for single-digit seconds. </td></tr>
+<tr><td class="wikinowrap">t </td><td>One character time-marker string, such as A or P. </td></tr>
+<tr><td class="wikinowrap">tt </td><td>Multicharacter time-marker string, such as AM or PM. </td></tr>
+<tr><td class="wikinowrap">SSS</td><td>Milliseconds with leading zeros, must be the last part of the format.</td></tr>
+</table>
+</li>
+<li><p>Save changes to the Everything.ini</p></li>
+<li><p>Restart Everything.</p></li>
+</ul>
+<br/>
+<h2 id="translucent_selection_rectangle">Translucent Selection Rectangle</h2>
+<p>To change the translucency see <a href="/everything/ini.htm#translucent_selection_rectangle_alpha">translucent_selection_rectangle_alpha</a></p>
+<p>To change the background color see <a href="/everything/ini.htm#translucent_selection_rectangle_background_color">translucent_selection_rectangle_background_color</a></p>
+<p>To change the border color see <a href="/everything/ini.htm#translucent_selection_rectangle_border_color">translucent_selection_rectangle_border_color</a></p>
+<br/>
+<h2 id="change_the_default_search_and_search_settings">Change the default search and search settings</h2>
+<p>See <a href="/everything/options.htm#home">home</a></p>
+<br/>
+<h2 id="fonts_and_colors">Fonts and colors</h2>
+<p>To change the result list font see <a href="/everything/options.htm#fonts_and_colors">Fonts and colors</a></p>
+<p>To change the search edit font see <a href="/everything/ini.htm#search_edit_font">search_edit_font</a> and <a href="/everything/ini.htm#search_edit_font_size">search_edit_font_size</a></p>
+<p>To change the status bar font see <a href="/everything/ini.htm#status_bar_font">status_bar_font</a> and <a href="/everything/ini.htm#status_bar_font_size">status_bar_font_size</a></p>
+<p>To change the result list header font see <a href="/everything/ini.htm#header_font">header_font</a> and <a href="/everything/ini.htm#header_font_size">header_font_size</a></p>
+<br/>
+<h2 id="status_bar_format">Status bar format</h2>
+<p>To change the status bar format see <a href="/everything/ini.htm#statusbar_selected_item_format">statusbar_selected_item_format</a></p>
+<br/>
+<h2 id="http_server">HTTP Server</h2>
+<p>See <a href="/everything/http.htm#change_the_default_http_files">Change the default HTTP files</a>.</p>
+<br/>
+<h2 id="etp_ftp_welcome_message">ETP/FTP Welcome Message</h2>
+<p>See <a href="/everything/ini.htm#etp_server_welcome_message">etp_server_welcome_message</a> in the Everything.ini.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/ini.htm">Ini</a></p></li>
+<li><p><a href="/everything/translating.htm">Translating</a></p></li>
+<li><p><a href="/everything/indexes.htm">Indexes</a></p></li>
+<li><p><a href="/everything/searching.htm">Searching</a></p></li>
+<li><p><a href="/everything/command_line_options.htm">Command line options</a></p></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Command Line Options</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="command_line_options">Command Line Options</h1>
+<p>A list of all the command line options available in Everything.</p>
+<p>Most of these options are available within Everything, in the <a href="/everything/options.htm">Everything options</a>.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>Everything.exe [file-list-filename] [options]</pre>
+<br/>
+<dl>
+<dt id="option"><p>[option]</p></dt>
+<dd><p>Optional option.</p>
+<br/>
+</dd>
+<dt id="lt_option_gt"><p>&lt;option&gt;</p></dt>
+<dd><p>Required option.</p>
+</dd>
+</dl>
+<br/>
+<br/>
+<h2 id="installation">Installation</h2>
+<p>These command line options return immediately and do not show an Everything search window.</p>
+<p>Some command line options require administrative privileges. Running Everything with a command line option that requires administrative privileges from a standard user account will automatically relaunch Everything with the specified command line option as administrator.</p>
+<br/>
+<dl>
+<dt id="-app-data"><p><i>-app-data</i></p></dt>
+<dt id="-noapp-data"><p><i>-noapp-data</i></p></dt>
+<dd><p>Store settings and data in %APPDATA%\Everything or in the same location as the executable.</p>
+<p>When enabled, user settings in the Everything.ini in the same location as Everything.exe will be lost. </p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-choose-language"><p><i>-choose-language</i></p></dt>
+<dd><p>Show the language selection page.</p>
+<br/>
+</dd>
+<dt id="-choose-volumes"><p><i>-choose-volumes</i></p></dt>
+<dd><p>Do not automatically index volumes. Removes all NTFS volumes from the index.</p>
+<br/>
+</dd>
+<dt id="-enable-run-as-admin"><p><i>-enable-run-as-admin</i></p></dt>
+<dt id="-disable-run-as-admin"><p><i>-disable-run-as-admin</i></p></dt>
+<dd><p>Enable or disable run as administrator.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-enable-update-notification"><p><i>-enable-update-notification</i></p></dt>
+<dt id="-disable-update-notification"><p><i>-disable-update-notification</i></p></dt>
+<dd><p>Enable or disable update notification on startup.</p>
+<br/>
+</dd>
+<dt id="-install"><p><i>-install</i> &lt;location&gt;</p></dt>
+<dd><p>Copies Everything.exe and uninstall.exe to the new location. Creates an uninstall entry in Programs and Features if uninstall.exe is present. Executes the copied Everything.exe with the install options specified in <a href="/everything/command_line_options.htm#-install-options">-install-options</a>.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-client-service"><p><i>-install-client-service</i></p></dt>
+<dt id="-uninstall-client-service"><p><i>-uninstall-client-service</i></p></dt>
+<dd><p>Install the "Everything" client as a service.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-config"><p><i>-install-config</i> &lt;filename&gt;</p></dt>
+<dd><p>Install the specified configuration file. The specified ini file is merged with any existing configuration file before any other install options are applied.</p>
+<br/>
+</dd>
+<dt id="-install-desktop-shortcut"><p><i>-install-desktop-shortcut</i></p></dt>
+<dt id="-uninstall-desktop-shortcut"><p><i>-uninstall-desktop-shortcut</i></p></dt>
+<dd><p>Create or delete the desktop shortcut for the current user.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-all-users-desktop-shortcut"><p><i>-install-all-users-desktop-shortcut</i></p></dt>
+<dt id="-uninstall-all-users-desktop-shortcut"><p><i>-uninstall-all-users-desktop-shortcut</i></p></dt>
+<dd><p>Create or delete the desktop shortcut for all users.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-efu-association"><p><i>-install-efu-association</i></p></dt>
+<dt id="-uninstall-efu-association"><p><i>-uninstall-efu-association</i></p></dt>
+<dd><p>Create or remove the EFU file association with Everything.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-folder-context-menu"><p><i>-install-folder-context-menu</i></p></dt>
+<dt id="-uninstall-folder-context-menu"><p><i>-uninstall-folder-context-menu</i></p></dt>
+<dd><p>Install or uninstall folder context menus.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-options"><p><i>-install-options</i> &lt;command line options&gt;</p></dt>
+<dd><p>Command line options to pass to the newly installed Everything.exe. </p>
+<p>Combine with <a href="/everything/command_line_options.htm#-install">-install</a>.</p>
+<p>Requires administrative privileges.</p>
+<p>install options are executed with administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-quick-launch-shortcut"><p><i>-install-quick-launch-shortcut</i></p></dt>
+<dt id="-uninstall-quick-launch-shortcut"><p><i>-uninstall-quick-launch-shortcut</i></p></dt>
+<dd><p>Create or delete the Search Everything quick launch shortcut.</p>
+<br/>
+</dd>
+<dt id="-install-run-on-system-startup"><p><i>-install-run-on-system-startup</i></p></dt>
+<dt id="-uninstall-run-on-system-startup"><p><i>-uninstall-run-on-system-startup</i></p></dt>
+<dd><p>Add or remove Everything from the system startup.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-service"><p><i>-install-service</i></p></dt>
+<dt id="-uninstall-service"><p><i>-uninstall-service</i></p></dt>
+<dd><p>Install or uninstall the "Everything" service. The service is started automatically. Combine with <a href="/everything/command_line_options.htm#-install-service-port">-install-service-port</a> to set the service port. Combine with <a href="/everything/command_line_options.htm#-install-service-pipe-name">-install-service-pipe-name</a> to set the service pipe name.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-service-port"><p><i>-install-service-port</i> &lt;port&gt;</p></dt>
+<dd><p>Install the Everything service on the specified port.</p>
+<p>Combine with <a href="/everything/command_line_options.htm#-install-service">-install-service</a>.</p>
+<p>Removed in Everything 1.4, use -install-service-pipe-name instead.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-service-pipe-name"><p><i>-install-service-pipe-name</i> &lt;name&gt;</p></dt>
+<dd><p>Install the Everything service with the specified pipe name.</p>
+<p>Combine with <a href="/everything/command_line_options.htm#-install-service">-install-service</a>.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-start-menu-shortcuts"><p><i>-install-start-menu-shortcuts</i></p></dt>
+<dt id="-uninstall-start-menu-shortcuts"><p><i>-uninstall-start-menu-shortcuts</i></p></dt>
+<dd><p>Create or delete the Everything shortcuts in the Start menu for the current user.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-all-users-start-menu-shortcuts"><p><i>-install-all-users-start-menu-shortcuts</i></p></dt>
+<dt id="-uninstall-all-users-start-menu-shortcuts"><p><i>-uninstall-all-users-start-menu-shortcuts</i></p></dt>
+<dd><p>Create or delete the Everything shortcuts in the Start menu for all users.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-url-protocol"><p><i>-install-url-protocol</i></p></dt>
+<dt id="-uninstall-url-protocol"><p><i>-uninstall-url-protocol</i></p></dt>
+<dd><p>Install or uninstall the URL Protocol.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-language"><p><i>-language</i> &lt;langID&gt;</p></dt>
+<dd><p>Set the language to the specified language ID in decimal. 1033 = English (US). 0 = System default. See <a href="/everything/language_ids.htm">Language IDs</a> for a list of langIDs.</p>
+<br/>
+</dd>
+<dt id="-uninstall"><p><i>-uninstall</i> [path]</p></dt>
+<dd><p>Uninstall Everything from the specified path. If no path is specified Everything is uninstalled from the executables location. This removes Everything from system startup, removes the service, folder context menu, start menu shortcuts, desktop shortcut, quick launch shortcut, URL protocol, efu file associations and deletes any files created by Everything.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-uninstall-user"><p><i>-uninstall-user</i></p></dt>
+<dd><p>Uninstall Everything user files.</p>
+<br/>
+</dd>
+<dt id="-create-usn-journal"><p><i>-create-usn-journal</i> &lt;volume&gt; &lt;max-size-bytes&gt; &lt;allocation-delta-bytes&gt;</p></dt>
+<dd><p>Create a USN Journal on the specifed volume with the specified maximum size and allocation delta in bytes.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-delete-usn-journal"><p><i>-delete-usn-journal</i> &lt;volume&gt;</p></dt>
+<dd><p>Delete the USN Journal on the specifed volume.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-install-language"><p><i>-install-language</i> &lt;langID&gt;</p></dt>
+<dd><p>Include in <a href="/everything/command_line_options.htm#-install-options">-install-options</a> to set the installation language. </p>
+<p>Set the language to the specified language ID in decimal. 1033 = English (US). 0 = System default. See <a href="/everything/language_ids.htm">Language IDs</a> for a list of langIDs.</p>
+<p>Requires administrative privileges.</p>
+<br/>
+</dd>
+<dt id="-save-install-options"><p><i>-save-install-options</i> &lt;user-install-option-flags&gt;</p></dt>
+<dd><p>Include in <a href="/everything/command_line_options.htm#-install-options">-install-options</a> to save user install options to the registry. </p>
+<p>user-install-option-flags in decimal, can be zero or more of the following:</p>
+<table>
+<tr><th class="wikinowrap">Flag</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">1</td><td>Update notifications</td></tr>
+<tr><td class="wikinowrap">2</td><td>Install Quick Launch shortcut</td></tr>
+<tr><td class="wikinowrap">4</td><td>Choose volumes</td></tr>
+</table>
+</dd>
+</dl>
+<p>Requires administrative privileges.</p>
+<br/>
+<h2 id="file_lists">File Lists</h2>
+<p>Command line options to manipulate Everything file lists EFU files.</p>
+<br/>
+<dl>
+<dt id="file-list-filename"><p>[file-list-filename]</p></dt>
+<dd><p>Open the specified file list.</p>
+<br/>
+</dd>
+<dt id="-create-file-list"><p><i>-create-file-list</i> &lt;filename&gt; &lt;path&gt;</p></dt>
+<dd><p>Create a file list of a path. When this command completes Everything.exe will exit, no search window is shown.</p>
+<br/>
+</dd>
+<dt id="-create-file-list-exclude-files"><p><i>-create-file-list-exclude-files</i> &lt;filters&gt;</p></dt>
+<dd><p>Set a semicolon delimited wildcard filter of files to exclude with -create-file-list.</p>
+<p>Prefix a filter with regex: to use Regex.</p>
+<br/>
+</dd>
+<dt id="-create-file-list-exclude-folders"><p><i>-create-file-list-exclude-folders</i> &lt;filters&gt;</p></dt>
+<dd><p>Set a semicolon delimited wildcard filter of folders to exclude with -create-file-list.</p>
+<p>Prefix a filter with regex: to use Regex.</p>
+<br/>
+</dd>
+<dt id="-create-file-list-include-only-files"><p><i>-create-file-list-include-only-files</i> &lt;filters&gt;</p></dt>
+<dd><p>Set a semicolon delimited wildcard filter of files to include only with -create-file-list.</p>
+<p>Prefix a filter with regex: to use Regex.</p>
+<br/>
+</dd>
+<dt id="-edit"><p><i>-edit</i> &lt;filename&gt;</p></dt>
+<dd><p>Open the specified file list with the file list editor.</p>
+<br/>
+</dd>
+<dt id="-f"><p><i>-f</i> &lt;filename&gt;</p></dt>
+<dt id="-filelist"><p><i>-filelist</i> &lt;filename&gt;</p></dt>
+<dd><p>Open a file list.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="etp">ETP</h2>
+<p>Command line options to connect to an ETP server.</p>
+<br/>
+<dl>
+<dt id="-admin-server-share-links"><p><i>-admin-server-share-links</i></p></dt>
+<dt id="-server-share-links"><p><i>-server-share-links</i></p></dt>
+<dt id="-ftp-links"><p><i>-ftp-links</i></p></dt>
+<dt id="-drive-links"><p><i>-drive-links</i></p></dt>
+<dd><p>Link type for ETP connections. Use with <a href="/everything/command_line_options.htm#-connect">-connect</a>.</p>
+<br/>
+</dd>
+<dt id="-connect"><p><i>-connect</i> &lt;[username[:password]@]host[:port]&gt;</p></dt>
+<dd><p>Connect to an ETP server.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="searching">Searching</h2>
+<p>Command line options to manipulate the search.</p>
+<br/>
+<dl>
+<dt id="-bookmark"><p><i>-bookmark</i> &lt;name&gt;</p></dt>
+<dd><p>Open a bookmark.</p>
+<br/>
+</dd>
+<dt id="-case"><p><i>-case</i></p></dt>
+<dt id="-nocase"><p><i>-nocase</i></p></dt>
+<dd><p>Enable or disable case matching.</p>
+<br/>
+</dd>
+<dt id="-diacritics"><p><i>-diacritics</i></p></dt>
+<dt id="-nodiacritics"><p><i>-nodiacritics</i></p></dt>
+<dd><p>Enable or disable diacritics matching.</p>
+<br/>
+</dd>
+<dt id="-filename"><p><i>-filename</i> &lt;filename&gt;</p></dt>
+<dd><p>Search for a file or folder by filename.</p>
+<br/>
+</dd>
+<dt id="-filter"><p><i>-filter</i> &lt;name&gt;</p></dt>
+<dd><p>Select a search filter.</p>
+<br/>
+</dd>
+<dt id="-l"><p><i>-l</i></p></dt>
+<dt id="-local"><p><i>-local</i></p></dt>
+<dd><p>Load the local database.</p>
+<br/>
+</dd>
+<dt id="-matchpath"><p><i>-matchpath</i></p></dt>
+<dt id="-nomatchpath"><p><i>-nomatchpath</i></p></dt>
+<dd><p>Enable or disable full path matching.</p>
+<br/>
+</dd>
+<dt id="-p"><p><i>-p</i> &lt;path&gt;</p></dt>
+<dt id="-path"><p><i>-path</i> &lt;path&gt;</p></dt>
+<dd><p>Search for a path.</p>
+<br/>
+</dd>
+<dt id="-parent"><p><i>-parent</i> &lt;path&gt;</p></dt>
+<dd><p>Search for files and folders in path. Does not search subfolders.</p>
+<br/>
+</dd>
+<dt id="-parentpath"><p><i>-parentpath</i> &lt;path&gt;</p></dt>
+<dd><p>Search for the parent of a path.</p>
+<br/>
+</dd>
+<dt id="-regex"><p><i>-regex</i></p></dt>
+<dt id="-noregex"><p><i>-noregex</i></p></dt>
+<dd><p>Enable or disable Regex.</p>
+<br/>
+</dd>
+<dt id="-s"><p><i>-s</i> &lt;text&gt;</p></dt>
+<dt id="-search"><p><i>-search</i> &lt;text&gt;</p></dt>
+<dd><p>Set the search.</p>
+<br/>
+</dd>
+<dt id="-url"><p><i>-url</i> &lt;[es:]search&gt;</p></dt>
+<dd><p>Set the search from an ES: URL.</p>
+<br/>
+</dd>
+<dt id="-wholeword"><p><i>-wholeword</i></p></dt>
+<dt id="-nowholeword"><p><i>-nowholeword</i></p></dt>
+<dt id="-ww"><p><i>-ww</i></p></dt>
+<dt id="-noww"><p><i>-noww</i></p></dt>
+<dd><p>Enable or disable match whole word.</p>
+<br/>
+</dd>
+<dt id="-home"><p><i>-home</i></p></dt>
+<dd><p>Open the home search.</p>
+<br/>
+</dd>
+<dt id="-name-part"><p><i>-name-part</i> &lt;filename&gt;</p></dt>
+<dd><p>Search for the name part of a filename.</p>
+<br/>
+</dd>
+<dt id="-search-file-list"><p><i>-search-file-list</i> &lt;filename&gt;</p></dt>
+<dd><p>Search the specified text file for a list of file names.</p>
+<p>Each filename must appear on a single line.</p>
+<p>Include a backslash to match the full path and filename.</p>
+<br/>
+</dd>
+</dl>
+<br/>
+<h2 id="results">Results</h2>
+<p>Command line options to manipulate the results.</p>
+<br/>
+<dl>
+<dt id="-sort"><p><i>-sort</i> &lt;name&gt;</p></dt>
+<dd><p>Set the sort to the specified name.</p>
+<br/>
+</dd>
+<dt id="-sort-ascending"><p><i>-sort-ascending</i></p></dt>
+<dd><p>Sort ascending.</p>
+<br/>
+</dd>
+<dt id="-sort-descending"><p><i>-sort-descending</i></p></dt>
+<dd><p>Sort descending.</p>
+<br/>
+</dd>
+<dt id="-details"><p><i>-details</i></p></dt>
+<dd><p>View results in the detail view.</p>
+<br/>
+</dd>
+<dt id="-thumbnail-size"><p><i>-thumbnail-size</i> &lt;size&gt;</p></dt>
+<dd><p>Specify the size of thumbnails in pixels.</p>
+<br/>
+</dd>
+<dt id="-thumbnails"><p><i>-thumbnails</i></p></dt>
+<dd><p>Show results in thumbnail view.</p>
+<br/>
+</dd>
+<dt id="-focus-bottom-result"><p><i>-focus-bottom-result</i></p></dt>
+<dd><p>Focus the bottom result.</p>
+<br/>
+</dd>
+<dt id="-focus-last-run-result"><p><i>-focus-last-run-result</i></p></dt>
+<dd><p>Focus the last run result.</p>
+<br/>
+</dd>
+<dt id="-focus-most-run-result"><p><i>-focus-most-run-result</i></p></dt>
+<dd><p>Focus the most run result.</p>
+<br/>
+</dd>
+<dt id="-focus-results"><p><i>-focus-results</i></p></dt>
+<dd><p>Focus the result list.</p>
+<br/>
+</dd>
+<dt id="-focus-top-result"><p><i>-focus-top-result</i></p></dt>
+<dd><p>Focus the top result.</p>
+<br/>
+</dd>
+<dt id="-select"><p><i>-select</i> &lt;filename&gt;</p></dt>
+<dd><p>Focus and select the specified result.</p>
+<br/>
+</dd>
+</dl>
+<br/>
+<h2 id="general">General</h2>
+<p>General command line options.</p>
+<br/>
+<dl>
+<dt id="-"><p><i>-?</i></p></dt>
+<dt id="-h"><p><i>-h</i></p></dt>
+<dt id="-help"><p><i>-help</i></p></dt>
+<dd><p>Show this help.</p>
+<br/>
+</dd>
+<dt id="-admin"><p><i>-admin</i></p></dt>
+<dd><p>Run Everything as an administrator.</p>
+<br/>
+</dd>
+<dt id="-client-svc"><p><i>-client-svc</i></p></dt>
+<dd><p>Everything client service entry point.</p>
+<br/>
+</dd>
+<dt id="-config"><p><i>-config</i> &lt;filename&gt;</p></dt>
+<dd><p>The filename of the ini file.</p>
+<br/>
+</dd>
+<dt id="-console"><p><i>-console</i></p></dt>
+<dt id="-debug"><p><i>-debug</i></p></dt>
+<dd><p>Show the debugging console.</p>
+<br/>
+</dd>
+<dt id="-debug-log"><p><i>-debug-log</i></p></dt>
+<dd><p>Enables debug mode and <a href="http://www.voidtools.com/forum/viewtopic.php?t=5790" target="_blank">logs debugging information</a> to disk.</p>
+<br/>
+</dd>
+<dt id="-exit"><p><i>-exit</i></p></dt>
+<dt id="-quit"><p><i>-quit</i></p></dt>
+<dd><p>Exit an existing "Everything" instance.</p>
+<br/>
+</dd>
+<dt id="-instance"><p><i>-instance</i> &lt;name&gt;</p></dt>
+<dd><p>The name of the Everything <a href="/everything/multiple_instances.htm">instance</a>.</p>
+<br/>
+</dd>
+<dt id="-is-run-as"><p><i>-is-run-as</i></p></dt>
+<dd><p>Everything was executed with "runas" and should not attempt to runas again.</p>
+<br/>
+</dd>
+<dt id="-start-client-service"><p><i>-start-client-service</i></p></dt>
+<dt id="-stop-client-service"><p><i>-stop-client-service</i></p></dt>
+<dd><p>Start or stop the Everything client service.</p>
+<br/>
+</dd>
+<dt id="-start-service"><p><i>-start-service</i></p></dt>
+<dt id="-stop-service"><p><i>-stop-service</i></p></dt>
+<dd><p>Start or stop the Everything service.</p>
+<br/>
+</dd>
+<dt id="-startup"><p><i>-startup</i></p></dt>
+<dd><p>Run Everything in the background.</p>
+<br/>
+</dd>
+<dt id="-svc"><p><i>-svc</i></p></dt>
+<dd><p>Service entry point. Optionally combine with -svc-port.</p>
+<br/>
+</dd>
+<dt id="-svc-port"><p><i>-svc-port</i> &lt;port&gt;</p></dt>
+<dd><p>Run the Everything service on the specified port.</p>
+<br/>
+</dd>
+<dt id="-svc-pipe-name"><p><i>-svc-pipe-name</i> &lt;name&gt;</p></dt>
+<dd><p>Host the pipe server with the specified name.</p>
+<br/>
+</dd>
+<dt id="-svc-security-descriptor"><p><i>-svc-security-descriptor</i> &lt;sd&gt;</p></dt>
+<dd><p>Host the Everything Service pipe server with the specified security descriptor.</p>
+<p>Requires Everything 1.4.1.994 or later.</p>
+<br/>
+</dd>
+<dt id="-service-port"><p><i>-service-port</i> &lt;port&gt;</p></dt>
+<dd><p>Connect to the Everything service on the specified port.</p>
+<br/>
+</dd>
+<dt id="-service-pipe-name"><p><i>-service-pipe-name</i> &lt;name&gt;</p></dt>
+<dd><p>Connect to the Everything service using the specified pipe name.</p>
+<br/>
+</dd>
+<dt id="-verbose"><p><i>-verbose</i></p></dt>
+<dt id="-noverbose"><p><i>-noverbose</i></p></dt>
+<dd><p>Display all or basic debug messages. combine with <a href="/everything/command_line_options.htm#-debug">-debug</a>.</p>
+<br/>
+</dd>
+<dt id="-first-instance"><p><i>-first-instance</i></p></dt>
+<dd><p>Only run Everything if this is the first instance of Everything.</p>
+<p>If Everything is already running this call will be ignored.</p>
+<br/>
+</dd>
+<dt id="-no-first-instance"><p><i>-no-first-instance</i></p></dt>
+<dd><p>Only run Everything if Everything is already running.</p>
+<p>If Everything is not running this call will be ignored.</p>
+<br/>
+<br/>
+</dd>
+</dl>
+<br/>
+<h2 id="database">Database</h2>
+<p>Command line options to manipulate the Everything database.</p>
+<br/>
+<dl>
+<dt id="-db"><p><i>-db</i> &lt;filename&gt;</p></dt>
+<dd><p>The filename of the database. Combine with -read-only.</p>
+<br/>
+</dd>
+<dt id="-load-delay"><p><i>-load-delay</i> &lt;milliseconds&gt;</p></dt>
+<dd><p>The delay in milliseconds before loading the database.</p>
+<p>The database is loaded if required before this delay.</p>
+<br/>
+</dd>
+<dt id="-nodb"><p><i>-nodb</i></p></dt>
+<dd><p>Do not save to or load from the "Everything" database file.</p>
+<br/>
+</dd>
+<dt id="-read-only"><p><i>-read-only</i></p></dt>
+<dd><p>Do not update the database.</p>
+<p>Prevents new database creation.</p>
+<br/>
+</dd>
+<dt id="-reindex"><p><i>-reindex</i></p></dt>
+<dd><p>Force database rebuild.</p>
+<br/>
+</dd>
+<dt id="-update"><p><i>-update</i></p></dt>
+<dd><p>Save the database to disk.</p>
+<br/>
+</dd>
+<dt id="-monitor-pause"><p><i>-monitor-pause</i></p></dt>
+<dd><p>Pause NTFS, ReFS and folder index monitors.</p>
+<br/>
+</dd>
+<dt id="-monitor-resume"><p><i>-monitor-resume</i></p></dt>
+<dd><p>Resume NTFS, ReFS and folder index monitors.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="window">Window</h2>
+<p>Command line options to manipulate the search window and results.</p>
+<br/>
+<dl>
+<dt id="-fullscreen"><p><i>-fullscreen</i></p></dt>
+<dt id="-nofullscreen"><p><i>-nofullscreen</i></p></dt>
+<dd><p>Show the search window fullscreen or in a window.</p>
+<br/>
+</dd>
+<dt id="-maximized"><p><i>-maximized</i></p></dt>
+<dt id="-nomaximized"><p><i>-nomaximized</i></p></dt>
+<dd><p>Maximize or restore the search window.</p>
+<br/>
+</dd>
+<dt id="-minimized"><p><i>-minimized</i></p></dt>
+<dt id="-nominimized"><p><i>-nominimized</i></p></dt>
+<dd><p>Minimize or restore the search window.</p>
+<br/>
+</dd>
+<dt id="-newwindow"><p><i>-newwindow</i></p></dt>
+<dt id="-nonewwindow"><p><i>-nonewwindow</i></p></dt>
+<dd><p>Create a new search window or show an existing window.</p>
+<br/>
+</dd>
+<dt id="-ontop"><p><i>-ontop</i></p></dt>
+<dt id="-noontop"><p><i>-noontop</i></p></dt>
+<dd><p>Enable or disable always ontop.</p>
+<br/>
+</dd>
+<dt id="-close"><p><i>-close</i></p></dt>
+<dd><p>Close the current search window. </p>
+<br/>
+</dd>
+<dt id="-toggle-window"><p><i>-toggle-window</i></p></dt>
+<dd><p>Shows or hides the current search window.</p>
+<br/>
+<br/>
+</dd>
+</dl>
+<br/>
+<h2 id="multi_file_renaming">Multi File Renaming</h2>
+<p>Shows the multi file renamer dialog and does not start Everything.</p>
+<br/>
+<dl>
+<dt id="-copyto"><p><i>-copyto</i> [filename1] [filename2] [filename3] [...]</p></dt>
+<dd><p>Show the Everything multi file renamer for a copy to operation.</p>
+<br/>
+</dd>
+<dt id="-moveto"><p><i>-moveto</i> [filename1] [filename2] [filename3] [...]</p></dt>
+<dd><p>Show the Everything multi file renamer for a move to operation.</p>
+<br/>
+</dd>
+<dt id="-rename"><p><i>-rename</i> [filename1] [filename2] [filename3] [...]</p></dt>
+<dd><p>Show the Everything multi file renamer for a rename operation.</p>
+<br/>
+</dd>
+</dl>
+<br/>
+<h2 id="notes">Notes</h2>
+<p>Dashes (-) inside switches can be omitted, for example, instead of using -no-new-window, use: -nonewwindow</p>
+<br/>
+<p>Use double quotes to escape spaces and switches.</p>
+<br/>
+<p>Use ^ to escape \, &amp;, |, &gt;, &lt; and ^.</p>
+<br/>
+<p>Use """ to escape a literal "</p>
+<br/>
+<h2 id="examples">Examples</h2>
+<p>Search for ABC or 123:</p>
+<pre>Everything.exe -s "ABC|123"</pre>
+<br/>
+<p>Connect to an ETP server:</p>
+<pre>Everything.exe -connect "ComputerName" -drive-links</pre>
+<br/>
+<p>Create a filelist mp3 and flac files in D:\Music</p>
+<pre>Everything.exe -create-file-list "music.efu" "D:\Music" -create-file-list-include-only-files "*.mp3;*.flac"</pre>
+<br/>
+<h2 id="see_also">See also</h2>
+<ul>
+<li><p><a href="/everything/multiple_instances.htm">Multiple Instances</a></p></li>
+</ul>
+</body>
+</html>

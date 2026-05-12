@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetReplyWindow</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setreplywindow">Everything_SetReplyWindow</h1>
+<p>The <b>Everything_SetReplyWindow</b> function sets the window that will receive the the IPC Query results.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetReplyWindow(<br/>    HWND hWnd<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="hwnd"><p><i>hWnd</i></p></dt>
+<dd><p>The handle to the window that will receive the IPC Query reply.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>This function has no return value.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>This function must be called before calling <a href="/everything/sdk/everything_query.htm">Everything_Query</a> with bWait set to FALSE.</p>
+<p>Check for results with the specified window using <a href="/everything/sdk/everything_isqueryreply.htm">Everything_IsQueryReply</a>.</p>
+<p>Call <a href="/everything/sdk/everything_setreplyid.htm">Everything_SetReplyID</a> with a unique identifier to specify multiple searches.</p>
+<br/>
+<h2 id="example">Example</h2>
+<br/>
+<pre>// reply to this window.<br/>Everything_SetReplyWindow(hwnd);<br/><br/>// execute the query<br/>Everything_Query(TRUE);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_setreplyid.htm">Everything_SetReplyID</a></p></li>
+<li><p><a href="/everything/sdk/everything_getreplywindow.htm">Everything_GetReplyWindow</a></p></li>
+<li><p><a href="/everything/sdk/everything_getreplyid.htm">Everything_GetReplyID</a></p></li>
+<li><p><a href="/everything/sdk/everything_isqueryreply.htm">Everything_IsQueryReply</a></p></li>
+</ul>
+</body>
+</html>

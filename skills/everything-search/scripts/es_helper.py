@@ -166,20 +166,68 @@ def download_portable(dest_dir: pathlib.Path) -> pathlib.Path:
     return exe_dest
 
 
-def launch_everything(exe_path: pathlib.Path) -> bool:
-    """Start Everything in the background (minimized to tray). Returns True on success."""
+def is_everything_running() -> bool:
+    """Return True if at least one Everything.exe process is running."""
     try:
-        subprocess.Popen(
-            [str(exe_path), "-startup", "-no-uac"],
+        out = subprocess.run(
+            ["tasklist", "/FI", "IMAGENAME eq Everything.exe", "/NH"],
+            capture_output=True, timeout=5,
+        ).stdout
+        return b"Everything.exe" in out
+    except Exception:
+        return False
+
+
+def is_ipc_ready(es_path: pathlib.Path) -> bool:
+    """Quick probe: return True if es.exe can reach Everything's IPC right now."""
+    try:
+        result = subprocess.run(
+            [str(es_path), "-get-result-count"],
+            capture_output=True,
+            timeout=3,
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
+
+
+def _db_is_corrupt(db_path: pathlib.Path) -> bool:
+    """Return True if the Everything.db looks corrupted (too small to be valid)."""
+    try:
+        return db_path.exists() and db_path.stat().st_size < 1024
+    except OSError:
+        return False
+
+
+def launch_everything(exe_path: pathlib.Path) -> Optional[subprocess.Popen]:
+    """Start Everything in the background (minimized to tray).
+
+    Returns the Popen object on success, None on failure.
+    Note: -disable-run-as-admin is an admin-only install flag and must NOT be
+    passed here — it causes Everything to exit immediately under a standard user
+    account.
+    """
+    # Delete a corrupt database so Everything doesn't crash on load.
+    db_path = exe_path.parent / "Everything.db"
+    if _db_is_corrupt(db_path):
+        print(f"Removing corrupt database ({db_path.stat().st_size} bytes): {db_path}", file=sys.stderr)
+        try:
+            db_path.unlink()
+        except OSError as exc:
+            print(f"Warning: could not remove corrupt db: {exc}", file=sys.stderr)
+
+    try:
+        proc = subprocess.Popen(
+            [str(exe_path), "-startup"],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             creationflags=subprocess.DETACHED_PROCESS | subprocess.CREATE_NO_WINDOW,
         )
         print(f"Launched {exe_path.name}", file=sys.stderr)
-        return True
+        return proc
     except Exception as exc:
         print(f"Failed to launch {exe_path}: {exc}", file=sys.stderr)
-        return False
+        return None
 
 
 def launch_everything_elevated(exe_path: pathlib.Path) -> bool:
@@ -209,14 +257,31 @@ def launch_everything_elevated(exe_path: pathlib.Path) -> bool:
         return False
 
 
-def wait_for_ipc(es_path: pathlib.Path, timeout: int = 30) -> bool:
-    """Poll es.exe until Everything's IPC is ready or timeout expires."""
+def wait_for_ipc(
+    es_path: pathlib.Path,
+    timeout: int = 30,
+    process: Optional[subprocess.Popen] = None,
+) -> bool:
+    """Poll es.exe until Everything's IPC is ready or timeout expires.
+
+    Pass the Popen object returned by launch_everything() so this function can
+    detect an early exit and stop waiting immediately instead of burning the
+    full timeout.
+    """
     print(f"Waiting for Everything IPC (up to {timeout}s) ...", file=sys.stderr)
+    time.sleep(2)  # let Everything register its IPC window
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
+        # If the process we launched already exited, IPC will never arrive.
+        if process is not None and process.poll() is not None:
+            print(
+                f"Everything exited early (code {process.returncode}) — IPC will not become ready.",
+                file=sys.stderr,
+            )
+            return False
         try:
             result = subprocess.run(
-                [str(es_path), "-get-result-count", ""],
+                [str(es_path), "-get-result-count"],
                 capture_output=True,
                 timeout=3,
             )
@@ -237,18 +302,39 @@ def ensure_everything(
     """Handle the not_running case: locate/download Everything, launch it, wait for IPC.
 
     Returns {} on success (caller should retry the search), or an error dict on failure.
+
+    Cross-session note: Everything may already be running as a Windows service in
+    Session 0 (LocalSystem).  In that case is_everything_running() returns True but
+    es.exe still gets exit code 8 because IPC window messages don't cross session
+    boundaries.  The fix is to launch a user-session client anyway; it connects to
+    the service via the default named pipe and registers an IPC window that es.exe
+    can reach.
     """
     everything_exe = find_everything_exe()
 
     if everything_exe:
-        # Binary is available locally — auto-launch silently, no flag required.
-        if not launch_everything(everything_exe):
+        if is_everything_running():
+            # Quick probe: IPC might already be available (user-session client running).
+            if is_ipc_ready(es_path):
+                print("Everything IPC is already ready.", file=sys.stderr)
+                return {}
+
+            # IPC not ready.  Everything is likely a service in Session 0 — launch a
+            # user-session client that bridges to it via named pipe.
+            print(
+                "Everything is running but IPC is unavailable "
+                "(possibly a service in Session 0). Launching user-session client ...",
+                file=sys.stderr,
+            )
+
+        proc = launch_everything(everything_exe)
+        if proc is None:
             return {
                 "error": "launch_failed",
                 "message": f"Could not start {everything_exe}.",
                 "setup": "Try launching Everything manually from the Start Menu.",
             }
-        if not wait_for_ipc(es_path, timeout=30):
+        if not wait_for_ipc(es_path, timeout=30, process=proc):
             return {
                 "error": "ipc_timeout",
                 "message": "Everything launched but IPC was not ready within 30s.",
@@ -275,7 +361,8 @@ def ensure_everything(
     except RuntimeError as exc:
         return {"error": "download_failed", "message": str(exc), "setup": ""}
 
-    if not launch_everything(everything_exe):
+    proc = launch_everything(everything_exe)
+    if proc is None:
         return {
             "error": "launch_failed",
             "message": f"Could not start {everything_exe}.",
@@ -283,7 +370,7 @@ def ensure_everything(
         }
 
     # First-time launch needs longer to build the initial index.
-    if not wait_for_ipc(es_path, timeout=60):
+    if not wait_for_ipc(es_path, timeout=60, process=proc):
         return {
             "error": "ipc_timeout",
             "message": "Everything launched but IPC was not ready within 60s.",

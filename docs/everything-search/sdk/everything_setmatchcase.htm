@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetMatchCase</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setmatchcase">Everything_SetMatchCase</h1>
+<p>The <b>Everything_SetMatchCase</b> function enables or disables full path matching for the next call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetMatchCase(<br/>    BOOL bEnable<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="benable"><p><i>bEnable</i></p></dt>
+<dd><p>Specifies whether the search is case sensitive or insensitive.</p>
+<p>If this parameter is TRUE, the search is case sensitive. </p>
+<p>If the parameter is FALSE, the search is case insensitive. </p>
+</dd>
+</dl>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Match case is disabled by default.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>Everything_SetMatchCase(TRUE);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getmatchcase.htm">Everything_GetMatchCase</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

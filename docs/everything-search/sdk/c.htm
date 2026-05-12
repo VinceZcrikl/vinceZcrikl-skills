@@ -1,0 +1,16 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>C</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="c">C</h1>
+<p>Make sure to link to Everything32.lib or Everything64.lib.</p>
+<p>Copy Everything32.dll or Everything64.dll to your programs executable directory.</p>
+<p>Note: requires Everything running in the background.</p>
+<br/>
+<pre>#include &lt;stdio.h&gt;<br/>#include "Everything.h"<br/><br/>int main(int argc,char **argv)<br/>{<br/>	DWORD i;<br/>	<br/>	// Set the search string to abc<br/>	Everything_SetSearch("abc");<br/>	<br/>	// Execute the query.<br/>	Everything_Query(TRUE);<br/>	<br/>	// Display results.<br/>	for(i=0;i&lt;Everything_GetNumResults();i++)<br/>	{<br/>		printf("%s [%s]\n",Everything_GetResultFileName(i),Everything_GetResultPath(i));<br/>	}<br/>	<br/>	return 0;<br/>}</pre>
+</body>
+</html>

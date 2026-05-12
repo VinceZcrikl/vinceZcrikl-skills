@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Troubleshooting</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<br/>
+<h2 id="missing_files">Missing files</h2>
+<p>Corrupt files and folders are automatically excluded by "<i>Everything</i>". Please check your disk(s) for errors.</p>
+<br/>
+<p>To check your disk(s) for errors:</p>
+<ul>
+<li><p> In <b>My Computer</b>, for each volume:</p></li>
+<li><p> <b>Right click</b> and select <b>Properties</b>.</p></li>
+<li><p> Click the <b>Tools</b> tab.</p></li>
+<li><p> Click <b>Check now...</b>.</p></li>
+<li><p> Select <b>Automatically fix file system errors</b>.</p></li>
+<li><p> Click <b>Start</b>.</p></li>
+<li><p> If prompted to schedule the disk check the next time you restart the computer select Yes.</p></li>
+</ul>
+<br/>
+<h2 id="rebuilding_the_database">Rebuilding the database</h2>
+<p>To force "<i>Everything</i>" to rebuild the database:</p>
+<ul>
+<li><p>In "<b><i>Everything</i></b>", from the the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Indexes</b> tab.</p></li>
+<li><p>Click <b>Force rebuild</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="recreate_the_usn_journal">Recreate the USN Journal</h2>
+<p>To force the NTFS driver to rebuild the USN Journal:</p>
+<ul>
+<li><p>In "<b><i>Everything</i></b>", from the the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>NTFS</b> tab.</p></li>
+<li><p>Select the NTFS volume .</p></li>
+<li><p>Uncheck <b>Enable USN Journal Logging</b>.</p></li>
+<li><p>Click <b>Apply</b>.</p></li>
+<li><p>Check <b>Enable USN Journal Logging</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="http_server_does_not_start">HTTP Server does not start</h2>
+<p>This is most commonly caused by another service using port 80.</p>
+<br/>
+<p>Try to change the HTTP server port.</p>
+<br/>
+<p>For example: to change the HTTP server port to 8080:</p>
+<br/>
+<ul>
+<li><p>In "Everything", from the Tools menu, click Options.</p></li>
+<li><p>Under the HTTP tab, change the HTTP Server Port to 8080.</p></li>
+<li><p>Click OK.</p></li>
+</ul>
+<br/>
+<p>To connect to this server:</p>
+<ul>
+<li><p>In your web browser, enter http://localhost:8080</p></li>
+<li><p>Change localhost to the server name for remote access. </p></li>
+</ul>
+<br/>
+<h2 id="debug_mode.">Debug mode.</h2>
+<p>The debug console can be toggled with the Ctrl + ` key.</p>
+<p>See <a href="http://www.voidtools.com/forum/viewtopic.php?f=6&t=1713" target="_blank">viewtopic.php?f=6&t=1713</a> for more information.</p>
+<br/>
+<h2 id="support">Support</h2>
+<p>Please check the <a href="http://www.voidtools.com/forum/" target="_blank">forums</a> or <a href="http://www.voidtools.com/contact" target="_blank">contact voidtools</a> for support.</p>
+</body>
+</html>

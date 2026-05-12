@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetResultListRequestFlags</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getresultlistrequestflags">Everything_GetResultListRequestFlags</h1>
+<p>The <b>Everything_GetResultListRequestFlags</b> function returns the flags of available result data.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>DWORD Everything_GetResultListRequestFlags(void);</pre>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>Returns zero or more of the following request flags:</p>
+<pre>EVERYTHING_REQUEST_FILE_NAME                            (0x00000001)<br/>EVERYTHING_REQUEST_PATH                                 (0x00000002)<br/>EVERYTHING_REQUEST_FULL_PATH_AND_FILE_NAME              (0x00000004)<br/>EVERYTHING_REQUEST_EXTENSION                            (0x00000008)<br/>EVERYTHING_REQUEST_SIZE                                 (0x00000010)<br/>EVERYTHING_REQUEST_DATE_CREATED                         (0x00000020)<br/>EVERYTHING_REQUEST_DATE_MODIFIED                        (0x00000040)<br/>EVERYTHING_REQUEST_DATE_ACCESSED                        (0x00000080)<br/>EVERYTHING_REQUEST_ATTRIBUTES                           (0x00000100)<br/>EVERYTHING_REQUEST_FILE_LIST_FILE_NAME                  (0x00000200)<br/>EVERYTHING_REQUEST_RUN_COUNT                            (0x00000400)<br/>EVERYTHING_REQUEST_DATE_RUN                             (0x00000800)<br/>EVERYTHING_REQUEST_DATE_RECENTLY_CHANGED                (0x00001000)<br/>EVERYTHING_REQUEST_HIGHLIGHTED_FILE_NAME                (0x00002000)<br/>EVERYTHING_REQUEST_HIGHLIGHTED_PATH                     (0x00004000)<br/>EVERYTHING_REQUEST_HIGHLIGHTED_FULL_PATH_AND_FILE_NAME  (0x00008000)</pre>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The requested result data may differ to the desired result data specified in <a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a>.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>DWORD dwRequestFlags = Everything_GetResultListRequestFlags();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

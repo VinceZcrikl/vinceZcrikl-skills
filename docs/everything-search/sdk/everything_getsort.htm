@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetSort</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getsort">Everything_GetSort</h1>
+<p>The <b>Everything_GetSort</b> function returns the desired sort order for the results.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>DWORD Everything_GetSort(void);</pre>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>Returns one of the following sort types:</p>
+<pre>EVERYTHING_SORT_NAME_ASCENDING                      (1)<br/>EVERYTHING_SORT_NAME_DESCENDING                     (2)<br/>EVERYTHING_SORT_PATH_ASCENDING                      (3)<br/>EVERYTHING_SORT_PATH_DESCENDING                     (4)<br/>EVERYTHING_SORT_SIZE_ASCENDING                      (5)<br/>EVERYTHING_SORT_SIZE_DESCENDING                     (6)<br/>EVERYTHING_SORT_EXTENSION_ASCENDING                 (7)<br/>EVERYTHING_SORT_EXTENSION_DESCENDING                (8)<br/>EVERYTHING_SORT_TYPE_NAME_ASCENDING                 (9)<br/>EVERYTHING_SORT_TYPE_NAME_DESCENDING                (10)<br/>EVERYTHING_SORT_DATE_CREATED_ASCENDING              (11)<br/>EVERYTHING_SORT_DATE_CREATED_DESCENDING             (12)<br/>EVERYTHING_SORT_DATE_MODIFIED_ASCENDING             (13)<br/>EVERYTHING_SORT_DATE_MODIFIED_DESCENDING            (14)<br/>EVERYTHING_SORT_ATTRIBUTES_ASCENDING                (15)<br/>EVERYTHING_SORT_ATTRIBUTES_DESCENDING               (16)<br/>EVERYTHING_SORT_FILE_LIST_FILENAME_ASCENDING        (17)<br/>EVERYTHING_SORT_FILE_LIST_FILENAME_DESCENDING       (18)<br/>EVERYTHING_SORT_RUN_COUNT_ASCENDING                 (19)<br/>EVERYTHING_SORT_RUN_COUNT_DESCENDING                (20)<br/>EVERYTHING_SORT_DATE_RECENTLY_CHANGED_ASCENDING     (21)<br/>EVERYTHING_SORT_DATE_RECENTLY_CHANGED_DESCENDING    (22)<br/>EVERYTHING_SORT_DATE_ACCESSED_ASCENDING             (23)<br/>EVERYTHING_SORT_DATE_ACCESSED_DESCENDING            (24)<br/>EVERYTHING_SORT_DATE_RUN_ASCENDING                  (25)<br/>EVERYTHING_SORT_DATE_RUN_DESCENDING                 (26)</pre>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The default sort is EVERYTHING_SORT_NAME_ASCENDING (1)</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>DWORD dwSort = Everything_GetSort();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_setsort.htm">Everything_SetSort</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

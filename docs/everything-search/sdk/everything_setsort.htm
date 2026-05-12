@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetSort</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setsort">Everything_SetSort</h1>
+<p>The <b>Everything_SetSort</b> function sets how the results should be ordered.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetSort(<br/>    DWORD dwSortType<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="dwsorttype"><p><i>dwSortType</i></p></dt>
+<dd><p>The sort type, can be one of the following values:</p>
+<pre>EVERYTHING_SORT_NAME_ASCENDING                      (1)<br/>EVERYTHING_SORT_NAME_DESCENDING                     (2)<br/>EVERYTHING_SORT_PATH_ASCENDING                      (3)<br/>EVERYTHING_SORT_PATH_DESCENDING                     (4)<br/>EVERYTHING_SORT_SIZE_ASCENDING                      (5)<br/>EVERYTHING_SORT_SIZE_DESCENDING                     (6)<br/>EVERYTHING_SORT_EXTENSION_ASCENDING                 (7)<br/>EVERYTHING_SORT_EXTENSION_DESCENDING                (8)<br/>EVERYTHING_SORT_TYPE_NAME_ASCENDING                 (9)<br/>EVERYTHING_SORT_TYPE_NAME_DESCENDING                (10)<br/>EVERYTHING_SORT_DATE_CREATED_ASCENDING              (11)<br/>EVERYTHING_SORT_DATE_CREATED_DESCENDING             (12)<br/>EVERYTHING_SORT_DATE_MODIFIED_ASCENDING             (13)<br/>EVERYTHING_SORT_DATE_MODIFIED_DESCENDING            (14)<br/>EVERYTHING_SORT_ATTRIBUTES_ASCENDING                (15)<br/>EVERYTHING_SORT_ATTRIBUTES_DESCENDING               (16)<br/>EVERYTHING_SORT_FILE_LIST_FILENAME_ASCENDING        (17)<br/>EVERYTHING_SORT_FILE_LIST_FILENAME_DESCENDING       (18)<br/>EVERYTHING_SORT_RUN_COUNT_ASCENDING                 (19)<br/>EVERYTHING_SORT_RUN_COUNT_DESCENDING                (20)<br/>EVERYTHING_SORT_DATE_RECENTLY_CHANGED_ASCENDING     (21)<br/>EVERYTHING_SORT_DATE_RECENTLY_CHANGED_DESCENDING    (22)<br/>EVERYTHING_SORT_DATE_ACCESSED_ASCENDING             (23)<br/>EVERYTHING_SORT_DATE_ACCESSED_DESCENDING            (24)<br/>EVERYTHING_SORT_DATE_RUN_ASCENDING                  (25)<br/>EVERYTHING_SORT_DATE_RUN_DESCENDING                 (26)</pre>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>This function has no return value.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The default sort is EVERYTHING_SORT_NAME_ASCENDING (1). This sort is free.</p>
+<p>Using fast sorts is recommended, fast sorting is instant.</p>
+<p>To enable fast sorts in Everything:</p>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>Indexes</b> tab.</p></li>
+<li><p>Check <b>fast sort</b> for desired fast sort type.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<p>It is possible the sort is not supported, in which case after you have received your results you should call *<a href="/everything/sdk/everything_getresultlistsort.htm">Everything_GetResultListSort</a> to determine the sorting actually used.</p>
+<br/>
+<p>This function must be called before <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// set the search.<br/>Everything_SetSearch("123 ABC");<br/><br/>// sort by size descending.<br/>Everything_SetSort(EVERYTHING_SORT_SIZE_DESCENDING);<br/><br/>// execute the query<br/>Everything_Query(TRUE);</pre>
+<br/>
+<h2 id="requirements">Requirements</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

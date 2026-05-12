@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_IsFileResult</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_isfileresult">Everything_IsFileResult</h1>
+<p>The <b>Everything_IsFileResult</b> function determines if the visible result is file.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_IsFileResult(<br/>    DWORD index<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="index"><p><i>index</i></p></dt>
+<dd><p>Zero based index of the visible result.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns TRUE, if the visible result is a file (For example: C:\ABC.123).</p>
+<p>The function returns FALSE, if the visible result is a folder or volume (For example: C: or c:\WINDOWS).</p>
+<p>If the function fails the return value is FALSE. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_IsFileResult.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDINDEX</td><td>index must be greater than or equal to 0 and less than the visible number of results.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>You can only call this function for a visible result. To determine if a result is visible use the <a href="/everything/sdk/everything_getnumfileresults.htm">Everything_GetNumFileResults</a> function.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// set the search text to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// execute the query<br/>Everything_Query(TRUE);<br/><br/>// determine if the first visible result is a file.<br/>BOOL bIsFileResult = Everything_IsFileResult(0);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_isvolumeresult.htm">Everything_IsVolumeResult</a></p></li>
+<li><p><a href="/everything/sdk/everything_isfolderresult.htm">Everything_IsFolderResult</a></p></li>
+</ul>
+</body>
+</html>

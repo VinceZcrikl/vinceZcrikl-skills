@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>makevoidtools</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="makevoidtools">makevoidtools</h1>
+<p>makevoidtools is a program to compile your own <a href="http://www.voidtools.com" target="_blank">voidtools.com</a> website.</p>
+<p>All text can be customized for localization.</p>
+<br/>
+<h2 id="makevoidtools_guide">makevoidtools Guide</h2>
+<ul>
+<li><p>Extact <a href="http://www.voidtools.com/makevoidtools.zip" target="_blank">makevoidtools.zip</a> to a new folder, eg: c:\makevoidtools</p></li>
+<li><p>Copy the en-us.txt file and name it with the <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank">language code</a> for your language and region.</p></li>
+<li><p>This is the main translation template file for the website.</p></li>
+<li><p>For example: en-us.txt</p></li>
+<li><p>Copy the en-us subfolder and name it with the <a href="http://www.lingoes.net/en/translator/langcode.htm" target="_blank">language code</a> for your language and region.</p></li>
+<li><p>This is the main translation folder for the website.</p></li>
+<li><p>For example: en-us</p></li>
+<li><p>open your main translation file, eg: en-us.txt</p></li>
+<li><p>Read the notes inside this translation file for help.</p></li>
+<li><p>translate all strings.</p></li>
+<li><p>translate all pages in the main translation folder, eg: en-us\*.txt</p></li>
+<li><p>I recommend leaving the filenames in English (Optional).</p></li>
+</ul>
+<br/>
+<h2 id="requirements">Requirements</h2>
+<p>Only the files directly in your main translation folder (eg: en-us) need to be translated.</p>
+<p>Translating the support wiki is not required. -not all pages need translating as some are quite technical.</p>
+<p>translating the following support wiki pages are encouraged:</p>
+<ul>
+<li><p>01-Installing Everything.txt</p></li>
+<li><p>02-Using Everything.txt</p></li>
+<li><p>Searching.txt</p></li>
+</ul>
+<br/>
+<h2 id="offline_help">Offline help</h2>
+<p>The Everything.chm offline help will use the same support wiki templates.</p>
+<br/>
+<h2 id="testing">Testing</h2>
+<p>Run makevoidtools.exe</p>
+<p>makevoidtools will compile *.txt in the same location as makevoidtools.exe</p>
+<p>These txt files will be translation templates for each language and region.</p>
+<br/>
+<pre>makevoidtools.exe &lt;output folder&gt; &lt;url root&gt;</pre>
+<br/>
+<p>Example:</p>
+<pre>makevoidtools.exe c:\makevoidtools\voidtools file://c:/makevoidtools/voidtools</pre>
+<br/>
+<p>Open c:\makevoidtools\voidtools\index.html</p>
+<br/>
+<h2 id="wiki_pages">Wiki Pages</h2>
+<p>Make sure you open and save wiki pages as UTF-8</p>
+<p>Wiki pages in the support folder use basic <a href="/everything/makevoidtools.htm#wiki_syntax">wiki markup language</a>.</p>
+<p>Prefixing a wiki page template with a number are shown above all other wiki pages in sequence. For example, 01-Installing Everything.txt is the first wiki page listed and 02-Using Everything.txt is the second wiki page listed and so on.</p>
+<p>wiki page templates starting with a underscore (_) are hidden. For example: <a href="http://www.voidtools.com/support/everything/db" target="_blank">http://www.voidtools.com/support/everything/db</a>.</p>
+<br/>
+<h2 id="wiki_syntax">Wiki syntax</h2>
+<p>The voidtools wiki syntax is very similar to <a href="https://en.wikipedia.org/wiki/Help:Wiki_markup" target="_blank">Wikipedia's markup</a> with some limitations:</p>
+<br/>
+<dl>
+<dt id="text"><p><i>Text</i></p></dt>
+<dd><pre>A paragraph of text.</pre>
+<br/>
+<p>A paragraph of text.</p>
+<br/>
+</dd>
+<dt id="headers"><p><i>Headers</i></p></dt>
+<dd><pre>=Main Header=</pre>
+<br/>
+<h1 id="main_header">Main Header</h1>
+<br/>
+<pre>==Sub Header==</pre>
+<br/>
+<h2 id="sub_header">Sub Header</h2>
+<br/>
+</dd>
+<dt id="italic"><p><i>Italic</i></p></dt>
+<dd><pre>''Italic''</pre>
+<br/>
+<p><i>Italic</i></p>
+<br/>
+</dd>
+<dt id="bold"><p><i>Bold</i></p></dt>
+<dd><pre>'''Bold'''</pre>
+<br/>
+<p><b>bold</b></p>
+<br/>
+</dd>
+<dt id="italic_and_bold"><p><i>Italic and Bold</i></p></dt>
+<dd><pre>'''''Italic and Bold'''''</pre>
+<br/>
+<p><b><i>Italic and Bold</i></b></p>
+<br/>
+</dd>
+<dt id="links"><p><i>Links</i></p></dt>
+<dd><p>Relative URLs are relative to http://www.voidtools.com/en-us</p>
+<p>where en-us is your language-region code.</p>
+<p>The |text part in [ [url|text]] can be omitted, in which case the url is used as the text and URLs paths are striped when no protocol is present.</p>
+<br/>
+<pre>[[http://en.wikipedia.org/wiki/]]</pre>
+<br/>
+<p><a href="http://en.wikipedia.org/wiki/" target="_blank">http://en.wikipedia.org/wiki/</a></p>
+<br/>
+<pre>[[faq#what_is_everything|What is Everything?]]</pre>
+<br/>
+<p><a href="http://www.voidtools.com/faq/#what_is_everything" target="_blank">What is Everything?</a></p>
+<br/>
+</dd>
+<dt id="images"><p><i>Images</i></p></dt>
+<dd><pre>[[File:support/everything/Everything.Search.Window.png|alt=Everything Search Window]]</pre>
+<br/>
+<p><img src="/everything/Everything.Search.Window.png" alt="Everything Search Window" /></p>
+<br/>
+</dd>
+<dt id="preformatted_text"><p><i>Preformatted text</i></p></dt>
+<dd><br/>
+<pre>int i;<br/>for(i=0;i&lt;10;i++)<br/>{<br/>	printf("hello %d\n",i);<br/>}</pre>
+<br/>
+</dd>
+<dt id="unordered_lists"><p><i>Unordered lists</i></p></dt>
+<dd><pre>&lt;ul&gt;<br/>*item1<br/>*item2<br/>&lt;ul&gt;<br/>*subitem1<br/>*subitem2<br/>*subitem3<br/>&lt;/ul&gt;<br/>*item3<br/>&lt;/ul&gt;</pre>
+<br/>
+<ul>
+<li><p>item1</p></li>
+<li><p>item2</p><ul>
+<li><p>subitem1</p></li>
+<li><p>subitem2</p></li>
+<li><p>subitem3</p></li>
+</ul>
+</li>
+<li><p>item3</p></li>
+</ul>
+<br/>
+</dd>
+<dt id="tables"><p><i>Tables</i></p></dt>
+<dd><pre>{|<br/>! header1<br/>! header2<br/>! header3<br/>|-<br/>| row1, data1<br/>| row1, data2<br/>| row1, data3<br/>|-<br/>| row2, abc1<br/>| row2, abc2<br/>| row2, abc3<br/>|}</pre>
+<br/>
+<table>
+<tr><th class="wikinowrap">header1</th><th class="wikinowrap">header2</th><th class="wikinowrap">header3</th></tr>
+<tr><td class="wikinowrap">row1, data1</td><td>row1, data2</td><td>row1, data3</td></tr>
+<tr><td class="wikinowrap">row2, abc1</td><td>row2, abc2</td><td>row2, abc3</td></tr>
+</table>
+<br/>
+</dd>
+<dt id="discription_lists"><p><i>Discription lists</i></p></dt>
+<dd><pre>&lt;dl&gt;<br/>;''item1''<br/>text1<br/>;''item2''<br/>text2<br/>;''item3''<br/>text3<br/>&lt;/dl&gt;</pre>
+<br/>
+<dl>
+</dd>
+<dt id="item1"><p><i>item1</i></p></dt>
+<dd><p>text1</p>
+</dd>
+<dt id="item2"><p><i>item2</i></p></dt>
+<dd><p>text2</p>
+</dd>
+<dt id="item3"><p><i>item3</i></p></dt>
+<dd><p>text3</p>
+</dd>
+</dl>
+<br/>
+<dt id="macros"><p><i>Macros</i></p></dt>
+<pre>{{DOWNLOAD_EVERYTHING}}</pre>
+<br/>
+<br/>
+<p>&lt;/dl&gt;</p>
+<br/>
+<h2 id="help">Help</h2>
+<p>If you need any assistance, please <a href="http://www.voidtools.com/contact" target="_blank">contact David Carpenter</a>.</p>
+<br/>
+</body>
+</html>

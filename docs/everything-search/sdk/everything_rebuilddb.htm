@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_RebuildDB</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_rebuilddb">Everything_RebuildDB</h1>
+<p>The <b>Everything_RebuildDB</b> function requests Everything to forcefully rebuild the Everything index.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_RebuildDB(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dd><p>No parameters.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if the request to forcefully rebuild the Everything index was successful.</p>
+<p>The function returns 0 if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Requesting a rebuild will mark all indexes as dirty and start the rebuild process.</p>
+<p>Use <b>Everything_IsDBLoaded</b> to determine if the database has been rebuilt before performing a query.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// rebuild the database.<br/>Everything_RebuildDB();</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_isdbloaded.htm">Everything_IsDBLoaded</a></p></li>
+</ul>
+</body>
+</html>

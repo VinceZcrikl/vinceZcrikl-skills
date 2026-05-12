@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_IsQueryReply</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_isqueryreply">Everything_IsQueryReply</h1>
+<p>The <b>Everything_IsQueryReply</b> function checks if the specified window message is a query reply.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL EVERYTHINGAPI Everything_IsQueryReply(<br/>    UINT message,<br/>    WPARAM wParam,<br/>    LPARAM lParam,<br/>    DWORD nId<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="message"><p><i>message</i></p></dt>
+<dd><p>Specifies the message identifier.</p>
+</dd>
+<dt id="wparam"><p><i>wParam</i></p></dt>
+<dd><p>Specifies additional information about the message.</p>
+</dd>
+<dt id="lparam"><p><i>lParam</i></p></dt>
+<dd><p>Specifies additional information about the message.</p>
+</dd>
+<dt id="nid"><p><i>nId</i></p></dt>
+<dd><p>The unique identifier specified with <a href="/everything/sdk/everything_setreplyid.htm">Everything_SetReplyID</a>, or 0 for the default ID.</p>
+<p>This is the value used to compare with the dwData member of the COPYDATASTRUCT if the message is WM_COPYDATA.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>Returns TRUE if the message is a query reply.</p>
+<p>If the function fails the return value is FALSE. To get extended error information, call: <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>This function checks if the message is a WM_COPYDATA message. If the message is a WM_COPYDATA message the function checks if the ReplyID matches the dwData member of the COPYDATASTRUCT. If they match the function makes a copy of the query results.</p>
+<p>You must call Everything_IsQueryReply in the windows message handler to check for an IPC query reply if you call Everything_Query with bWait set to FALSE.</p>
+<p>If the function returns TRUE you should return TRUE.</p>
+<p>If the function returns TRUE you can call the following functions to read the results:</p>
+<br/>
+<ul>
+<li><p><a href="/everything/sdk/everything_sortresultsbypath.htm">Everything_SortResultsByPath</a></p></li>
+<li><p><a href="/everything/sdk/everything_reset.htm">Everything_Reset</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfileresults.htm">Everything_GetNumFileResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfolderresults.htm">Everything_GetNumFolderResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumresults.htm">Everything_GetNumResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotfileresults.htm">Everything_GetTotFileResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotfolderresults.htm">Everything_GetTotFolderResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotresults.htm">Everything_GetTotResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_isvolumeresult.htm">Everything_IsVolumeResult</a></p></li>
+<li><p><a href="/everything/sdk/everything_isfolderresult.htm">Everything_IsFolderResult</a></p></li>
+<li><p><a href="/everything/sdk/everything_isfileresult.htm">Everything_IsFileResult</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultfilename.htm">Everything_GetResultFileName</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultpath.htm">Everything_GetResultPath</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultfullpathname.htm">Everything_GetResultFullPathName</a></p></li>
+</ul>
+<br/>
+<h2 id="example">Example</h2>
+<pre>LRESULT CALLBACK WindowProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)<br/>{<br/>	if (Everything_IsQueryReply(uMsg,wParam,lParam,0))<br/>	{<br/>		// ...<br/>		// do something with the results..<br/>		// ...<br/>		<br/>		return TRUE;<br/>	}<br/><br/>	// return the default window proc..<br/>	return DefWindowProc(hwnd,uMsg,wParam,lParam);<br/>}</pre>
+<br/>
+<h2 id="implementation">Implementation</h2>
+<pre>BOOL EVERYTHINGAPI Everything_IsQueryReply(UINT message,WPARAM wParam,LPARAM lParam,DWORD nId)<br/>{<br/>	if (message == WM_COPYDATA)<br/>	{<br/>		COPYDATASTRUCT *cds = (COPYDATASTRUCT *)lParam;<br/>		<br/>		if (cds)<br/>		{<br/>			if (cds-&gt;dwData == _Everything_ReplyID)<br/>			{<br/>				if (_Everything_IsUnicodeQuery)				<br/>				{<br/>					if (_Everything_List) HeapFree(GetProcessHeap(),0,_Everything_List);<br/>					<br/>					_Everything_List = (EVERYTHING_IPC_LISTW *)HeapAlloc(GetProcessHeap(),0,cds-&gt;cbData);<br/>					<br/>					if (_Everything_List)<br/>					{<br/>						CopyMemory(_Everything_List,cds-&gt;lpData,cds-&gt;cbData);<br/>					}<br/>					else<br/>					{<br/>						_Everything_LastError = EVERYTHING_ERROR_MEMORY;<br/>					}<br/>					<br/>					return TRUE;<br/>				}<br/>				else<br/>				{<br/>					if (_Everything_List) HeapFree(GetProcessHeap(),0,_Everything_List);<br/>					<br/>					_Everything_List = (EVERYTHING_IPC_LISTW *)HeapAlloc(GetProcessHeap(),0,cds-&gt;cbData);<br/>					<br/>					if (_Everything_List)<br/>					{<br/>						CopyMemory(_Everything_List,cds-&gt;lpData,cds-&gt;cbData);<br/>					}<br/>					else<br/>					{<br/>						_Everything_LastError = EVERYTHING_ERROR_MEMORY;<br/>					}<br/>					<br/>					return TRUE;<br/>				}<br/>			}<br/>		}<br/>	}<br/>	<br/>	return FALSE;<br/>}</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_setreplywindow.htm">Everything_SetReplyWindow</a></p></li>
+<li><p><a href="/everything/sdk/everything_setreplyid.htm">Everything_SetReplyID</a></p></li>
+<li><p><a href="/everything/sdk/everything_getreplywindow.htm">Everything_GetReplyWindow</a></p></li>
+<li><p><a href="/everything/sdk/everything_getreplyid.htm">Everything_GetReplyID</a></p></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>File Lists</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="file_lists">File Lists</h1>
+<p>Everything File List (EFU) are recommended for off-line files or files that do not change, for example a CDRom, DVDRom or read only NAS.</p>
+<p>An EFU file is a Comma-separated Values (CSV) file containing a list of filenames, sizes, dates and attributes.</p>
+<p>File lists can be opened with Everything or included in your Everything index.</p>
+<p>File lists can be searched and sorted by size, date or attributes instantly.</p>
+<br/>
+<h2 id="how_do_i_make_an_efu_file_list">How do I make an EFU file list?</h2>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>File List Editor...</b>.</p></li>
+<li><p>In the <b>File List Editor</b>, <b>drag and drop</b> files into the list to add to your file list.</p></li>
+<li><p>You can also add files and folders from the Edit menu.</p></li>
+<li><p>When you are finished, from the <b>File </b>menu, click <b>Save</b>.</p></li>
+</ul>
+<br/>
+<h2 id="how_do_i_make_an_efu_file_list_from_everything">How do I make an EFU file list from Everything?</h2>
+<p>To save the current search as an EFU file list</p>
+<ul>
+<li><p>In <b><i>"Everything"</i></b>, from the <b>File </b>menu, click <b>Export...</b>.</p></li>
+<li><p>Change <b>Save as Type</b> to <b>EFU Everything File List (*.efu)</b>.</p></li>
+<li><p>Type in a filename and click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="how_do_i_make_an_efu_file_list_from_the_command_line">How do I make an EFU File list from the command line?</h2>
+<p>To create a file list from the command line:</p>
+<pre>Everything.exe -create-file-list &lt;output-filename&gt; &lt;path-to-scan&gt;</pre>
+<br/>
+<p>Combine with <a href="/everything/command_line_options.htm#-create-file-list-exclude-files">-create-file-list-exclude-files</a> &lt;filters&gt; to exclude files.</p>
+<p>Combine with <a href="/everything/command_line_options.htm#-create-file-list-exclude-folders">-create-file-list-exclude-folders</a> &lt;filters&gt; to exclude folders.</p>
+<p>Combine with <a href="/everything/command_line_options.htm#-create-file-list-include-only-files">-create-file-list-include-only-files</a> &lt;filters&gt; to include only the specified files.</p>
+<br/>
+<p>Examples</p>
+<p>To create a file list excluding tmp files:</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-exclude-files "*.tmp"</pre>
+<br/>
+<p>To create a file list excluding lnk and thumbs.db files:</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-exclude-files "*.lnk;thumbs.db"</pre>
+<br/>
+<p>To exclude folders with the name 1033:</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-exclude-folders "1033"</pre>
+<br/>
+<p>To exclude a specific folder</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-exclude-folders "c:\windows"</pre>
+<br/>
+<p>To exclude specific folders</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-exclude-folders "c:\windows;c:\program files;c:\program files (x86)"</pre>
+<br/>
+<p>To include specified files only:</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-include-only-files "*.mp3;*.flac"</pre>
+<br/>
+<p>regex can be used in the exclude lists, for example, exclude files starting with A-M</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-exclude-files "regex:^^[A-M]"</pre>
+<br/>
+<p>Path matching can be done by including a \ in your filter (\\ for regex).</p>
+<pre>Everything.exe -create-file-list "myfilelist.efu" "c:\" -create-file-list-exclude-files "c:\folder\a specific file.txt"</pre>
+<br/>
+<h2 id="does_everything_access_the_files_in_the_file_list">Does Everything access the files in the file list?</h2>
+<p>Everything will only access the files if you try to open a file or right click a file.</p>
+<p>File size, dates and attributes are read from the file list.</p>
+<br/>
+<br/>
+<h2 id="how_do_i_change_the_volume_for_all_the_files_in_a_file_list">How do I change the volume for all the files in a file list?</h2>
+<ul>
+<li><p>Open the file list in Notepad.</p></li>
+<li><p>Press <b>Ctrl + H</b> to replace.</p></li>
+<li><p>Change <b>Find what</b> to the old volume (eg: D:)</p></li>
+<li><p>Change <b>Replace with</b> to the new volume (eg: E:)</p></li>
+<li><p>Click <b>Replace All</b>.</p></li>
+<li><p><b>Save </b>changes to the file list.</p></li>
+</ul>
+<br/>
+<h2 id="can_i_use_relative_paths_in_a_file_list">Can I use relative paths in a file list?</h2>
+<p>Yes, filenames are relative to the file list location.</p>
+<p>Optionally use . and .. for locations relative to the file list location.</p>
+<p>You can use \ at the start of a filename to specify a file relative to the root of the file list.</p>
+<p>Specify a filename with a full path to override relative filenames.</p>
+<br/>
+<h2 id="update_a_file_list_with_the_task_scheduler">Update a file list with the Task Scheduler</h2>
+<p>To rebuild a file list every hour with the task scheduler:</p>
+<ul>
+<li><p>Open the <b>Task Scheduler</b> from Start -&gt; Programs -&gt; Accessories -&gt; System Tools -&gt; Task Scheduler.</p></li>
+<li><p>Click <b>Create Task...</b>.</p></li>
+<li><p>Set the <b>Name</b> to <b>Everything File List</b></p><br/>
+</li>
+<li><p>Click the <b>Triggers</b> tab.</p></li>
+<li><p>Click <b>New...</b>.</p></li>
+<li><p>Select <b>One time</b>.</p></li>
+<li><p>Check <b>Repeat task every</b>.</p></li>
+<li><p>Change the <b>Repeat task every time</b> to <b>1 hour</b>.</p></li>
+<li><p>Change <b>for a duration of</b> to <b>Indefinitely</b>.</p></li>
+<li><p>Click <b>OK</b>.</p><br/>
+</li>
+<li><p>Click the <b>Actions</b> tab.</p></li>
+<li><p>Click <b>New...</b>.</p></li>
+<li><p>Select Start a program for Action.</p></li>
+<li><p>Click Browse to select Everything.exe</p></li>
+<li><p>Set <b>Add arguments</b> to:</p><pre>-create-file-list c:\filelist.efu c:\</pre>
+</li>
+<li><p>Click <b>OK</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="include_a_file_list_in_the_everything_index">Include a file list in the Everything index</h2>
+<ul>
+<li><p>In <b><i>"Everything"</i></b>, from the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>File Lists</b> tab.</p></li>
+<li><p>Click <b>Add...</b> to add a file list.</p></li>
+<li><p>Select a file list.</p></li>
+<li><p>Click <b>Open</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="modifying_file_lists">Modifying file lists</h2>
+<p>"Everything" will automatically reload modified file lists that are included in the Everything index.</p>
+<br/>
+<p>To disable this feature:</p>
+<ul>
+<li><p>In <b><i>"Everything"</i></b>, from the <b>Tools</b> menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>File Lists</b> tab.</p></li>
+<li><p>Select the file list to stop monitoring.</p></li>
+<li><p>Uncheck <b>Monitor changes</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="what_is_the_format_of_an_efu_file_list">What is the format of an EFU file list?</h2>
+<p>EFU files are comma-separated values (<a href="http://en.wikipedia.org/wiki/Comma-separated_values" target="_blank">CSV</a>) files.</p>
+<p>A header is required with at least the Filename column specified.</p>
+<p>File size is specified in bytes.</p>
+<p>Dates are FILETIMEs (100-nanosecond intervals since January 1, 1601.) in decimal or <a href="http://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601</a> dates.</p>
+<p>Attributes can be zero or more of the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/gg258117%28v=vs.85%29.aspx" target="_blank">Windows File Attributes</a>.</p>
+<p>EFU files are encoded with UTF-8.</p>
+<br/>
+<h2 id="opening_a_file_list_with_excel">Opening a file list with Excel</h2>
+<p>To open a file list with excel:</p>
+<ul>
+<li><p>In <b>Excel</b>, from the <b>Data</b> menu, from the <b>Import External Data</b> submenu, click <b>Import data...</b>.</p></li>
+<li><p>Select your exported csv and click <b>Open</b>.</p></li>
+<li><p>Change <b>File origin</b> to <b>65001 : Unicode (UTF-8)</b>.</p></li>
+<li><p>Click <b>Next</b>.</p></li>
+<li><p>Check <b>Comma</b>.</p></li>
+<li><p>Click <b>Next</b>.</p></li>
+<li><p>Click <b>Finish</b>.</p></li>
+<li><p>Click <b>OK</b> to put the data in the existing worksheet at <b>$A$1</b>.</p></li>
+</ul>
+<br/>
+<h2 id="see_also">See also</h2>
+<ul>
+<li><p><a href="/everything/folder_indexing.htm">Folder indexing</a></p></li>
+</ul>
+</body>
+</html>

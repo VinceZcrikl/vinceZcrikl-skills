@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_IsDBLoaded</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_isdbloaded">Everything_IsDBLoaded</h1>
+<p>The <b>Everything_IsDBLoaded</b> function checks if the database has been fully loaded.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_IsDBLoaded(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dd><p>No parameters.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if the Everything database is fully loaded.</p>
+<p>The function returns 0 if the database has not fully loaded or if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_SUCCESS</td><td>The database is still loading.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>When Everything is loading, any queries will appear to return no results.</p>
+<p>Use <b>Everything_IsDBLoaded</b> to determine if the database has been loaded before performing a query.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>for(;;)<br/>{<br/>	if (Everything_IsDBLoaded())<br/>	{<br/>		// perform a query...<br/>		break;<br/>	}	<br/>	else<br/>	{<br/>		if (Everything_GetLastError())<br/>		{<br/>			// IPC not running.<br/>			break;<br/>		}<br/>	}<br/>	<br/>	// wait for database to load..<br/>	Sleep(1000);<br/>}</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

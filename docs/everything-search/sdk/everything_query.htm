@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_Query</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_query">Everything_Query</h1>
+<p>The <b>Everything_Query</b> function executes an Everything IPC query with the current search state.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_Query(<br/>    BOOL bWait<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="bwait"><p><i>bWait</i></p></dt>
+<dd><p>Should the function wait for the results or return immediately.</p>
+<p>Set this to FALSE to post the IPC Query and return immediately.</p>
+<p>Set this to TRUE to send the IPC Query and wait for the results.</p>
+</dd>
+</dl>
+<br/>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>If the function succeeds, the return value is TRUE.</p>
+<p>If the function fails, the return value is FALSE.  To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_CREATETHREAD</td><td>Failed to create the search query thread. </td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_REGISTERCLASSEX</td><td>Failed to register the search query window class.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_CREATEWINDOW</td><td>Failed to create the search query window.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>IPC is not available. Make sure Everything is running.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_MEMORY</td><td>Failed to allocate memory for the search query.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Call <a href="/everything/sdk/everything_setreplywindow.htm">Everything_SetReplyWindow</a> before calling Everything_Query with bWait set to FALSE.</td></tr>
+</table>
+<br/>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>If bWait is FALSE you must call <a href="/everything/sdk/everything_setreplywindow.htm">Everything_SetReplyWindow</a> before calling Everything_Query. Use the <a href="/everything/sdk/everything_isqueryreply.htm">Everything_IsQueryReply</a> function to check for query replies.</p>
+<p>Optionally call the following functions to set the search state before calling Everything_Query:</p>
+<ul>
+<li><p><a href="/everything/sdk/everything_setsearch.htm">Everything_SetSearch</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmatchpath.htm">Everything_SetMatchPath</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmatchcase.htm">Everything_SetMatchCase</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmatchwholeword.htm">Everything_SetMatchWholeWord</a></p></li>
+<li><p><a href="/everything/sdk/everything_setregex.htm">Everything_SetRegex</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmax.htm">Everything_SetMax</a></p></li>
+<li><p><a href="/everything/sdk/everything_setoffset.htm">Everything_SetOffset</a></p></li>
+<li><p><a href="/everything/sdk/everything_setreplyid.htm">Everything_SetReplyID</a></p></li>
+<li><p><a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a></p></li>
+</ul>
+<p>You can mix ANSI / Unicode version of Everything_SetSearch and Everything_Query.</p>
+<p>The ANSI / Unicode version of Everything_Query MUST match the ANSI / Unicode version of Everything_GetResultName and Everything_GetResultPath.</p>
+<p>The search state is not modified from a call to Everything_Query.</p>
+<p>The default state is as follows:</p>
+<p>See <a href="/everything/sdk/everything_reset.htm">Everything_Reset</a> for the default search state.</p>
+<br/>
+<br/>
+<h2 id="example">Example</h2>
+<br/>
+<pre>// set the search text to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// enable case sensitive searching.<br/>Everything_SetMatchCase(TRUE);<br/><br/>// execute the query<br/>Everything_Query(TRUE);</pre>
+<br/>
+<br/>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_setsearch.htm">Everything_SetSearch</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmatchpath.htm">Everything_SetMatchPath</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmatchcase.htm">Everything_SetMatchCase</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmatchwholeword.htm">Everything_SetMatchWholeWord</a></p></li>
+<li><p><a href="/everything/sdk/everything_setregex.htm">Everything_SetRegex</a></p></li>
+<li><p><a href="/everything/sdk/everything_setmax.htm">Everything_SetMax</a></p></li>
+<li><p><a href="/everything/sdk/everything_setoffset.htm">Everything_SetOffset</a></p></li>
+<li><p><a href="/everything/sdk/everything_sortresultsbypath.htm">Everything_SortResultsByPath</a></p></li>
+<li><p><a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfileresults.htm">Everything_GetNumFileResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumfolderresults.htm">Everything_GetNumFolderResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_getnumresults.htm">Everything_GetNumResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotfileresults.htm">Everything_GetTotFileResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotfolderresults.htm">Everything_GetTotFolderResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_gettotresults.htm">Everything_GetTotResults</a></p></li>
+<li><p><a href="/everything/sdk/everything_isvolumeresult.htm">Everything_IsVolumeResult</a></p></li>
+<li><p><a href="/everything/sdk/everything_isfolderresult.htm">Everything_IsFolderResult</a></p></li>
+<li><p><a href="/everything/sdk/everything_isfileresult.htm">Everything_IsFileResult</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultfilename.htm">Everything_GetResultFileName</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultpath.htm">Everything_GetResultPath</a></p></li>
+<li><p><a href="/everything/sdk/everything_getresultfullpathname.htm">Everything_GetResultFullPathName</a></p></li>
+<li><p><a href="/everything/sdk/everything_setreplywindow.htm">Everything_SetReplyWindow</a></p></li>
+<li><p><a href="/everything/sdk/everything_setreplyid.htm">Everything_SetReplyID</a></p></li>
+<li><p><a href="/everything/sdk/everything_reset.htm">Everything_Reset</a></p></li>
+</ul>
+</body>
+</html>

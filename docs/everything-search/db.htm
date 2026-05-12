@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>DB</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="db">DB</h1>
+<p>This is very basic description and is likely to change...</p>
+<p>Since the database is just a cache of the NTFS mft with some volume information, it can be re-built from scratch easily.</p>
+<br/>
+<p>BZIP compression can be applied.</p>
+<p>I usually see a total 11:1 compression ratio.</p>
+<p>After BZIP decompression it should look something like:</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Offset</th><th class="wikinowrap">Size</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">0x00000000</td><td>DWORD</td><td>0x42445A45 or EZDB or (0x455A4442 or BDZE for byte swapped)</td></tr>
+<tr><td class="wikinowrap">0x00000004</td><td>DWORD</td><td>0x01060006 or version 0xXXYYZZZZ x.y.z (major.minor.revision)</td></tr>
+<tr><td class="wikinowrap">0x00000008</td><td>DWORD</td><td>flags: 0x00000002 exclude hidden files and folders. 0x00000004 exclude system files and folders.</td></tr>
+<tr><td class="wikinowrap">0x0000000C</td><td>DWORD</td><td>folder count</td></tr>
+<tr><td class="wikinowrap">0x00000010</td><td>DWORD</td><td>file count</td></tr>
+<tr><td class="wikinowrap">0x00000014</td><td>DWORD</td><td>folder decode size</td></tr>
+<tr><td class="wikinowrap">0x00000018</td><td>DWORD</td><td>file decode size</td></tr>
+</table>
+<br/>
+<p>Followed immediately by the monitoring status for each volume.</p>
+<br/>
+<p>There are 26 of the following structures, one for each drive:</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Offset</th><th class="wikinowrap">Size</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">0x00000000</td><td>BYTE</td><td>included: 0x00 there is no data for this volume so start reading the next volume. 0x01 continue reading the information for this volume.</td></tr>
+<tr><td class="wikinowrap">0x00000001</td><td>DWORD</td><td>serial number</td></tr>
+<tr><td class="wikinowrap">0x00000005</td><td>QWORD</td><td>USN Journal ID</td></tr>
+<tr><td class="wikinowrap">0x0000000D</td><td>QWORD</td><td>Next USN</td></tr>
+</table>
+<br/>
+<p>Followed immediately by the exclude list count:</p>
+<br/>
+<table>
+<tr><td class="wikinowrap">0x00000000</td><td>DWORD</td><td>number of exclude items.</td></tr>
+</table>
+<br/>
+<p>Followed immediately by the exclude list:</p>
+<p>Use the exclude list count from above to determine how many exclude items there are..</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Offset</th><th class="wikinowrap">Size</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">0x00000000</td><td>BYTE</td><td>exclude type</td></tr>
+<tr><td class="wikinowrap">0x00000001</td><td>DWORD</td><td>length of the exclude string</td></tr>
+<tr><td class="wikinowrap">0x00000005</td><td>length of the exclude string</td><td>exclude string</td></tr>
+</table>
+<br/>
+<p>Followed immediately by the sorted folders:</p>
+<p>We know the number of folders from above.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Offset</th><th class="wikinowrap">Size</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">0x00000000</td><td>BYTE</td><td>drive this folder belongs too.</td></tr>
+<tr><td class="wikinowrap">0x00000001</td><td>QWORD</td><td>FRN</td></tr>
+<tr><td class="wikinowrap">0x00000005</td><td>DWORD</td><td>Parent folder offset, or 0xFFFFFFFF if root.</td></tr>
+<tr><td class="wikinowrap">0x00000009</td><td>DWORD</td><td>FRN offset</td></tr>
+<tr><td class="wikinowrap">0x0000000D</td><td>BYTE</td><td>code length, if 0 it is the same name, skip to the next folder after adding the same name.</td></tr>
+<tr><td class="wikinowrap">0x0000000E</td><td>BYTE</td><td>code offset</td></tr>
+<tr><td class="wikinowrap">0x0000000F</td><td>code length</td><td>code</td></tr>
+</table>
+<br/>
+<p>Followed immediately by the sorted files:</p>
+<p>We know the number of files from above.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Offset</th><th class="wikinowrap">Size</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">0x00000000</td><td>DWORD</td><td>Parent folder offset</td></tr>
+<tr><td class="wikinowrap">0x00000004</td><td>BYTE</td><td>code length, if 0 it is the same name, skip to the next file after adding the same name.</td></tr>
+<tr><td class="wikinowrap">0x00000005</td><td>BYTE</td><td>code offset</td></tr>
+<tr><td class="wikinowrap">0x00000006</td><td>code length</td><td>code</td></tr>
+</table>
+</body>
+</html>

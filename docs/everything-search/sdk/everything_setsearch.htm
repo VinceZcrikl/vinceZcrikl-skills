@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetSearch</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setsearch">Everything_SetSearch</h1>
+<p>The <b>Everything_SetSearch</b> function sets the search string for the IPC Query.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetSearch(<br/>    LPCTSTR lpString<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="lpstring"><p><i>lpString</i> [in]</p></dt>
+<dd><p>Pointer to a null-terminated string to be used as the new search text. </p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>This function has no return value.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Optionally call this function prior to a call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a></p>
+<p><a href="/everything/sdk/everything_query.htm">Everything_Query</a> executes the IPC Query using this search string.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// Set the search string to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// Execute the IPC query.<br/>Everything_Query(TRUE);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getsearch.htm">Everything_GetSearch</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+<br/>
+</body>
+</html>

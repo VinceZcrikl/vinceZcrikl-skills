@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_IsFastSort</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_isfastsort">Everything_IsFastSort</h1>
+<p>The <b>Everything_IsFastSort</b> function checks if the specified file information is indexed and has fast sort enabled.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_IsFastSort(DWORD sortType);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="sorttype"><p><i>sortType</i></p></dt>
+<dd><p>Can be one of the following:</p>
+<table>
+<tr><th class="wikinowrap">Code</th><th class="wikinowrap">Value</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_NAME_ASCENDING</td><td>1</td><td>Name ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_NAME_DESCENDING </td><td>2</td><td>Name descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_PATH_ASCENDING </td><td>3</td><td>Path ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_PATH_DESCENDING </td><td>4</td><td>Path descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_SIZE_ASCENDING </td><td>5</td><td>Size ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_SIZE_DESCENDING </td><td>6</td><td>Size descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_EXTENSION_ASCENDING </td><td>7</td><td>Extension ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_EXTENSION_DESCENDING </td><td>8</td><td>Extension descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_TYPE_NAME_ASCENDING </td><td>9</td><td>Type name ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_TYPE_NAME_DESCENDING </td><td>10</td><td>Type name descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_CREATED_ASCENDING </td><td>11</td><td>Date created ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_CREATED_DESCENDING </td><td>12</td><td>Date created descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_MODIFIED_ASCENDING </td><td>13</td><td>Date modified ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_MODIFIED_DESCENDING </td><td>14</td><td>Date modified descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_ATTRIBUTES_ASCENDING </td><td>15</td><td>Attributes ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_ATTRIBUTES_DESCENDING </td><td>16</td><td>Attributes descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_FILE_LIST_FILENAME_ASCENDING </td><td>17</td><td>File list filename ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_FILE_LIST_FILENAME_DESCENDING </td><td>18</td><td>File list filename descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_RUN_COUNT_ASCENDING </td><td>19</td><td>Run count ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_RUN_COUNT_DESCENDING </td><td>20</td><td>Run count descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RECENTLY_CHANGED_ASCENDING</td><td>21</td><td>Recently changed ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RECENTLY_CHANGED_DESCENDING</td><td>22</td><td>Recently changed descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_ACCESSED_ASCENDING</td><td>23</td><td>Date accessed ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_ACCESSED_DESCENDING</td><td>24</td><td>Date accessed descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RUN_ASCENDING</td><td>25</td><td>Date run ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RUN_DESCENDING</td><td>26</td><td>Date run descending</td></tr>
+</table>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if the specified information is indexed and has fast sort enabled.</p>
+<p>The function returns 0 if the specified information does not have fast sort enabled or if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_SUCCESS</td><td>The specified information does not have fast sort enabled.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The following sort types are always fast sort types:</p>
+<table>
+<tr><th class="wikinowrap">Code</th><th class="wikinowrap">Value</th><th class="wikinowrap">Description</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_NAME_ASCENDING</td><td>1</td><td>Name ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_NAME_DESCENDING </td><td>2</td><td>Name descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_RUN_COUNT_ASCENDING </td><td>19</td><td>Run count ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_RUN_COUNT_DESCENDING </td><td>20</td><td>Run count descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RECENTLY_CHANGED_ASCENDING</td><td>21</td><td>Recently changed ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RECENTLY_CHANGED_DESCENDING</td><td>22</td><td>Recently changed descending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RUN_ASCENDING</td><td>25</td><td>Date run ascending</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_IPC_SORT_DATE_RUN_DESCENDING</td><td>26</td><td>Date run descending</td></tr>
+</table>
+<p>		</p>
+<h2 id="example">Example</h2>
+<pre>BOOL isFastSizeSort;<br/><br/>// Check if sorting by size descending will be instant.<br/>isFastSizeSort = Everything_IsFastSort(EVERYTHING_IPC_SORT_SIZE_DESCENDING);</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_isfileinfoindexed.htm">Everything_IsFileInfoIndexed</a></p></li>
+<li><p><a href="everything/indexes/.htm#size_dates_and_attributes_indexing">Enable or disable file information indexing</a></p></li>
+<li><p><a href="everything/indexes/.htm#fast_sorting">Enable or disable fast sorting</a></p></li>
+</ul>
+</body>
+</html>

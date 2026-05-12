@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_UpdateAllFolderIndexes</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_updateallfolderindexes">Everything_UpdateAllFolderIndexes</h1>
+<p>The <b>Everything_UpdateAllFolderIndexes</b> function requests Everything to rescan all folder indexes.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_UpdateAllFolderIndexes(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dd><p>No parameters.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if the request to rescan all folder indexes was successful.</p>
+<p>The function returns 0 if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Everything will begin updating all folder indexes in the background.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// Request all folder indexes be rescanned.<br/>Everything_UpdateAllFolderIndexes();</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+</ul>
+</body>
+</html>

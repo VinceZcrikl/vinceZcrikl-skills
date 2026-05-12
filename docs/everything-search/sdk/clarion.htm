@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Clarion</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="clarion">Clarion</h1>
+<p>Note: requires Everything running in the background.</p>
+<br/>
+<h2 id="setup">Setup</h2>
+<p>Download the Clarion module: <a href="http://www.voidtools.com/Clarion_Everything.zip" target="_blank">Clarion_Everything.zip</a></p>
+<br/>
+<p>Source code of the module is included.</p>
+<br/>
+<p>Extract Everything.lib to your clarion project. </p>
+<br/>
+<p>Add the LIB to "Library, object, and resource files" in your Clarion project and put the following in your global map.</p>
+<br/>
+<pre>MODULE('Everything.lib')<br/>  Everything_GetLastError(),LONG,RAW,PASCAL<br/>  Everything_SetSearch(*CSTRING),RAW,PASCAL<br/>  Everything_SetMatchPath(LONG),RAW,PASCAL<br/>  Everything_SetMatchCase(LONG),RAW,PASCAL<br/>  Everything_SetMatchWholeWord(LONG),RAW,PASCAL<br/>  Everything_EnableRegex(LONG),RAW,PASCAL<br/>  Everything_SetMax(LONG),RAW,PASCAL<br/>  Everything_SetOffset(LONG),RAW,PASCAL<br/>  Everything_Query(),RAW,PASCAL<br/>  Everything_SetDetail(LONG),RAW,PASCAL<br/>  Everything_SortResults(LONG),RAW,PASCAL<br/>  Everything_GetNumFileResults(),LONG,RAW,PASCAL<br/>  Everything_GetNumFolderResults(),LONG,RAW,PASCAL<br/>  Everything_GetNumResults(),LONG,RAW,PASCAL<br/>  Everything_GetTotFileResults(),LONG,RAW,PASCAL<br/>  Everything_GetTotFolderResults(),LONG,RAW,PASCAL<br/>  Everything_GetTotResults(),LONG,RAW,PASCAL<br/>  Everything_IsVolumeResult(LONG),LONG,RAW,PASCAL<br/>  Everything_IsFolderResult(LONG),LONG,RAW,PASCAL<br/>  Everything_IsFileResult(LONG),LONG,RAW,PASCAL<br/>  Everything_GetResultFileName(LONG),*CSTRING,RAW,PASCAL<br/>  Everything_GetResultPath(LONG),*CSTRING,RAW,PASCAL<br/>  Everything_GetResult(LONG,LONG),RAW,PASCAL<br/>END</pre>
+<br/>
+<h2 id="changes">Changes</h2>
+<dl>
+<dt id="added"><p>added:</p></dt>
+<dd><li><p><a href="/everything/sdk/clarion.htm#everything_setdetail">Everything_SetDetail</a></p></li>
+<li><p><a href="/everything/sdk/clarion.htm#everything_sortresults">Everything_SortResults</a></p></dd>
+</dl>
+<br/>
+<h2 id="equates">Equates</h2>
+<pre><br/>!return values from Everything_GetLastError<br/>EVERYTHING_OK				EQUATE(0) ! no error<br/>EVERYTHING_ERROR_MEMORY			EQUATE(1) ! out of memory<br/>EVERYTHING_ERROR_IPC			EQUATE(2) ! IPC not available<br/>EVERYTHING_ERROR_REGISTERCLASSEX	EQUATE(3) ! RegisterClassEx failed<br/>EVERYTHING_ERROR_CREATEWINDOW		EQUATE(4) ! CreateWindow failed<br/>EVERYTHING_ERROR_CREATETHREAD		EQUATE(5) ! CreateThread failed<br/>EVERYTHING_ERROR_INVALIDINDEX		EQUATE(6) ! Invalid result index (must be &gt;= 0 and &lt; numResults)<br/>EVERYTHING_ERROR_INVALIDCALL		EQUATE(7) ! Call Everything_Query before getting results<br/><br/>!attributes<br/>EVERYTHING_FILE_ATTRIBUTE_READONLY             EQUATE(0001h)<br/>EVERYTHING_FILE_ATTRIBUTE_HIDDEN               EQUATE(0002h)<br/>EVERYTHING_FILE_ATTRIBUTE_SYSTEM               EQUATE(0004h)<br/>EVERYTHING_FILE_ATTRIBUTE_DIRECTORY            EQUATE(0010h)<br/>EVERYTHING_FILE_ATTRIBUTE_ARCHIVE              EQUATE(0020h)<br/>EVERYTHING_FILE_ATTRIBUTE_DEVICE               EQUATE(0040h)<br/>EVERYTHING_FILE_ATTRIBUTE_NORMAL               EQUATE(0080h)<br/>EVERYTHING_FILE_ATTRIBUTE_TEMPORARY            EQUATE(0100h)<br/>EVERYTHING_FILE_ATTRIBUTE_SPARSE_FILE          EQUATE(0200h)<br/>EVERYTHING_FILE_ATTRIBUTE_REPARSE_POINT        EQUATE(0400h)<br/>EVERYTHING_FILE_ATTRIBUTE_COMPRESSED           EQUATE(0800h)<br/>EVERYTHING_FILE_ATTRIBUTE_OFFLINE              EQUATE(1000h)<br/>EVERYTHING_FILE_ATTRIBUTE_NOT_CONTENT_INDEXED  EQUATE(2000h)<br/>EVERYTHING_FILE_ATTRIBUTE_ENCRYPTED            EQUATE(4000h)</pre>
+<br/>
+<h2 id="limits_and_notes">Limits and Notes</h2>
+<p>Everything MUST be running for this to work.</p>
+<br/>
+<p>See Everything <a href="/everything/sdk/ipc.htm">IPC</a>.</p>
+<br/>
+<p>You can only do one search at a time.</p>
+<p>If there is demand for it, I can add multiple thread safe searches.</p>
+<br/>
+<h2 id="descriptions">Descriptions</h2>
+<h2 id="everything_getlasterror">Everything_GetLastError</h2>
+<pre>myError LONG<br/><br/>!check the equates for error message descriptions<br/>myError = Everything_GetLastError()</pre>
+<br/>
+<h2 id="everything_setsearch">Everything_SetSearch</h2>
+<pre>myString STRING<br/><br/>!Set the search string<br/>!default search is '' (empty string)<br/>Everything_SetSearch(myString)</pre>
+<br/>
+<h2 id="everything_setmatchpath">Everything_SetMatchPath</h2>
+<pre>val LONG<br/><br/>!set val to zero to disable path matching<br/>!set val to non-zero to enable path matching<br/>!default is 0 (off)<br/>Everything_SetMatchPath(val)</pre>
+<br/>
+<h2 id="everything_setmatchcase">Everything_SetMatchCase</h2>
+<pre>val LONG<br/><br/>!set val to zero to disable case matching<br/>!set val to non-zero to enable case matching<br/>!default is 0 (off)<br/>Everything_SetMatchCase(val)</pre>
+<br/>
+<h2 id="everything_setmatchwholeword">Everything_SetMatchWholeWord</h2>
+<pre>val LONG<br/><br/>!set val to zero to disable whole word matching<br/>!set val to non-zero to enable whole word matching<br/>!default is 0 (off)<br/>Everything_SetMatchWholeWord(val)</pre>
+<br/>
+<h2 id="everything_enableregex">Everything_EnableRegex</h2>
+<pre>val LONG<br/><br/>!set val to zero to disable regex<br/>!set val to non-zero to enable regex<br/>!default is 0 (off)<br/>Everything_EnableRegex(val)</pre>
+<br/>
+<h2 id="everything_setmax">Everything_SetMax</h2>
+<pre>val LONG<br/><br/>!If you display the results in a list, set this value to how many items are visible in the list.<br/>!How many results would you like Everything to return?<br/>!Use this for displaying small lists.<br/>!Default is 0xFFFFFFFF (all results)<br/>Everything_SetMax(val)</pre>
+<br/>
+<h2 id="everything_setoffset">Everything_SetOffset</h2>
+<pre>offset LONG<br/><br/>!If you display a list with a scroll bar, set the offset to the scroll bar's offset.<br/>!From what index would you like Everything to return results from?<br/>!zero means return results starting from the first result.<br/>!10 would mean return results starting from the 10th result.<br/>!use this for displaying small lists.<br/>!default is 0<br/>!This is 0 based<br/>Everything_SetOffset(offset)</pre>
+<br/>
+<h2 id="everything_query">Everything_Query</h2>
+<pre>!Execute the query<br/>!use the Everything_Set* functions to override default search parameters<br/>!This sends the search options to "Everything" over the IPC.<br/>!It does not return until it has a copy of ALL the results.<br/>!Use Everything_GetResult to enumerate results.<br/>!100 results will take about 1 millisecond.<br/>!1 million results will take about 1 second.<br/>Everything_Query()</pre>
+<br/>
+<h2 id="everything_setdetail">Everything_SetDetail</h2>
+<pre>detail LONG<br/><br/>!The result detail<br/>!Set detail to nonzero to get file information from Everything_GetResult<br/>!Set detail to zero to get file name, path name offsets and lengths and partial file attributes only.<br/>!The default detail is zero.<br/>!This can be called at anytime.<br/>!make sure you sort the results with Everything_SortResults() if you set the detail to non-zero. (this will speed up the enumerating process.)<br/>Everything_SetDetail(detail)</pre>
+<br/>
+<h2 id="everything_sortresults">Everything_SortResults</h2>
+<pre>NoDriveLetter LONG<br/><br/>!Set NoDriveLetter to nonzero to sort by path excluding drive letters.<br/>!Set NoDriveLetter to zero to sort by path.<br/>!Use this before getting detailed results (set NoDriveLetter to zero).<br/>!Results are sorted by name by default.<br/>!Can only be called after a call to Everything_Query<br/>Everything_SortResults(NoDriveLetter)</pre>
+<br/>
+<h2 id="everything_getnumfileresults">Everything_GetNumFileResults</h2>
+<pre>numFiles LONG<br/><br/>!Get the number of files in the visible results list.<br/>numFiles = Everything_GetNumFileResults()</pre>
+<br/>
+<h2 id="everything_getnumfolderresults">Everything_GetNumFolderResults</h2>
+<pre>numFolders LONG<br/><br/>!Get the number of folders in the visible results list.<br/>numFolders = Everything_GetNumFolderResults()</pre>
+<br/>
+<h2 id="everything_getnumresults">Everything_GetNumResults</h2>
+<pre>numResults LONG<br/><br/>!Get the number of files and folders in the visible results list.<br/>numResults = Everything_GetNumResults()</pre>
+<br/>
+<h2 id="everything_gettotfileresults">Everything_GetTotFileResults</h2>
+<pre>totFiles LONG<br/><br/>!Get the total number of files in the results list.<br/>totFiles = Everything_GetTotFileResults()</pre>
+<br/>
+<h2 id="everything_gettotfolderresults">Everything_GetTotFolderResults</h2>
+<pre>totFolders LONG<br/><br/>!Get the total number of files in the results list.<br/>totFolders = Everything_GetTotFolderResults()</pre>
+<br/>
+<h2 id="everything_gettotresults">Everything_GetTotResults</h2>
+<pre>totResults LONG<br/><br/>!Get the total number of files and folders in the results list.<br/>!index is 0 based<br/>totResults = Everything_GetTotResults()</pre>
+<br/>
+<h2 id="everything_isvolumeresult">Everything_IsVolumeResult</h2>
+<pre>index LONG<br/>val LONG<br/><br/>!returns zero if the result is not a volume.<br/>!returns non-zero if the result is a volume.<br/>!index is 0 based<br/>!deprecated - Use Everything_GetResult<br/>val = Everything_IsVolumeResult(index)</pre>
+<br/>
+<h2 id="everything_isfolderresult">Everything_IsFolderResult</h2>
+<pre>index LONG<br/>val LONG<br/><br/>!returns zero if the result is not a folder.<br/>!returns non-zero if the result is a folder.<br/>!index is 0 based<br/>!deprecated - Use Everything_GetResult<br/>val = Everything_IsFolderResult(index)</pre>
+<br/>
+<h2 id="everything_isfileresult">Everything_IsFileResult</h2>
+<pre>index LONG<br/>val LONG<br/><br/>!returns zero if the result is not a file<br/>!returns non-zero if the result is a file.<br/>!index is 0 based<br/>!deprecated - Use Everything_GetResult<br/>val = Everything_IsFileResult(index)</pre>
+<br/>
+<h2 id="everything_getresultfilename">Everything_GetResultFileName</h2>
+<pre>index LONG<br/>filename CSTRING<br/><br/>!index is 0 based<br/>!this gets the result file name<br/>!deprecated - Use Everything_GetResult<br/>filename = Everything_GetResultFileName(index)</pre>
+<br/>
+<h2 id="everything_getresultpath">Everything_GetResultPath</h2>
+<pre>index LONG<br/>path CSTRING<br/><br/>!index is 0 based<br/>!this gets the result path<br/>!deprecated - Use Everything_GetResult<br/>path = Everything_GetResultPath(index)</pre>
+<br/>
+<h2 id="everything_getresult"> Everything_GetResult</h2>
+<pre>index LONG<br/>result	GROUP<br/>FullPathFileName	STRING(260) !The full path and file name of the result<br/>PathPartLength		LONG ! Length of the path part only<br/>FileNamePartOffset	LONG ! Offset into FullPathFileName for the file name part only (0 based)<br/>SizeHigh		LONG ! High part of size (ignore this if you do not need the full 64bit size)<br/>SizeLow			ULONG ! Low part of size<br/>Attributes		LONG ! Attribute flags can be zero or more EVERYTHING_FILE_ATTRIBUTE_* flags<br/>CreationYear		LONG ! The year (1601 - 30827). <br/>CreationMonth		LONG ! The month (January = 1, December = 12)<br/>CreationDayOfWeek	LONG ! The day of the week. (sunday = 0, monday = 1, Saturday = 6)<br/>CreationDay		LONG ! The day of the month (1-31). <br/>CreationHour		LONG ! The hour (0-23).<br/>CreationMinute		LONG ! The minute (0-59). <br/>CreationSecond		LONG ! The second (0-59). <br/>CreationMilliseconds	LONG ! The millisecond (0-999). <br/>LastAccessYear		LONG ! The year (1601 - 30827). <br/>LastAccessMonth		LONG ! The month (January = 1, December = 12)<br/>LastAccessDayOfWeek	LONG ! The day of the week. (sunday = 0, monday = 1, Saturday = 6)<br/>LastAccessDay		LONG ! The day of the month (1-31). <br/>LastAccessHour		LONG ! The hour (0-23).<br/>LastAccessMinute	LONG ! The minute (0-59). <br/>LastAccessSecond	LONG ! The second (0-59). <br/>LastAccessMilliseconds	LONG ! The millisecond (0-999). <br/>LastWriteYear		LONG ! The year (1601 - 30827). <br/>LastWriteMonth		LONG ! The month (January = 1, December = 12)<br/>LastWriteDayOfWeek	LONG ! The day of the week. (sunday = 0, monday = 1, Saturday = 6)<br/>LastWriteDay		LONG ! The day of the month (1-31). <br/>LastWriteHour		LONG ! The hour (0-23).<br/>LastWriteMinute		LONG ! The minute (0-59). <br/>LastWriteSecond		LONG ! The second (0-59). <br/>LastWriteMilliseconds	LONG ! The millisecond (0-999). <br/>	END<br/><br/>!index is 0 based<br/>!fills in the result group<br/>!See Everything_SetDetail for what information is filled in.<br/>Everything_GetResult(index,ADDRESS(result))</pre>
+<br/>
+<h2 id="fast_program_example">Fast Program Example</h2>
+<pre><br/>x LONG,AUTO<br/>m LONG<br/>result	GROUP<br/>FullPathFileName	STRING(260) !The full path and file name of the result<br/>PathPartLength		LONG ! Length of the path part only<br/>FileNamePartOffset	LONG ! Offset into FullPathFileName for the file name part only (0 based)<br/>SizeHigh		LONG ! Not used in this example.<br/>SizeLow			ULONG ! Not used in this example.<br/>Attributes		LONG ! Attribute flags can be zero or EVERYTHING_FILE_ATTRIBUTE_DIRECTORY flag<br/>CreationYear		LONG ! Not used in this example.<br/>CreationMonth		LONG ! Not used in this example.<br/>CreationDayOfWeek	LONG ! Not used in this example.<br/>CreationDay		LONG ! Not used in this example.<br/>CreationHour		LONG ! Not used in this example.<br/>CreationMinute		LONG ! Not used in this example.<br/>CreationSecond		LONG ! Not used in this example.<br/>CreationMilliseconds	LONG ! Not used in this example.<br/>LastAccessYear		LONG ! Not used in this example.<br/>LastAccessMonth		LONG ! Not used in this example.<br/>LastAccessDayOfWeek	LONG ! Not used in this example.<br/>LastAccessDay		LONG ! Not used in this example.<br/>LastAccessHour		LONG ! Not used in this example.<br/>LastAccessMinute	LONG ! Not used in this example.<br/>LastAccessSecond	LONG ! Not used in this example.<br/>LastAccessMilliseconds	LONG ! Not used in this example.<br/>LastWriteYear		LONG ! Not used in this example.<br/>LastWriteMonth		LONG ! Not used in this example.<br/>LastWriteDayOfWeek	LONG ! Not used in this example.<br/>LastWriteDay		LONG ! Not used in this example.<br/>LastWriteHour		LONG ! Not used in this example.<br/>LastWriteMinute		LONG ! Not used in this example.<br/>LastWriteSecond		LONG ! Not used in this example.<br/>LastWriteMilliseconds	LONG ! Not used in this example.<br/>	END<br/><br/>!setup a query using the default search parameters<br/>!change the search string to 'whatthe'<br/>Everything_SetSearch('whatthe')<br/><br/>!Find all the results for 'whatthe'<br/>Everything_Query()<br/><br/>m = Everything_GetNumResults()<br/>LOOP x = 0 TO m - 1<br/><br/>    Everything_GetResult(x,ADDRESS(result))<br/><br/>    ...<br/>    !do something with name and path<br/>    ...<br/>END</pre>
+<br/>
+<h2 id="detailed_program_example">Detailed Program Example</h2>
+<pre><br/>x LONG,AUTO<br/>m LONG<br/>result	GROUP<br/>FullPathFileName	STRING(260) !The full path and file name of the result<br/>PathPartLength		LONG ! Length of the path part only<br/>FileNamePartOffset	LONG ! Offset into FullPathFileName for the file name part only (0 based)<br/>SizeHigh		LONG ! High part of size (ignore this if you do not need the full 64bit size)<br/>SizeLow			ULONG ! Low part of size<br/>Attributes		LONG ! Attribute flags can be zero or more EVERYTHING_FILE_ATTRIBUTE_* flags<br/>CreationYear		LONG ! The year (1601 - 30827). <br/>CreationMonth		LONG ! The month (January = 1, December = 12)<br/>CreationDayOfWeek	LONG ! The day of the week. (sunday = 0, monday = 1, Saturday = 6)<br/>CreationDay		LONG ! The day of the month (1-31). <br/>CreationHour		LONG ! The hour (0-23).<br/>CreationMinute		LONG ! The minute (0-59). <br/>CreationSecond		LONG ! The second (0-59). <br/>CreationMilliseconds	LONG ! The millisecond (0-999). <br/>LastAccessYear		LONG ! The year (1601 - 30827). <br/>LastAccessMonth		LONG ! The month (January = 1, December = 12)<br/>LastAccessDayOfWeek	LONG ! The day of the week. (sunday = 0, monday = 1, Saturday = 6)<br/>LastAccessDay		LONG ! The day of the month (1-31). <br/>LastAccessHour		LONG ! The hour (0-23).<br/>LastAccessMinute	LONG ! The minute (0-59). <br/>LastAccessSecond	LONG ! The second (0-59). <br/>LastAccessMilliseconds	LONG ! The millisecond (0-999). <br/>LastWriteYear		LONG ! The year (1601 - 30827). <br/>LastWriteMonth		LONG ! The month (January = 1, December = 12)<br/>LastWriteDayOfWeek	LONG ! The day of the week. (sunday = 0, monday = 1, Saturday = 6)<br/>LastWriteDay		LONG ! The day of the month (1-31). <br/>LastWriteHour		LONG ! The hour (0-23).<br/>LastWriteMinute		LONG ! The minute (0-59). <br/>LastWriteSecond		LONG ! The second (0-59). <br/>LastWriteMilliseconds	LONG ! The millisecond (0-999). <br/>	END<br/><br/>!setup a query using the default search parameters<br/>!change the search string to 'whatthe'<br/>Everything_SetSearch('whatthe')<br/><br/>!Find all the results for 'whatthe'<br/>Everything_Query()<br/><br/>!turn detail on<br/>Everything_SetDetail(1)<br/><br/>!Sort the results<br/>!this is required for nonzero detail<br/>Everything_SortResults(0)<br/><br/>m = Everything_GetNumResults()<br/>LOOP x = 0 TO m - 1<br/>    Everything_GetResult(x,ADDRESS(result))<br/>    ...<br/>    !do something with result<br/>    ...<br/>END<br/></pre>
+</body>
+</html>

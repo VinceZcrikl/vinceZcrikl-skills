@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Python</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="python">Python</h1>
+<p>An Everything SDK Python example.</p>
+<p>Created with Python 3.7.3.</p>
+<p>Note: requires Everything running in the background.</p>
+<br/>
+<h2 id="test.py">test.py</h2>
+<pre>import ctypes<br/>import datetime<br/>import struct<br/><br/>#defines<br/>EVERYTHING_REQUEST_FILE_NAME = 0x00000001<br/>EVERYTHING_REQUEST_PATH = 0x00000002<br/>EVERYTHING_REQUEST_FULL_PATH_AND_FILE_NAME = 0x00000004<br/>EVERYTHING_REQUEST_EXTENSION = 0x00000008<br/>EVERYTHING_REQUEST_SIZE = 0x00000010<br/>EVERYTHING_REQUEST_DATE_CREATED = 0x00000020<br/>EVERYTHING_REQUEST_DATE_MODIFIED = 0x00000040<br/>EVERYTHING_REQUEST_DATE_ACCESSED = 0x00000080<br/>EVERYTHING_REQUEST_ATTRIBUTES = 0x00000100<br/>EVERYTHING_REQUEST_FILE_LIST_FILE_NAME = 0x00000200<br/>EVERYTHING_REQUEST_RUN_COUNT = 0x00000400<br/>EVERYTHING_REQUEST_DATE_RUN = 0x00000800<br/>EVERYTHING_REQUEST_DATE_RECENTLY_CHANGED = 0x00001000<br/>EVERYTHING_REQUEST_HIGHLIGHTED_FILE_NAME = 0x00002000<br/>EVERYTHING_REQUEST_HIGHLIGHTED_PATH = 0x00004000<br/>EVERYTHING_REQUEST_HIGHLIGHTED_FULL_PATH_AND_FILE_NAME = 0x00008000<br/><br/>#dll imports<br/>everything_dll = ctypes.WinDLL ("C:\\EverythingSDK\\DLL\\Everything32.dll")<br/>everything_dll.Everything_GetResultDateModified.argtypes = [ctypes.c_int,ctypes.POINTER(ctypes.c_ulonglong)]<br/>everything_dll.Everything_GetResultSize.argtypes = [ctypes.c_int,ctypes.POINTER(ctypes.c_ulonglong)]<br/><br/>#setup search<br/>everything_dll.Everything_SetSearchW("test.py")<br/>everything_dll.Everything_SetRequestFlags(EVERYTHING_REQUEST_FILE_NAME | EVERYTHING_REQUEST_PATH | EVERYTHING_REQUEST_SIZE | EVERYTHING_REQUEST_DATE_MODIFIED)<br/><br/>#execute the query<br/>everything_dll.Everything_QueryW(1)<br/><br/>#get the number of results<br/>num_results = everything_dll.Everything_GetNumResults()<br/><br/>#show the number of results<br/>print("Result Count: {}".format(num_results))<br/><br/>#convert a windows FILETIME to a python datetime<br/>#https://stackoverflow.com/questions/39481221/convert-datetime-back-to-windows-64-bit-filetime<br/>WINDOWS_TICKS = int(1/10**-7)  # 10,000,000 (100 nanoseconds or .1 microseconds)<br/>WINDOWS_EPOCH = datetime.datetime.strptime('1601-01-01 00:00:00',<br/>                                           '%Y-%m-%d %H:%M:%S')<br/>POSIX_EPOCH = datetime.datetime.strptime('1970-01-01 00:00:00',<br/>                                         '%Y-%m-%d %H:%M:%S')<br/>EPOCH_DIFF = (POSIX_EPOCH - WINDOWS_EPOCH).total_seconds()  # 11644473600.0<br/>WINDOWS_TICKS_TO_POSIX_EPOCH = EPOCH_DIFF * WINDOWS_TICKS  # 116444736000000000.0<br/><br/>def get_time(filetime):<br/>    """Convert windows filetime winticks to python datetime.datetime."""<br/>    winticks = struct.unpack('&lt;Q', filetime)[0]<br/>    microsecs = (winticks - WINDOWS_TICKS_TO_POSIX_EPOCH) / WINDOWS_TICKS<br/>    return datetime.datetime.fromtimestamp(microsecs)<br/><br/>#create buffers<br/>filename = ctypes.create_unicode_buffer(260)<br/>date_modified_filetime = ctypes.c_ulonglong(1)<br/>file_size = ctypes.c_ulonglong(1)<br/><br/>#show results<br/>for i in range(num_results):<br/><br/>	everything_dll.Everything_GetResultFullPathNameW(i,filename,260)<br/>	everything_dll.Everything_GetResultDateModified(i,date_modified_filetime)<br/>	everything_dll.Everything_GetResultSize(i,file_size)<br/>	print("Filename: {}\nDate Modified: {}\nSize: {} bytes\n".format(ctypes.wstring_at(filename),get_time(date_modified_filetime),file_size.value))<br/></pre>
+<br/>
+<h2 id="output">Output</h2>
+<pre>Filename: C:\Users\python\Desktop\test.py<br/>Date Modified: 2019-06-30 19:38:03.171133<br/>Size: 2976 bytes</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<p><a href="https://stackoverflow.com/questions/252417/how-can-i-use-a-dll-file-from-python" target="_blank">https://stackoverflow.com/questions/252417/how-can-i-use-a-dll-file-from-python</a></p>
+<p><a href="https://stackoverflow.com/questions/39481221/convert-datetime-back-to-windows-64-bit-filetime" target="_blank">https://stackoverflow.com/questions/39481221/convert-datetime-back-to-windows-64-bit-filetime</a></p>
+<p><a href="https://stackoverflow.com/questions/2330587/how-to-convert-ctypes-c-long-to-pythons-int" target="_blank">https://stackoverflow.com/questions/2330587/how-to-convert-ctypes-c-long-to-pythons-int</a></p>
+<p><a href="https://stackoverflow.com/questions/45178140/returning-string-from-c-function-with-ctypes-gives-large-int-not-char-pointer" target="_blank">https://stackoverflow.com/questions/45178140/returning-string-from-c-function-with-ctypes-gives-large-int-not-char-pointer</a></p>
+</body>
+</html>

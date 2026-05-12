@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_DeleteRunHistory</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_deleterunhistory">Everything_DeleteRunHistory</h1>
+<p>The <b>Everything_DeleteRunHistory</b> function deletes all run history.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>BOOL Everything_DeleteRunHistory(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dd><p>No parameters.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns non-zero if run history is cleared.</p>
+<p>The function returns 0 if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>Calling this function will clear all run history from memory and disk.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// clear run history<br/>Everything_DeleteRunHistory();</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_getruncountfromfilename.htm">Everything_GetRunCountFromFileName</a></p></li>
+<li><p><a href="/everything/sdk/everything_setruncountfromfilename.htm">Everything_SetRunCountFromFileName</a></p></li>
+<li><p><a href="/everything/sdk/everything_incruncountfromfilename.htm">Everything_IncRunCountFromFileName</a></p></li>
+</ul>
+</body>
+</html>

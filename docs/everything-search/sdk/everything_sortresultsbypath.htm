@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SortResultsByPath</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_sortresultsbypath">Everything_SortResultsByPath</h1>
+<p>The <b>Everything_SortResultsByPath</b> function sorts the current results by path, then file name.</p>
+<p>SortResultsByPath is CPU Intensive. Sorting by path can take several seconds.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SortResultsByPath(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<p>This functions has no parameters.</p>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>This function has no return value.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The default result list contains no results.</p>
+<p>Call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> to retrieve the result list prior to a call to Everything_SortResultsByPath.</p>
+<p>For improved performance, use [Everything/SDK/Everything_SetSort|Everything_SetSort]]</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// set the search text to abc AND 123<br/>Everything_SetSearch(\"abc 123\");<br/><br/>// execute the query<br/>Everything_Query(TRUE);<br/><br/>// sort the results by path<br/>Everything_SortResultsByPath();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_SetReplyID</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_setreplyid">Everything_SetReplyID</h1>
+<p>The <b>Everything_SetReplyID</b> function sets the unique number to identify the next query.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_SetReplyID(<br/>    DWORD nId<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="nid"><p><i>nID</i></p></dt>
+<dd><p>The unique number to identify the next query.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>This function has no return value.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The default identifier is 0.</p>
+<p>Set a unique identifier for the IPC Query.</p>
+<p>If you want to post multiple search queries with the same window handle, you must call the Everything_SetReplyID function to assign each query a unique identifier.</p>
+<p>The nID value is the dwData member in the COPYDATASTRUCT used in the WM_COPYDATA reply message.</p>
+<p>This function is not required if you call Everything_Query with bWait set to true.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// reply to this window.<br/>Everything_SetReplyWindow(hwnd);<br/><br/>// set a unique identifier for this query.<br/>Everything_SetReplyID(1);<br/><br/>// execute the query<br/>Everything_Query(FALSE);</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_setreplywindow.htm">Everything_SetReplyWindow</a></p></li>
+<li><p><a href="/everything/sdk/everything_getreplywindow.htm">Everything_GetReplyWindow</a></p></li>
+<li><p><a href="/everything/sdk/everything_getreplyid.htm">Everything_GetReplyID</a></p></li>
+<li><p><a href="/everything/sdk/everything_isqueryreply.htm">Everything_IsQueryReply</a></p></li>
+</ul>
+</body>
+</html>

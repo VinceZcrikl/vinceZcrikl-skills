@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetRunCountFromFileName</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getruncountfromfilename">Everything_GetRunCountFromFileName</h1>
+<p>The <b>Everything_GetRunCountFromFileName</b> function gets the run count from a specified file in the Everything index by file name.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>DWORD Everything_GetRunCountFromFileName(<br/>    LPCTSTR lpFileName<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="lpfilename"><p><i>lpFileName</i> [in]</p></dt>
+<dd><p>Pointer to a null-terminated string that specifies a fully qualified file name in the Everything index. </p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns the number of times the file has been run from Everything.</p>
+<p>The function returns 0 if an error occurred. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a></p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_SUCCESS</td><td>The run count is 0.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_IPC</td><td>Please make sure the Everything search client is running in the background.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<br/>
+<h2 id="example">Example</h2>
+<pre>DWORD runCount;<br/><br/>// get the run count of a file.<br/>runCount = Everything_GetRunCountFromFileName(TEXT("C:\\folder\\file.doc"));</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_setruncountfromfilename.htm">Everything_SetRunCountFromFileName</a></p></li>
+<li><p><a href="/everything/sdk/everything_incruncountfromfilename.htm">Everything_IncRunCountFromFileName</a></p></li>
+</ul>
+<br/>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_CleanUp</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_cleanup">Everything_CleanUp</h1>
+<p>The <b>Everything_CleanUp</b> function frees any allocated memory by the library.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>void Everything_CleanUp(void);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<p>This function has no parameters.</p>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>This function has no return value.</p>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>You should call <b>Everything_CleanUp</b> to free any memory allocated by the Everything SDK.</p>
+<p>Everything_CleanUp should be the last call to the Everything SDK.</p>
+<p>Call <a href="/everything/sdk/everything_reset.htm">Everything_Reset</a> to free any allocated memory for the current search and results.</p>
+<p><a href="/everything/sdk/everything_reset.htm">Everything_Reset</a> will also reset the search and result state to their defaults.</p>
+<p>Calling <a href="/everything/sdk/everything_setsearch.htm">Everything_SetSearch</a> frees the old search and allocates the new search string.</p>
+<p>Calling <a href="/everything/sdk/everything_query.htm">Everything_Query</a> frees the old result list and allocates the new result list.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>Everything_CleanUp();</pre>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_setsearch.htm">Everything_SetSearch</a></p></li>
+<li><p><a href="/everything/sdk/everything_reset.htm">Everything_Reset</a></p></li>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+</ul>
+<br/>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything_GetResultHighlightedFileName</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_getresulthighlightedfilename">Everything_GetResultHighlightedFileName</h1>
+<p>The <b>Everything_GetResultHighlightedFileName</b> function retrieves the highlighted file name part of the visible result.</p>
+<br/>
+<h2 id="syntax">Syntax</h2>
+<pre>LPCTSTR Everything_GetResultHighlightedFileName(<br/>    int index<br/>);</pre>
+<br/>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt id="index"><p><i>index</i></p></dt>
+<dd><p>Zero based index of the visible result.</p>
+</dd>
+</dl>
+<br/>
+<h2 id="return_value">Return Value</h2>
+<p>The function returns a pointer to a null terminated string of <b>TCHARs</b>.</p>
+<p>If the function fails the return value is NULL. To get extended error information, call <a href="/everything/sdk/everything_getlasterror.htm">Everything_GetLastError</a>.</p>
+<br/>
+<table>
+<tr><th class="wikinowrap">Error code</th><th class="wikinowrap">Meaning</th></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDCALL</td><td>Call <a href="/everything/sdk/everything_query.htm">Everything_Query</a> before calling Everything_GetResultHighlightedFileName.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDREQUEST</td><td>Highlighted file name information was not requested or is unavailable, Call <a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a> with EVERYTHING_REQUEST_DATE_HIGHLIGHTED_FILE_NAME before calling <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</td></tr>
+<tr><td class="wikinowrap">EVERYTHING_ERROR_INVALIDINDEX</td><td>index must be greater than or equal to 0 and less than the visible number of results.</td></tr>
+</table>
+<br/>
+<h2 id="remarks">Remarks</h2>
+<p>The ANSI / Unicode version of this function must match the ANSI / Unicode version of the call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a>.</p>
+<p>The function returns a pointer to an internal structure that is only valid until the next call to <a href="/everything/sdk/everything_query.htm">Everything_Query</a> or <a href="/everything/sdk/everything_reset.htm">Everything_Reset</a>.</p>
+<p>You can only call this function for a visible result. To determine if a result is visible use the <a href="/everything/sdk/everything_getnumfileresults.htm">Everything_GetNumFileResults</a> function.</p>
+<p>Text inside a * quote is highlighted, two consecutive *'s is a single literal *.</p>
+<p>For example, in the highlighted text: abc *123* the 123 part is highlighted.</p>
+<br/>
+<h2 id="example">Example</h2>
+<pre>// set the search text to abc AND 123<br/>Everything_SetSearch("abc 123");<br/><br/>// execute the query<br/>Everything_Query(TRUE);<br/><br/>// Get the highlighted file name of the first visible result.<br/>LPCTSTR lpHighlightedFileName = Everything_GetResultHighlightedFileName(0);</pre>
+<br/>
+<h2 id="function_information">Function Information</h2>
+<p>Requires Everything 1.4.1 or later.</p>
+<br/>
+<h2 id="see_also">See Also</h2>
+<ul>
+<li><p><a href="/everything/sdk/everything_query.htm">Everything_Query</a></p></li>
+<li><p><a href="/everything/sdk/everything_reset.htm">Everything_Reset</a></p></li>
+<li><p><a href="/everything/sdk/everything_setrequestflags.htm">Everything_SetRequestFlags</a></p></li>
+</ul>
+</body>
+</html>

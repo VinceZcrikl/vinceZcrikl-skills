@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Everything Service</title>
+<link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1 id="everything_service">Everything Service</h1>
+<p>The Everything service helps Everything index NTFS volumes and monitor USN Journals.</p>
+<p>Everything can run as a standard user when the Everything service is installed.</p>
+<br/>
+<p>On XP or earlier the Everything service is not required.</p>
+<p>On Vista or later with a standard user account you will need to install the Everything service to use NTFS indexing.</p>
+<p>On Vista or later with the true administrator account the Everything service is not required.</p>
+<br/>
+<p>The Everything service is installed by default on Windows Vista or later when the installer is run with a standard user account.</p>
+<br/>
+<h2 id="installing">Installing</h2>
+<br/>
+<ul>
+<li><p>Check the Install Everything Service option when running the Everything installer.</p></li>
+</ul>
+<br/>
+<p>-or-</p>
+<br/>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>General </b>Tab.</p></li>
+<li><p>Check <b>Everything Service</b>.</p></li>
+<li><p>Uncheck <b>Run as administrator</b>.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="how_is_the_everything_service_started">How is the Everything service started?</h2>
+<p>Windows automatically starts the Everything service on system start-up.</p>
+<br/>
+<h2 id="stopping_or_starting_the_service">Stopping or starting the service</h2>
+<p>The Everything service is always running and generally does not need to be stopped.</p>
+<p>However, you can start or stop the Everything service from Start -&gt; Control Panel -&gt; Administrative Tools -&gt; Services. Right click the Everything service and select Start or Stop.</p>
+<br/>
+<h2 id="how_can_i_manage_the_everything_service_from_the_command_line">How can I manage the Everything service from the command line?</h2>
+<pre>Everything.exe -install-service [-install-service-pipe-name &lt;name&gt;] [-install-service-security-descriptor &lt;sd&gt;]<br/>Everything.exe -uninstall-service<br/>Everything.exe -start-service<br/>Everything.exe -stop-service</pre>
+<br/>
+<h2 id="how_can_i_manage_the_everything_service_from_everything">How can I manage the Everything service from Everything?</h2>
+<ul>
+<li><p>In <b>Everything</b>, from the <b>Tools </b>menu, click <b>Options</b>.</p></li>
+<li><p>Click the <b>General </b>Tab.</p></li>
+<li><p>Check or uncheck the <b>Everything service</b> to install or uninstall the Everything service.</p></li>
+<li><p>Click <b>OK</b>.</p></li>
+</ul>
+<br/>
+<h2 id="how_can_i_run_the_everything_service_from_the_portable_version_of_everything">How can I run the Everything service from the portable version of Everything?</h2>
+<p>To launch the Everything service as a normal administrator application, run the following:</p>
+<pre>Everything.exe -svc</pre>
+<br/>
+<p>To specify the pipe name, use the -svc-pipe-name &lt;name&gt; command line option, for example:</p>
+<pre>Everything.exe -svc -svc-pipe-name "my Everything pipe name"</pre>
+<br/>
+<p>Running the Everything service this way does not modify the system.</p>
+<br/>
+<p>The Everything service has no interface.</p>
+<p>Use Task Manager to terminate the service application when it is no longer needed.</p>
+<br/>
+<p>You can close the portable service application easily by making a batch file that runs Everything.exe -svc</p>
+<p>Simply close the console window to terminate the service application.</p>
+<br/>
+<h2 id="how_many_resources_does_the_service_use">How many resources does the service use?</h2>
+<p>The Everything service will use about 1MB of RAM and will have none to very little CPU usage.</p>
+<br/>
+<h2 id="security">Security</h2>
+<p>Any local user can use the Everything Service to create a list of all NTFS filenames. </p>
+<p>Note: The Everything Service can not be used to access files, only filenames.</p>
+<br/>
+<br/>
+</body>
+</html>
