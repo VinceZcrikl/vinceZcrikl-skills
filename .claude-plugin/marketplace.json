@@ -5,16 +5,25 @@
   },
   "metadata": {
     "description": "A collection of Agent Skills for AI assistants",
-    "version": "1.0.1"
+    "version": "1.1.0"
   },
   "plugins": [
     {
-      "name": "VinceZcrikl-skills",
-      "description": "VinceZcrikl-skills collection",
-      "source": "./",
+      "name": "everything-search",
+      "description": "[Windows only] Instant file search powered by Everything (voidtools). Find any file by name, extension, size, date, or path in milliseconds.",
+      "source": "./skills/everything-search",
       "strict": false,
       "skills": [
         "./skills/everything-search"
+      ]
+    },
+    {
+      "name": "patent-builder",
+      "description": "Discovers patentable ideas, refines early concepts, analyzes implementations for patent potential, and drafts patent disclosure materials. Supports Chinese and English.",
+      "source": "./skills/patent-builder",
+      "strict": false,
+      "skills": [
+        "./skills/patent-builder"
       ]
     }
   ]
