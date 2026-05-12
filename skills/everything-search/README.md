@@ -82,15 +82,29 @@ If `es.exe` is unavailable, the skill falls back to Everything's HTTP API:
 
 ## Usage
 
-Once installed, the AI agent automatically uses this skill when you ask to find files:
+Once installed, ask Claude in plain English — no special syntax needed.
 
-| Request | Translated query | Suggested sort |
+| What you say | Everything query | Sort |
 |---|---|---|
-| large PDF files modified this week | `ext:pdf size:large dm:thisweek` | `--sort date-modified` |
-| Python files in the src folder | `path:src\ ext:py` | `--sort name` |
-| videos bigger than 2GB on D drive | `video: size:>2gb path:D:\` | `--sort size` (desc) |
-| folders named dist or build | `folder: dist \| folder: build` | `--sort name` |
-| images created today | `pic: dc:today` | `--sort date-created` |
+| **Development** | | |
+| "Which Python files did I edit today?" | `ext:py dm:today` | `date-modified` desc |
+| "Find all package.json files so I can see where my Node projects live." | `child:package.json` | `path` asc |
+| "I have a `.env` file somewhere in my Workspace folder, where is it?" | `path:Workspace\ .env` | `name` asc |
+| "List all git repos on my machine." | `folder: .git` | `path` asc |
+| "Find all `.log` files written today inside my project." | `path:Workspace\ ext:log dm:today` | `date-modified` desc |
+| "Show me TypeScript files larger than 100 KB." | `ext:ts size:>100kb` | `size` desc |
+| **Documents** | | |
+| "Find Word and Excel files I worked on last month." | `ext:docx;xlsx dm:lastmonth` | `date-modified` desc |
+| "I downloaded a PDF about Kubernetes last year, find it." | `ext:pdf kubernetes path:Downloads\` | `date-modified` desc |
+| "How many PDFs do I have in total?" | `ext:pdf` + `--count-only` | — |
+| "Find all PowerPoint presentations modified this week." | `ext:pptx dm:thisweek` | `date-modified` desc |
+| "Show me Markdown files in my notes folder." | `path:notes\ ext:md` | `name` asc |
+| **Media & photos** | | |
+| "Find all videos bigger than 500 MB." | `ext:mp4;mkv;avi size:>500mb` | `size` desc |
+| "Which screenshots did I take this month?" | `ext:png <screenshot \| screen \| snip> dm:thismonth` | `date-modified` desc |
+| "I shot footage on my Insta360 last week, find the raw files." | `ext:insv dm:lastweek path:Insta360\` | `date-modified` desc |
+| "Find photos from last year's holiday trip." | `ext:jpg;jpeg dc:lastyear path:holiday` | `date-created` desc |
+| "Show me all images in my project's assets folder." | `path:assets\ pic:` | `name` asc |
 
 ### Helper script flags
 

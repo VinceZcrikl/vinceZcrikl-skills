@@ -341,5 +341,373 @@ class TestLiveSearch(unittest.TestCase):
             self.assertIn("date_modified", r)
 
 
+# ── parse_es_csv edge cases ───────────────────────────────────────────────────
+
+class TestParseEsCsvEdgeCases(unittest.TestCase):
+
+    def test_unicode_filename(self):
+        csv = "Filename,Path,Size,Date Modified\r\n日本語.txt,C:\\Users\\test,100,\r\n"
+        rows = es_helper.parse_es_csv(csv)
+        self.assertEqual(rows[0]["name"], "日本語.txt")
+
+    def test_path_with_spaces(self):
+        csv = 'Filename,Path,Size,Date Modified\r\nfile.txt,"C:\\My Documents\\Work",256,\r\n'
+        rows = es_helper.parse_es_csv(csv)
+        self.assertEqual(rows[0]["path"], "C:\\My Documents\\Work")
+
+    def test_size_with_commas(self):
+        csv = "Filename,Path,Size,Date Modified\r\nbig.iso,C:\\,1,234,567,\r\n"
+        # size field may have commas stripped or fail gracefully
+        rows = es_helper.parse_es_csv(csv)
+        self.assertIsInstance(rows[0]["size"], (int, type(None)))
+
+    def test_empty_date_field(self):
+        csv = "Filename,Path,Size,Date Modified\r\nfile.log,C:\\,0,\r\n"
+        rows = es_helper.parse_es_csv(csv)
+        self.assertEqual(rows[0]["date_modified"], "")
+
+    def test_zero_size_formats_as_0b(self):
+        csv = "Filename,Path,Size,Date Modified\r\nempty.txt,C:\\,0,\r\n"
+        rows = es_helper.parse_es_csv(csv)
+        self.assertEqual(rows[0]["size_human"], "0 B")
+
+    def test_size_exactly_1kb(self):
+        csv = "Filename,Path,Size,Date Modified\r\nexact.bin,C:\\,1024,\r\n"
+        rows = es_helper.parse_es_csv(csv)
+        self.assertIn("KB", rows[0]["size_human"])
+
+    def test_size_exactly_1mb(self):
+        csv = f"Filename,Path,Size,Date Modified\r\nexact.bin,C:\\,{1024**2},\r\n"
+        rows = es_helper.parse_es_csv(csv)
+        self.assertIn("MB", rows[0]["size_human"])
+
+    def test_whitespace_around_fields(self):
+        csv = "Filename,Path,Size,Date Modified\r\n  trimmed.txt , C:\\test ,512,\r\n"
+        rows = es_helper.parse_es_csv(csv)
+        self.assertEqual(rows[0]["name"], "trimmed.txt")
+        self.assertEqual(rows[0]["path"], "C:\\test")
+
+
+# ── format_size boundary values ───────────────────────────────────────────────
+
+class TestFormatSizeBoundaries(unittest.TestCase):
+
+    def test_1023_bytes(self):
+        self.assertEqual(es_helper.format_size(1023), "1023 B")
+
+    def test_1024_bytes_is_kb(self):
+        self.assertIn("KB", es_helper.format_size(1024))
+
+    def test_1mb_minus_1(self):
+        self.assertIn("KB", es_helper.format_size(1024 ** 2 - 1))
+
+    def test_exactly_1gb(self):
+        self.assertIn("GB", es_helper.format_size(1024 ** 3))
+
+    def test_large_value(self):
+        result = es_helper.format_size(10 * 1024 ** 3)
+        self.assertIn("GB", result)
+
+
+# ── search_via_http (mocked) ──────────────────────────────────────────────────
+
+class TestSearchViaHttpMocked(unittest.TestCase):
+
+    def _http_response(self, body: dict) -> MagicMock:
+        raw = json.dumps(body).encode("utf-8")
+        cm = MagicMock()
+        cm.__enter__ = MagicMock(return_value=cm)
+        cm.__exit__ = MagicMock(return_value=False)
+        cm.read = MagicMock(return_value=raw)
+        return cm
+
+    @patch("urllib.request.urlopen")
+    def test_success_returns_results(self, mock_urlopen):
+        payload = {
+            "totalResults": 2,
+            "results": [
+                {"name": "a.py", "path": "C:\\src", "size": 512, "date_modified": ""},
+                {"name": "b.py", "path": "C:\\src", "size": 1024, "date_modified": ""},
+            ],
+        }
+        mock_urlopen.return_value = self._http_response(payload)
+        result = es_helper.search_via_http("ext:py", 20, [80])
+        self.assertNotIn("error", result)
+        self.assertEqual(len(result["results"]), 2)
+        self.assertEqual(result["total"], 2)
+        self.assertEqual(result["source"], "http:80")
+
+    @patch("urllib.request.urlopen")
+    def test_count_only_returns_total(self, mock_urlopen):
+        payload = {"totalResults": 99, "results": []}
+        mock_urlopen.return_value = self._http_response(payload)
+        result = es_helper.search_via_http("ext:py", 20, [80], count_only=True)
+        self.assertNotIn("error", result)
+        self.assertEqual(result["total"], 99)
+        self.assertNotIn("results", result)
+
+    @patch("urllib.request.urlopen", side_effect=Exception("connection refused"))
+    def test_all_ports_fail_returns_error(self, _mock):
+        result = es_helper.search_via_http("ext:py", 20, [80, 8080])
+        self.assertEqual(result["error"], "http_failed")
+        self.assertIn("message", result)
+
+    @patch("urllib.request.urlopen")
+    def test_result_size_human_populated(self, mock_urlopen):
+        payload = {
+            "totalResults": 1,
+            "results": [{"name": "big.iso", "path": "C:\\", "size": 2 * 1024 ** 3, "date_modified": ""}],
+        }
+        mock_urlopen.return_value = self._http_response(payload)
+        result = es_helper.search_via_http("big.iso", 5, [80])
+        self.assertIn("GB", result["results"][0]["size_human"])
+
+    @patch("urllib.request.urlopen")
+    def test_null_size_handled(self, mock_urlopen):
+        payload = {
+            "totalResults": 1,
+            "results": [{"name": "nul.txt", "path": "C:\\", "size": None, "date_modified": ""}],
+        }
+        mock_urlopen.return_value = self._http_response(payload)
+        result = es_helper.search_via_http("nul.txt", 5, [80])
+        self.assertIsNone(result["results"][0]["size"])
+        self.assertEqual(result["results"][0]["size_human"], "")
+
+    @patch("urllib.request.urlopen")
+    def test_fallback_to_second_port(self, mock_urlopen):
+        import urllib.error
+        payload = {"totalResults": 1, "results": [{"name": "x.txt", "path": "C:\\", "size": 0, "date_modified": ""}]}
+        ok_response = self._http_response(payload)
+        mock_urlopen.side_effect = [urllib.error.URLError("refused"), ok_response]
+        result = es_helper.search_via_http("x.txt", 5, [80, 8080])
+        self.assertNotIn("error", result)
+        self.assertEqual(result["source"], "http:8080")
+
+
+# ── is_everything_running (mocked) ────────────────────────────────────────────
+
+class TestIsEverythingRunning(unittest.TestCase):
+
+    @patch("subprocess.run")
+    def test_returns_true_when_process_listed(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=b"Everything.exe   1234 Console   1 24,000 K")
+        self.assertTrue(es_helper.is_everything_running())
+
+    @patch("subprocess.run")
+    def test_returns_false_when_not_listed(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=b"INFO: No tasks running with the specified criteria.")
+        self.assertFalse(es_helper.is_everything_running())
+
+    @patch("subprocess.run", side_effect=Exception("tasklist failed"))
+    def test_exception_returns_false(self, _mock):
+        self.assertFalse(es_helper.is_everything_running())
+
+
+# ── is_ipc_ready (mocked) ─────────────────────────────────────────────────────
+
+class TestIsIpcReady(unittest.TestCase):
+
+    ES = SKILL_ROOT / "bin" / "es.exe"
+
+    @patch("subprocess.run")
+    def test_returns_true_on_exit_0(self, mock_run):
+        mock_run.return_value = _make_proc(0)
+        self.assertTrue(es_helper.is_ipc_ready(self.ES))
+
+    @patch("subprocess.run")
+    def test_returns_false_on_nonzero(self, mock_run):
+        mock_run.return_value = _make_proc(8)
+        self.assertFalse(es_helper.is_ipc_ready(self.ES))
+
+    @patch("subprocess.run", side_effect=Exception("boom"))
+    def test_exception_returns_false(self, _mock):
+        self.assertFalse(es_helper.is_ipc_ready(self.ES))
+
+
+# ── _db_is_corrupt ────────────────────────────────────────────────────────────
+
+class TestDbIsCorrupt(unittest.TestCase):
+
+    def test_missing_file_not_corrupt(self):
+        p = pathlib.Path("nonexistent_db_xyz.db")
+        self.assertFalse(es_helper._db_is_corrupt(p))
+
+    def test_small_file_is_corrupt(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as f:
+            f.write(b"x" * 100)
+            tmp = pathlib.Path(f.name)
+        try:
+            self.assertTrue(es_helper._db_is_corrupt(tmp))
+        finally:
+            tmp.unlink(missing_ok=True)
+
+    def test_large_file_not_corrupt(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as f:
+            f.write(b"x" * 2048)
+            tmp = pathlib.Path(f.name)
+        try:
+            self.assertFalse(es_helper._db_is_corrupt(tmp))
+        finally:
+            tmp.unlink(missing_ok=True)
+
+    def test_exactly_1024_bytes_not_corrupt(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as f:
+            f.write(b"x" * 1024)
+            tmp = pathlib.Path(f.name)
+        try:
+            self.assertFalse(es_helper._db_is_corrupt(tmp))
+        finally:
+            tmp.unlink(missing_ok=True)
+
+
+# ── search_via_es compound queries ────────────────────────────────────────────
+
+class TestSearchViaEsCompoundQueries(unittest.TestCase):
+
+    ES = SKILL_ROOT / "bin" / "es.exe"
+
+    @patch("subprocess.run")
+    def test_compound_query_tokens_split(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "meeting ext:zip", 10, "name", "asc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("meeting", cmd)
+        self.assertIn("ext:zip", cmd)
+
+    @patch("subprocess.run")
+    def test_size_filter_query(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:mp4 size:>500mb", 5, "size", "desc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("ext:mp4", cmd)
+        self.assertIn("size:>500mb", cmd)
+
+    @patch("subprocess.run")
+    def test_date_filter_query(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:docx dm:thisweek", 20, "date-modified", "desc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("dm:thisweek", cmd)
+
+    @patch("subprocess.run")
+    def test_path_filter_query(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, 'path:C:\\Users\\ ext:py', 20, "name", "asc")
+        cmd = mock_run.call_args[0][0]
+        self.assertTrue(any("path:" in token for token in cmd))
+
+    @patch("subprocess.run")
+    def test_max_results_respected_in_cmd(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:log", 50, "name", "asc")
+        cmd = mock_run.call_args[0][0]
+        n_idx = cmd.index("-n")
+        self.assertEqual(cmd[n_idx + 1], "50")
+
+    @patch("subprocess.run")
+    def test_sort_by_date_modified(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:jpg", 20, "date-modified", "desc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("date-modified", cmd)
+
+    @patch("subprocess.run")
+    def test_sort_by_path(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:txt", 20, "path", "asc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("path", cmd)
+
+    @patch("subprocess.run")
+    def test_csv_flag_present(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:py", 10, "name", "asc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("-csv", cmd)
+
+    @patch("subprocess.run")
+    def test_path_column_flag_present(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:py", 10, "name", "asc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("-path-column", cmd)
+
+    @patch("subprocess.run")
+    def test_size_flag_present(self, mock_run):
+        mock_run.return_value = _make_proc(0, stdout=CSV_HEADER.encode())
+        es_helper.search_via_es(self.ES, "ext:py", 10, "name", "asc")
+        cmd = mock_run.call_args[0][0]
+        self.assertIn("-size", cmd)
+
+
+# ── integration: additional live search scenarios ─────────────────────────────
+
+@unittest.skipUnless(_everything_available(), "Everything not running — skipping live tests")
+class TestLiveSearchExtended(unittest.TestCase):
+
+    ES = es_helper.find_es_exe()
+
+    def test_search_by_extension_txt(self):
+        result = es_helper.search_via_es(self.ES, "ext:txt", 10, "name", "asc")
+        self.assertNotIn("error", result)
+        self.assertIn("results", result)
+
+    def test_search_large_files(self):
+        result = es_helper.search_via_es(self.ES, "size:>100mb", 5, "size", "desc")
+        self.assertNotIn("error", result)
+        if result["results"]:
+            for r in result["results"]:
+                self.assertIsNotNone(r["size"])
+                self.assertGreater(r["size"], 100 * 1024 * 1024)
+
+    def test_search_modified_this_month(self):
+        result = es_helper.search_via_es(self.ES, "dm:thismonth ext:py", 10, "date-modified", "desc")
+        self.assertNotIn("error", result)
+
+    def test_search_in_users_folder(self):
+        result = es_helper.search_via_es(self.ES, "path:C:\\Users\\ ext:json", 5, "name", "asc")
+        self.assertNotIn("error", result)
+        if result["results"]:
+            for r in result["results"]:
+                self.assertTrue(r["path"].lower().startswith("c:\\users"))
+
+    def test_count_only_gives_integer(self):
+        result = es_helper.search_via_es(self.ES, "ext:exe", 1, "name", "asc", count_only=True)
+        self.assertIsInstance(result["total"], int)
+        self.assertGreater(result["total"], 0)
+
+    def test_no_results_query(self):
+        result = es_helper.search_via_es(self.ES, "zz_unlikely_filename_xyz_987.abcdef", 5, "name", "asc")
+        self.assertNotIn("error", result)
+        self.assertEqual(result["total"], 0)
+
+    def test_result_full_path_is_string(self):
+        result = es_helper.search_via_es(self.ES, "ext:py", 3, "name", "asc")
+        for r in result.get("results", []):
+            self.assertIsInstance(r["name"], str)
+            self.assertIsInstance(r["path"], str)
+
+    def test_size_human_readable_format(self):
+        result = es_helper.search_via_es(self.ES, "ext:py", 5, "size", "desc")
+        for r in result.get("results", []):
+            if r["size"] is not None and r["size"] > 0:
+                self.assertTrue(
+                    any(unit in r["size_human"] for unit in ("B", "KB", "MB", "GB")),
+                    f"Unexpected size_human: {r['size_human']!r}",
+                )
+
+    def test_source_field_is_es(self):
+        result = es_helper.search_via_es(self.ES, "ext:py", 1, "name", "asc")
+        self.assertEqual(result.get("source"), "es.exe")
+
+    def test_query_echoed_in_result(self):
+        query = "ext:ini"
+        result = es_helper.search_via_es(self.ES, query, 5, "name", "asc")
+        self.assertEqual(result.get("query"), query)
+
+
 if __name__ == "__main__":
     unittest.main()
