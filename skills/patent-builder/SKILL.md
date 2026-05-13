@@ -1,6 +1,6 @@
 ---
 name: patent-builder
-description: Discovers patentable ideas, refines early concepts, analyzes implementations for patent potential, and drafts patent disclosure materials. Use when the user asks about patent idea mining, invention brainstorming, patentability-oriented technical analysis, invention disclosure drafting, prior-solution comparison, or claim-feature extraction. / 发现可专利技术想法，打磨早期发明概念，分析已有实现的专利潜力，并起草专利交底材料。适用于专利点挖掘、发明构思启发、现有方案对比、专利性初步分析、专利交底书撰写与优化。
+description: Discovers patentable ideas, refines early concepts, analyzes implementations for patent potential, drafts patent disclosure materials, or reverse-lookups existing disclosures against new requirements to identify coverage gaps. Use when the user asks about patent idea mining, invention brainstorming, patentability-oriented technical analysis, invention disclosure drafting, prior-solution comparison, claim-feature extraction, or checking whether existing disclosures already cover a new feature or requirement. / 发现可专利技术想法，打磨早期发明概念，分析已有实现的专利潜力，起草专利交底材料，或根据新需求对已有交底书做覆盖度反查，识别保护空白。适用于专利点挖掘、发明构思启发、现有方案对比、专利性初步分析、专利交底书撰写与优化、或检查已有交底是否覆盖新功能或新需求。
 ---
 
 # Patent Builder
@@ -37,6 +37,9 @@ Use when the user has a preliminary concept, pain point, or possible solution bu
 
 **Mode C: Open exploration**
 Use when the user has no clear direction and wants guided brainstorming.
+
+**Mode D: Reverse disclosure lookup**
+Use when the user has one or more existing patent disclosures and wants to check whether a new requirement, feature, or implementation is already covered, identify protection gaps, or decide whether to file a new disclosure or extend an existing one.
 
 If unclear, ask one concise question:
 "Are we starting from an existing implementation, an initial idea, or open exploration?"
@@ -165,6 +168,84 @@ Provide:
 - Patent-potential ranking
 - Recommended direction
 - Questions needed to develop the idea
+
+## Mode D: Reverse disclosure lookup
+
+### Goal
+Analyze one or more existing patent disclosures against a new requirement, feature set, or implementation to determine coverage status, identify protection gaps, and recommend actions.
+
+### Inputs required
+
+Before starting, confirm:
+- **Existing disclosures:** full text, invention-point summaries, or abstract-level descriptions of one or more filed or drafted disclosures.
+- **Requirements to check:** a new feature, implementation description, product spec, or set of specific technical points to audit against the disclosures.
+
+If either input is missing, ask the user to provide it before proceeding.
+
+### Process
+
+1. **Inventory existing disclosures**
+   For each disclosure, extract:
+   - Technical field and target scenario
+   - Core technical problem addressed
+   - Key technical means and distinguishing features
+   - Strongest invention direction or independent claim scope
+   - Coverage keywords (data structures, processing steps, decision logic, control loops)
+
+2. **Parse the requirements**
+   Decompose the requirements into:
+   - A numbered list of discrete technical feature points or functional behaviors
+   - Data, modules, or flows involved
+   - Technical vocabulary that may overlap with existing disclosures
+
+3. **Map requirements to disclosures**
+   For each requirement feature, assign one status:
+   - **Covered:** the core technical mechanism in an existing disclosure directly encompasses this feature.
+   - **Partially covered:** meaningful overlap exists, but key variants, steps, or data flows are not covered.
+   - **Gap:** no existing disclosure covers this feature.
+
+4. **Identify protection gaps**
+   For each Gap or Partially covered item, analyze:
+   - What specific technical distinction is missing from existing coverage?
+   - Does the uncovered distinction produce an independent technical effect?
+   - Is the gap narrow (implementation variant) or broad (different technical mechanism)?
+   - Could it be addressed by supplementing an existing disclosure with additional embodiments?
+
+5. **Recommend action**
+   For each gap, assign one of three actions:
+   - **No action needed:** the requirement falls within the scope of existing protection.
+   - **Supplement existing disclosure:** add embodiments or extend the claim scope of an identified existing disclosure.
+   - **File new disclosure:** the gap is technically distinct enough to warrant a new disclosure; provide a brief invention-point direction.
+
+### Mode D output
+
+```text
+# Reverse Disclosure Lookup
+
+## Existing disclosures indexed
+| # | Title / Summary | Core technical mechanism | Coverage keywords |
+|---|---|---|---|
+
+## Requirements analyzed
+[Numbered list of requirement feature points]
+
+## Coverage map
+| # | Requirement feature | Status | Matched disclosure | Gap description |
+|---|---|---|---|---|
+| 1 | ... | Covered / Partial / Gap | ... | ... |
+
+## Protection gaps
+1. [Gap description — missing technical distinction and scope]
+2. ...
+
+## Recommended actions
+| Gap # | Action | Rationale |
+|---|---|---|
+| ... | No action / Supplement / New disclosure | ... |
+
+## Open questions
+- ...
+```
 
 ## Patent disclosure structure
 
