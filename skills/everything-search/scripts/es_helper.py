@@ -4,7 +4,7 @@ es_helper.py - Everything search helper for Claude Code skill.
 Stdlib only. No pip dependencies required.
 
 Usage:
-  python3 es_helper.py --query "<query>" [--max 20] [--sort name]
+  python3 es_helper.py --query "<query>" [--max 30] [--sort name]
                        [--order asc|desc] [--count-only] [--http-port 80]
 """
 
@@ -585,7 +585,7 @@ def _json_out(data: dict) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Search using Everything")
     parser.add_argument("--query", required=True, help="Everything search query")
-    parser.add_argument("--max", type=int, default=20, help="Maximum results (default: 20)")
+    parser.add_argument("--max", type=int, default=30, help="Maximum results (default: 30)")
     parser.add_argument(
         "--sort",
         default="name",

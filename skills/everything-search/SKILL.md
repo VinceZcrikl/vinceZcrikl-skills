@@ -17,7 +17,7 @@ python {skill_dir}/scripts/es_helper.py --query "ext:py dm:thisweek" --sort date
 
 The script prints JSON to stdout. Parse it and format the results as a markdown table.
 
-Pick `--sort`, `--order`, and `--max` based on user intent (see Step 3 decision table) — do **not** rely on defaults blindly. The default sort is `name` (alphabetical, asc); `--order` defaults intelligently per `--sort` (name/path=asc, size/date-\*=desc); `--max` defaults to 20.
+Pick `--sort`, `--order`, and `--max` based on user intent (see Step 3 decision table) — do **not** rely on defaults blindly. The default sort is `name` (alphabetical, asc); `--order` defaults intelligently per `--sort` (name/path=asc, size/date-\*=desc); `--max` defaults to 30.
 
 ## Step 1 — Locate the skill directory
 
@@ -73,7 +73,7 @@ Map the user's intent to parameters using this table — do not just take the de
 | "the file called X / find a specific file" (concrete name) | `name` | `asc` | 10 |
 | "all X / list X" (browsing a category) | `name` | `asc` | 50 |
 | "duplicate / sizedupe" — query has `dupe:` / `sizedupe:` | `size` | `desc` | 100 |
-| Unclear / fallback | `name` | `asc` | 20 |
+| Unclear / fallback | `name` | `asc` | 30 |
 
 For open-ended queries where you can't estimate scale, run a cheap probe first:
 
@@ -90,7 +90,7 @@ python "{SKILL_DIR}/scripts/es_helper.py" --query "<translated_query>" --sort da
 ```
 
 Options:
-- `--max N` — maximum results (default 20)
+- `--max N` — maximum results (default 30)
 - `--sort name|size|date-modified|date-created|path` — sort field (default `name`)
 - `--order asc|desc` — sort direction. Defaults intelligently: `name`/`path` → asc; `size`/`date-modified`/`date-created` → desc. Override only when needed.
 - `--count-only` — return only `{total, query}` without results

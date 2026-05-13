@@ -110,7 +110,7 @@ Once installed, ask Claude in plain English — no special syntax needed.
 
 ### Helper script flags
 
-- `--max N` — result cap (default `20`)
+- `--max N` — result cap (default `30`)
 - `--sort name|size|date-modified|date-created|path` — sort field (default `name`)
 - `--order asc|desc` — sort direction. Defaults: `name`/`path` → asc, `size`/`date-*` → desc
 - `--count-only` — return only `{total, query}`, useful as a cheap probe before picking `--max`
