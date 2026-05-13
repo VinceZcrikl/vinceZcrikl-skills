@@ -8,6 +8,10 @@ An open-source collection of Agent Skills for AI assistants. Each skill is a sel
 
 - **[everything-search](./skills/everything-search)** `[Windows only]` — Instant file search powered by [Everything (voidtools)](https://www.voidtools.com). Find any file by name, extension, size, date, or path in milliseconds. Accepts natural language or raw Everything query syntax.
 
+**Engineering & IP**
+
+- **[patent-builder](./skills/patent-builder)** — Discover patentable ideas, refine early concepts, analyze implementations for patent potential, and draft patent disclosure materials. Supports English and Chinese. Three entry modes: existing implementation, initial idea, or open exploration.
+
 ## Installation
 
 ### Register as a plugin marketplace

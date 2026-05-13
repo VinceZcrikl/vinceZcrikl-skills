@@ -16,7 +16,9 @@ everything-search/
 ├── scripts/
 │   └── es_helper.py       # Search helper (Python, stdlib only)
 └── bin/
-    └── es.exe             # Bundled Everything CLI (MIT license)
+    ├── es.exe             # Bundled Everything CLI (MIT license)
+    ├── Everything.exe     # Bundled Everything engine (auto-launched when needed)
+    └── Everything.ini     # Portable config (keeps Everything out of system registry)
 ```
 
 **Loading levels:**
@@ -112,17 +114,22 @@ Once installed, ask Claude in plain English — no special syntax needed.
 - `--sort name|size|date-modified|date-created|path` — sort field (default `name`)
 - `--order asc|desc` — sort direction. Defaults: `name`/`path` → asc, `size`/`date-*` → desc
 - `--count-only` — return only `{total, query}`, useful as a cheap probe before picking `--max`
-- `--http-port N` — Everything HTTP fallback port (default `80`)
+- `--elevated` — relaunch Everything with UAC elevation so it can index system directories (`C:\Windows`, `Program Files`, etc.). Shows a one-time UAC dialog.
+- `--auto-install` — if Everything is not installed, download the portable build (~5 MB) and launch it automatically. Use this on x86 Windows or when the bundled binary is missing.
+- `--http-port N` — Everything HTTP fallback port (default `80`; port `8080` is also tried automatically)
 
 ## Troubleshooting
 
 | Error | Solution |
 |---|---|
-| Everything is not running | Start Everything from the Start Menu or install from [voidtools.com](https://www.voidtools.com) |
-| es.exe not found / HTTP unavailable | Verify the skill is installed at `~/.claude/skills/everything-search/` |
-| IPC not ready | Wait ~10 seconds after starting Everything, then retry |
-| HTTP API unavailable | Enable HTTP Server: Tools → Options → HTTP Server |
-| Windows-only error | Everything does not run on macOS or Linux |
+| Everything is not running | The skill auto-launches `bin/Everything.exe` and retries. If it still fails, start Everything manually from the Start Menu. |
+| Everything not installed / portable binary missing | Re-run the search asking Claude to use `--auto-install` to download the portable build (~5 MB). |
+| Download failed | Check your internet connection and retry. |
+| Could not start Everything.exe | Try launching Everything manually from the Start Menu; then retry the search. |
+| IPC not ready / index still building | Wait ~30 seconds for Everything to finish indexing on first launch, then retry. |
+| HTTP API unavailable | Enable HTTP Server in Everything: **Tools → Options → HTTP Server**, default port 80. |
+| es.exe not found and HTTP unavailable | Verify the skill is cloned to `~/.claude/skills/VinceZcrikl-skills/` so `bin/es.exe` is present. |
+| Windows-only error | Everything does not run on macOS or Linux. |
 
 ## License
 
