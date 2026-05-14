@@ -1,11 +1,9 @@
 ---
-name: hermes-plugin-builer
+name: hermes-plugin-builder
 description: Build Hermes Agent plugins from idea to working implementation. Use when the user wants to create, scaffold, package, debug, enable, or distribute a Hermes plugin with tools, hooks, slash commands, CLI commands, bundled skills, data files, or specialized plugin types such as platform/model/memory/context/image backends. / 用于从需求到可运行实现构建 Hermes Agent 插件，覆盖目录结构、plugin.yaml、register(ctx)、工具 schema/handler、hook、命令、技能打包、调试、启用与分发。
 ---
 
-# Hermes Plugin Builer
-
-> Note: the skill name intentionally matches the requested name `hermes-plugin-builer`. Treat it as “Hermes Plugin Builder”.
+# Hermes Plugin Builder
 
 ## Language
 
