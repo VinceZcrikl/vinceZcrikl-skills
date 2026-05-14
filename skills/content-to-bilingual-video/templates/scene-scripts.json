@@ -1,0 +1,58 @@
+{
+  "project": {
+    "project_id": "<project-slug>",
+    "title": "<Video title>",
+    "source_ref": "<archive-note-path-or-url>",
+    "primary_language": "zh-CN",
+    "secondary_language": "en",
+    "tts_engine": "<cosyvoice2|edge-tts|other>",
+    "total_target_duration_sec": 90.0,
+    "notes": "Keep spoken text optimized for narration. Do not force subtitle phrasing into this file."
+  },
+  "scenes": [
+    {
+      "id": "scene_01",
+      "index": 1,
+      "title": "<Hook>",
+      "target_duration_sec": 10.5,
+      "visual_goal": "<What the viewer should be seeing in this scene>",
+      "spoken_text": "<Narration text optimized for TTS and natural speech>",
+      "pronunciation_overrides": [
+        {
+          "original": "Markdown",
+          "spoken_form": "Mark Down",
+          "apply_to_subtitles": false,
+          "reason": "Improve TTS pronunciation without forcing on-screen spelling"
+        }
+      ],
+      "timing_strategy": {
+        "if_short": "pad_silence",
+        "if_slightly_long": "mild_atempo",
+        "if_too_long": "rewrite"
+      },
+      "asset_refs": [
+        "<assets/project-slug/scene-01.png>"
+      ],
+      "qa_notes": [
+        "<Pronunciation check>",
+        "<Pacing check>"
+      ]
+    },
+    {
+      "id": "scene_02",
+      "index": 2,
+      "title": "<Contrast or development>",
+      "target_duration_sec": 12.0,
+      "visual_goal": "<What changes visually here>",
+      "spoken_text": "<Second scene narration>",
+      "pronunciation_overrides": [],
+      "timing_strategy": {
+        "if_short": "pad_silence",
+        "if_slightly_long": "mild_atempo",
+        "if_too_long": "rewrite"
+      },
+      "asset_refs": [],
+      "qa_notes": []
+    }
+  ]
+}

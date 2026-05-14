@@ -1,0 +1,58 @@
+{
+  "manifest": {
+    "project_id": "<project-slug>",
+    "source_scene_script": "templates/scene-scripts.json",
+    "render_mode": "unified_bilingual_card",
+    "primary_language": "zh-CN",
+    "secondary_language": "en",
+    "language_order": [
+      "primary_top",
+      "secondary_bottom"
+    ],
+    "design": {
+      "anchor": "bottom_center",
+      "safe_margin_px": 48,
+      "max_width_ratio": 0.82,
+      "card_style": "rounded_dark_translucent",
+      "allow_overlap": false
+    },
+    "notes": "Display text is optimized for readability, not for TTS pronunciation."
+  },
+  "cards": [
+    {
+      "id": "card_01",
+      "scene_id": "scene_01",
+      "start_sec": 0.0,
+      "end_sec": 4.8,
+      "primary_text": "<Chinese subtitle text for display>",
+      "secondary_text": "<English subtitle text for display>",
+      "source_spoken_text_ref": "scene_01",
+      "line_break_guidance": {
+        "max_primary_lines": 2,
+        "max_secondary_lines": 2,
+        "avoid_orphans": true
+      },
+      "style_override": null,
+      "qa_notes": [
+        "<Check wrap>",
+        "<Check important visual area remains visible>"
+      ]
+    },
+    {
+      "id": "card_02",
+      "scene_id": "scene_01",
+      "start_sec": 4.8,
+      "end_sec": 10.5,
+      "primary_text": "<Second subtitle beat in primary language>",
+      "secondary_text": "<Second subtitle beat in secondary language>",
+      "source_spoken_text_ref": "scene_01",
+      "line_break_guidance": {
+        "max_primary_lines": 2,
+        "max_secondary_lines": 2,
+        "avoid_orphans": true
+      },
+      "style_override": null,
+      "qa_notes": []
+    }
+  ]
+}
