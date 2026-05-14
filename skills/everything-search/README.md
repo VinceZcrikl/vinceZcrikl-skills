@@ -41,6 +41,10 @@ automatically (appears as a tray icon) and retries.
 
 - Everything builds a file-system index on first launch. This takes a few seconds to a minute
   depending on drive size. Subsequent launches are instant.
+- On some Windows setups, Everything may already be running only as a background service
+  (Session 0). In that case, the first CLI query still needs to launch a user-session client so
+  `es.exe` can talk to it. The helper now detects this case, waits longer, and performs a few
+  warm-up retries before giving up.
 - The tray icon remains until you quit it from the tray menu. This is normal — it keeps the
   index ready for fast searches.
 - On x86 Windows (rare/legacy), the bundled x64 binary is incompatible. Pass `--auto-install`
@@ -126,7 +130,7 @@ Once installed, ask Claude in plain English — no special syntax needed.
 | Everything not installed / portable binary missing | Re-run the search asking Claude to use `--auto-install` to download the portable build (~5 MB). |
 | Download failed | Check your internet connection and retry. |
 | Could not start Everything.exe | Try launching Everything manually from the Start Menu; then retry the search. |
-| IPC not ready / index still building | Wait ~30 seconds for Everything to finish indexing on first launch, then retry. |
+| IPC not ready / index still building | On true first launch, wait for the index to finish building. On service-only Windows setups, the helper may need extra time to bring up a user-session IPC client. The script now waits longer and performs several grace retries automatically; if it still fails, wait ~30–60 seconds and retry. |
 | HTTP API unavailable | Enable HTTP Server in Everything: **Tools → Options → HTTP Server**, default port 80. |
 | es.exe not found and HTTP unavailable | Verify the skill is cloned to `~/.claude/skills/VinceZcrikl-skills/` so `bin/es.exe` is present. |
 | Windows-only error | Everything does not run on macOS or Linux. |

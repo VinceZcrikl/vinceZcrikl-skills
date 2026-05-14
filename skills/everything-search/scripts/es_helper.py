@@ -178,6 +178,61 @@ def is_everything_running() -> bool:
         return False
 
 
+def list_everything_processes() -> List[dict]:
+    """Return running Everything.exe processes with session metadata."""
+    try:
+        proc = subprocess.run(
+            ["tasklist", "/FI", "IMAGENAME eq Everything.exe", "/V", "/FO", "CSV", "/NH"],
+            capture_output=True,
+            timeout=5,
+        )
+        enc = locale.getpreferredencoding(False) or "utf-8"
+        raw = proc.stdout.decode(enc, errors="replace").strip()
+    except Exception:
+        return []
+
+    if not raw or "No tasks are running" in raw:
+        return []
+
+    processes = []
+    for row in csv.reader(io.StringIO(raw)):
+        if not row or len(row) < 4:
+            continue
+        session_name = row[2].strip()
+        session_id_raw = row[3].strip()
+        try:
+            session_id = int(session_id_raw)
+        except ValueError:
+            session_id = None
+        processes.append({
+            "image": row[0].strip(),
+            "pid": row[1].strip(),
+            "session_name": session_name,
+            "session_id": session_id,
+        })
+    return processes
+
+
+def _everything_topology() -> dict:
+    """Describe whether Everything is running as a service, user client, or both."""
+    processes = list_everything_processes()
+    has_service = any(
+        (p.get("session_name", "").lower() == "services") or (p.get("session_id") == 0)
+        for p in processes
+    )
+    has_user_session = any(
+        (p.get("session_id") not in (None, 0)) and (p.get("session_name", "").lower() != "services")
+        for p in processes
+    )
+    return {
+        "processes": processes,
+        "running": bool(processes),
+        "has_service": has_service,
+        "has_user_session": has_user_session,
+        "service_only": has_service and not has_user_session,
+    }
+
+
 def is_ipc_ready(es_path: pathlib.Path) -> bool:
     """Quick probe: return True if es.exe can reach Everything's IPC right now."""
     try:
@@ -195,6 +250,14 @@ def _db_is_corrupt(db_path: pathlib.Path) -> bool:
     """Return True if the Everything.db looks corrupted (too small to be valid)."""
     try:
         return db_path.exists() and db_path.stat().st_size < 1024
+    except OSError:
+        return False
+
+
+def _db_is_prebuilt(db_path: pathlib.Path) -> bool:
+    """Return True when the Everything.db already looks substantially populated."""
+    try:
+        return db_path.exists() and db_path.stat().st_size >= 1024 * 1024
     except OSError:
         return False
 
@@ -313,19 +376,29 @@ def ensure_everything(
     everything_exe = find_everything_exe()
 
     if everything_exe:
-        if is_everything_running():
+        topology = _everything_topology()
+        db_path = everything_exe.parent / "Everything.db"
+        db_prebuilt = _db_is_prebuilt(db_path)
+
+        if topology["running"]:
             # Quick probe: IPC might already be available (user-session client running).
             if is_ipc_ready(es_path):
                 print("Everything IPC is already ready.", file=sys.stderr)
                 return {}
 
-            # IPC not ready.  Everything is likely a service in Session 0 — launch a
-            # user-session client that bridges to it via named pipe.
-            print(
-                "Everything is running but IPC is unavailable "
-                "(possibly a service in Session 0). Launching user-session client ...",
-                file=sys.stderr,
-            )
+            # IPC not ready. Everything may be service-only (Session 0) or the
+            # user-session client may still be starting up.
+            if topology["service_only"]:
+                print(
+                    "Everything is running only as a service (Session 0) and IPC is unavailable. "
+                    "Launching a user-session client ...",
+                    file=sys.stderr,
+                )
+            else:
+                print(
+                    "Everything is running but IPC is unavailable. Launching/restarting a user-session client ...",
+                    file=sys.stderr,
+                )
 
         proc = launch_everything(everything_exe)
         if proc is None:
@@ -334,11 +407,23 @@ def ensure_everything(
                 "message": f"Could not start {everything_exe}.",
                 "setup": "Try launching Everything manually from the Start Menu.",
             }
-        if not wait_for_ipc(es_path, timeout=30, process=proc):
+
+        initial_timeout = 45 if topology["service_only"] or db_prebuilt else 30
+        if not wait_for_ipc(es_path, timeout=initial_timeout, process=proc):
             return {
                 "error": "ipc_timeout",
-                "message": "Everything launched but IPC was not ready within 30s.",
-                "setup": "Everything may still be building its index. Wait a moment and retry.",
+                "message": (
+                    "Everything launched, but the user-session IPC bridge was not ready "
+                    f"within {initial_timeout}s."
+                    if topology["service_only"] or db_prebuilt
+                    else f"Everything launched but IPC was not ready within {initial_timeout}s."
+                ),
+                "setup": (
+                    "Everything's user-session client is still starting. The Windows service may already be running; "
+                    "wait a few more seconds and retry."
+                    if topology["service_only"] or db_prebuilt
+                    else "Everything may still be building its index. Wait a moment and retry."
+                ),
             }
         return {}  # success — caller retries the search
 
@@ -669,20 +754,37 @@ def main() -> None:
             _json_out(result)
             sys.exit(0)
         if result["error"] == "not_running":
-            # Attempt to locate/install/launch Everything, then retry once
+            # Attempt to locate/install/launch Everything, then retry with a short
+            # grace window for the user-session IPC bridge to come online.
             bootstrap = ensure_everything(es_path, args.auto_install, SKILL_ROOT / "bin")
             if "error" in bootstrap:
                 _json_out(bootstrap)
                 sys.exit(1)
-            # Everything is now running — retry the search
-            result = search_via_es(
-                es_path, args.query, args.max, args.sort, order, args.count_only
-            )
-            if "error" not in result:
+
+            retry_errors = []
+            for attempt in range(1, 6):
+                result = search_via_es(
+                    es_path, args.query, args.max, args.sort, order, args.count_only
+                )
+                if "error" not in result:
+                    if attempt > 1:
+                        print(f"Everything search succeeded on grace retry {attempt}.", file=sys.stderr)
+                    _json_out(result)
+                    sys.exit(0)
+                retry_errors.append(result.get("error", "unknown"))
+                if result.get("error") not in {"not_running", "ipc_failed"}:
+                    break
+                if attempt < 5:
+                    time.sleep(2)
+
+            if result.get("error") in {"not_running", "ipc_failed"}:
+                # es.exe may still be racing IPC registration; fall through to HTTP.
+                result["setup"] = (
+                    (result.get("setup") + " ") if result.get("setup") else ""
+                ) + "Tried several warm-up retries after launch before falling back."
+            else:
                 _json_out(result)
-                sys.exit(0)
-            _json_out(result)
-            sys.exit(1)
+                sys.exit(1)
         # IPC not ready or other es error — fall through to HTTP
 
     # Strategy 2: HTTP API (try configured port + 8080)

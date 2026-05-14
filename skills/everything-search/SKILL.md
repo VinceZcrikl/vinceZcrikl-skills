@@ -98,6 +98,20 @@ Options:
 - `--auto-install` — download portable Everything if missing (x86 fallback or no bundled exe)
 - `--http-port N` — Everything HTTP server port if not using default 80
 
+### Cold-start behavior
+
+If the first search hits `not_running`, the helper now does more than a single launch + retry:
+
+- It detects whether Everything is already running only as a Windows service in **Session 0**.
+- It checks whether `Everything.db` already looks prebuilt, which usually means this is **not** a true first index build.
+- In those cases it waits longer for the user-session IPC bridge to appear.
+- After launch it performs several short grace retries before surfacing an error.
+
+Interpretation guideline:
+
+- **True first launch / fresh database** → likely index-building delay.
+- **Service-only / prebuilt database** → more likely IPC startup lag than indexing.
+
 ### When to use `--elevated`
 
 Add `--elevated` when the translated query contains any of these patterns:
@@ -149,7 +163,7 @@ Found **N** result(s) for `<query>`:
 | `not_installed` | The portable binary is missing. Ask: *"Shall I download Everything automatically (~5 MB, no system install)?"* If yes → rerun adding `--auto-install`. |
 | `download_failed` | "Failed to download Everything. Check your internet connection and retry." |
 | `launch_failed` | "Could not start Everything.exe. Try launching it manually from the Start Menu." |
-| `ipc_timeout` | "Everything launched but is still building its index. Wait a minute and retry." |
+| `ipc_timeout` | If the message mentions a **user-session IPC bridge**, explain that Everything may already be running as a Windows service and the desktop client is still starting. Otherwise treat it as normal index-building delay. In either case, tell the user the helper already waited and performed several warm-up retries before giving up. |
 | `not_found` | "es.exe is missing and the HTTP API is unavailable. See the README for setup instructions." |
 | `ipc_failed` | "Everything's IPC is not ready. It may still be loading — wait a few seconds and retry." |
 | `http_failed` | "HTTP API unavailable. Enable it in Everything: Tools → Options → HTTP Server." |
