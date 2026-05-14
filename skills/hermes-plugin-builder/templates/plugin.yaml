@@ -1,0 +1,13 @@
+name: my-plugin
+version: 1.0.0
+description: Concise description of what this Hermes plugin adds
+provides_tools:
+  - my_tool
+provides_hooks: []
+# Optional:
+# author: Your Name
+# requires_env:
+#   - name: EXAMPLE_API_KEY
+#     description: "API key for the external service"
+#     url: "https://example.com/api-keys"
+#     secret: true
