@@ -1,0 +1,9 @@
+[project]
+name = "hermes-plugin-my-plugin"
+version = "1.0.0"
+description = "A Hermes Agent plugin"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.entry-points."hermes_agent.plugins"]
+my-plugin = "my_plugin_package"
